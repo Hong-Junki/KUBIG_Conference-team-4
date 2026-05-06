@@ -70,5 +70,9 @@ out/
 *.log
 logs/
 
+# ── 중간 산출물 JSON (CSV/MD로 요약됨) ────────────────────────────────────────
+outputs/reports/time_feature_ablation_val.json
+outputs/reports/time_feature_experiment_val.json
+
 # ── 제출용 압축 파일 ──────────────────────
 *.zip
