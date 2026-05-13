@@ -1,0 +1,60 @@
+# 환경 변수 / 비밀
+.env
+*.session
+*.session-journal
+conflict-early-warning-*.json
+
+# 데이터 (raw + 빌드 산출물)
+input/raw/
+input/raw_merged/
+input/processed/
+input/reference/
+*.zip
+*.pdf
+
+# 모델 / 평가 산출물 (실행 시 자동 생성)
+output/
+
+# 내부 명세 문서 (회의·12년 재학습 후 정리해서 별도 공유)
+docs/
+
+# 모델 코드 (모델링 단계 진행 예정)
+src/model/*
+!src/model/.gitkeep
+
+# 대시보드 코드 (대시보드 단계 진행 예정)
+src/dashboard/*
+!src/dashboard/.gitkeep
+
+# 작업 노트 / 리서치 (개인 작업용, 팀 repo 비공개)
+proc/
+logs/
+
+# AI 에이전트 가이드 (개인 작업용)
+CLAUDE.md
+.claude/
+.cursor/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# 가상 환경
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
