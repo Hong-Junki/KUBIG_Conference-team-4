@@ -69,10 +69,15 @@ def _build_acled_features(
         df_empty = pd.DataFrame({"date": date_range})
         for col, val in empty_cols.items():
             df_empty[col] = val
+        df_empty["acled_missing_mask"] = 1.0
         return df_empty
 
     df = pd.read_parquet(acled_path)
     df["event_date"] = pd.to_datetime(df["event_date"], utc=True).dt.normalize()
+    # 국가별 ACLED coverage 시작일: 7d lag 적용된 rolling 윈도우에 실제 이벤트가
+    # 하나라도 들어오는 가장 이른 date를 결측 경계로 사용
+    first_event_date = df["event_date"].min()
+    coverage_start = first_event_date + pd.Timedelta(days=ACLED_LAG_DAYS)
 
     # 일별 집계
     daily_counts = df.groupby("event_date").agg(
@@ -139,6 +144,11 @@ def _build_acled_features(
         features[f"acled_actor_type_{atype}_ratio"] = np.where(
             total_30d > 0, count_30d / total_30d, 0.0
         )
+
+    # ACLED 결측 마스크: 해당 일자의 lag 7d 윈도우가 첫 이벤트 이전이면 1
+    features["acled_missing_mask"] = (
+        date_range < coverage_start
+    ).astype(float)
 
     return features
 
