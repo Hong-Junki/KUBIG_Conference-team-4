@@ -14,4 +14,5 @@ export interface ModelMetrics {
   p_at_top5pct: number;
   recall_at_precision_010: number;
   ece: number;
+  brier_score: number;
 }

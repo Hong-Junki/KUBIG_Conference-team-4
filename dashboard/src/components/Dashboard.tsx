@@ -11,11 +11,12 @@ import CountryDetailPanel from './CountryDetailPanel';
 import MapPlaceholder from './MapPlaceholder';
 
 const MODEL_METRICS: ModelMetrics = {
-  model_name: 'LightGBM + SE',
-  pr_auc: 0.1628,
-  p_at_top5pct: 0.2254,
+  model_name: 'Updated(mask=0) + Platt Cal.',
+  pr_auc: 0.1741,
+  p_at_top5pct: 0.2159,
   recall_at_precision_010: 0.6209,
-  ece: 0.1829,
+  ece: 0.0029,
+  brier_score: 0.0365,
 };
 
 export default function Dashboard() {

@@ -33,7 +33,7 @@ export default function Header({ dateOptions, selectedDate, onDateChange }: Head
 
           <div className="flex items-center gap-2 bg-gray-800 rounded-md px-3 py-1.5">
             <span className="text-xs text-gray-400">Model</span>
-            <span className="text-sm font-semibold text-blue-400">LightGBM + SE</span>
+            <span className="text-sm font-semibold text-blue-400">LightGBM + SE · Updated · Platt</span>
           </div>
         </div>
       </div>

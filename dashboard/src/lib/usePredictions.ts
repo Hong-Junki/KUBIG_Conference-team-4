@@ -5,7 +5,7 @@ import Papa from 'papaparse';
 import { Prediction } from './types';
 import { getRiskLevel } from './riskUtils';
 
-const CSV_PATH = '/data/predictions__lightgbm_se__byeonghyeon.csv';
+const CSV_PATH = '/data/predictions__lightgbm_se_updated_mask0_only_platt__byeonghyeon.csv';
 
 interface RawRow {
   date: string;

@@ -40,12 +40,21 @@ export default function ModelPerformanceCard({ metrics }: Props) {
         <MetricItem label="PR-AUC"     value={metrics.pr_auc.toFixed(4)}                    direction="up"   description="높을수록 good" />
         <MetricItem label="P@top5%"    value={metrics.p_at_top5pct.toFixed(4)}              direction="up"   description="높을수록 good" />
         <MetricItem label="R@P≥0.10"   value={metrics.recall_at_precision_010.toFixed(4)}   direction="up"   description="높을수록 good" />
-        <MetricItem label="ECE"        value={metrics.ece.toFixed(4)}                        direction="down" description="낮을수록 good" />
+        <MetricItem label="ECE (Platt)" value={metrics.ece.toFixed(4)}                      direction="down" description="낮을수록 good" />
+        <MetricItem label="Brier (Platt)" value={metrics.brier_score.toFixed(4)}            direction="down" description="낮을수록 good" />
       </div>
 
-      <p className="text-xs text-gray-400 mt-3 pt-3 border-t border-gray-100">
-        ※ y_prob는 calibration이 미적용된 모델 신호입니다. 실제 발생 확률이 아닌 escalation 위험 신호(risk score)로 해석하세요.
-      </p>
+      <div className="mt-3 pt-3 border-t border-gray-100 space-y-1">
+        <p className="text-xs text-gray-500 font-medium">
+          모델: LightGBM + SE + Updated train(mask=0 only) + Platt Calibration
+        </p>
+        <p className="text-xs text-gray-400">
+          ※ 위험 점수는 Platt calibration이 적용된 모델 기반 escalation 위험 신호이며, 실제 발생 확률이 아닙니다.
+        </p>
+        <p className="text-xs text-gray-400">
+          ※ 보정 계수는 검증 데이터(2024-01~06) 기준으로 추정됐으므로 수치를 주의하여 해석하세요.
+        </p>
+      </div>
     </div>
   );
 }
