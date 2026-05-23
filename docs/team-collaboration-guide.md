@@ -24,13 +24,13 @@
 
 ## 1. 공유 데이터 명세
 
-### 1-1. `input/raw/` (원본 데이터)
+### 1-1. `input/raw_merged/` (원본 데이터, 12년 합본 2014~2026)
 
 | 폴더 | 파일 형식 | 행수/크기 | 기간 | 비고 |
 |------|----------|----------|------|------|
-| `acled/{ISO3}.parquet` | 58개국 × 1파일 | ~492k 행 / 8.2 MB | 2022-01-01 ~ 2025-03-31 | 정치적 폭력 이벤트 |
-| `gdelt/{ISO3}.parquet` | 58개국 × 1파일 | ~102M 행 / 1.1 GB | 2022-01-01 ~ 2025-03-31 | 글로벌 이벤트 (15분 갱신) |
-| `economic/indicators.parquet` | 1파일 | 1070일 × 5지표 / 40 KB | 2022-01-03 ~ 2026-03-30 | VIX/WTI/Gold/DXY/STLFSI4 |
+| `acled/{ISO3}.parquet` | 58개국 × 1파일 | ~1.0M 행 | 2014-01-01 ~ 2025-03-31 | 정치적 폭력 이벤트 (Research API 12개월 embargo, 2014-2017 일부국 결측) |
+| `gdelt/{ISO3}.parquet` | 58개국 × 1파일 | ~310M 행 | 2014-01-01 ~ 2026-03-31 | 글로벌 이벤트 (15분 갱신) |
+| `economic/indicators.parquet` | 1파일 | 3,101일 × 5지표 | 2014-01-02 ~ 2026-03-30 | VIX/WTI/Gold/DXY/STLFSI4 |
 
 **ACLED 스키마** (이벤트 단위):
 ```
@@ -56,13 +56,13 @@ index=date, columns=[VIX, WTI, Gold, DXY, STLFSI4]
 
 | 경로 | 내용 | 용도 |
 |------|------|------|
-| `dataset/full.parquet` | 68,614행 × 63컬럼 (54피처+3라벨+6메타) | **곧바로 학습** |
-| `dataset/full_se.parquet` | full + Macis SE score(55번째 피처) | SE 피처 사용 시 |
-| `dataset/train.parquet` | 42,340행 (~2023-12-31) | 학습 셋 |
+| `dataset/full.parquet` | 259,260행 × 63컬럼 (54피처+3라벨+6메타) | **곧바로 학습** |
+| `dataset/full_se.parquet` | full + Macis SE score(55번째 피처) — 12년 데이터 기준 재추출 진행 중 | SE 피처 사용 시 |
+| `dataset/train.parquet` | 211,816행 (2014-01 ~ 2023-12-31) | 학습 셋 |
 | `dataset/val.parquet` | 10,556행 (2024-01 ~ 2024-06) | 검증 셋 |
-| `dataset/test.parquet` | 15,718행 (2024-07 ~ 2025-03) | **테스트 셋 (학습/튜닝 금지)** |
+| `dataset/test.parquet` | 15,718행 (2024-07 ~ 2025-03-28) | **테스트 셋 (학습/튜닝 금지)** |
 | `features/baseline_scores.parquet` | 국가별 5y 사상자 prior B(0-100) | 위험도 점수 산출용 |
-| `features/se_scores.parquet` | 66,890행 (Macis SE score) | SE 피처 단독 |
+| `features/se_scores.parquet` | Macis SE score — 12년 데이터 기준 재추출 진행 중 | SE 피처 단독 |
 | `acled/`, `gdelt/`, `economic/`, `labels/` | 중간 산출물(원본 → 피처 변환 단계) | 피처를 새로 만들 때 참고 |
 
 ### 1-3. 메타·라벨 컬럼 (피처에서 반드시 제외)
@@ -78,13 +78,13 @@ LABEL_META_COLS = [
 
 ### 1-4. 라벨 3종 — 어떤 것을 학습 타겟으로?
 
-| 컬럼 | 양성 비율 | 정의 | 용도 |
+| 컬럼 | 양성 비율 (train) | 정의 | 용도 |
 |------|----------|------|------|
-| `y` | 69.99% | 향후 3일 내 ACLED 이벤트 ≥1건 | persistence 비교용 (단독 학습 금지) |
-| `y_onset` | 1.14% | 평시→분쟁 전환만 (희소) | onset 보조 평가 |
-| **`y_escalation`** | **4.49%** | onset + 급격 악화 | **★ 주 학습 타겟** |
+| `y` | 57.50% | 향후 3일 내 ACLED 이벤트 ≥1건 | persistence 비교용 (단독 학습 금지) |
+| `y_onset` | 1.03% | 평시→분쟁 전환만 (희소) | onset 보조 평가 |
+| **`y_escalation`** | **4.29%** | onset + 급격 악화 | **★ 주 학습 타겟** |
 
-> `y` 단독 학습은 persistence baseline(0.984)에 지배되어 학술적 가치 없음. 반드시 `y_escalation` 사용.
+> `y` 단독 학습은 persistence baseline에 지배되어 학술적 가치 없음. 반드시 `y_escalation` 사용.
 
 ---
 
@@ -93,9 +93,9 @@ LABEL_META_COLS = [
 비교가 가능하려면 **모두 같은 split**을 써야 합니다.
 
 ```
-train: ~2023-12-31  (42,340행, 양성 4.75%)
-val:   2024-01-01 ~ 2024-06-30  (10,556행, 양성 4.43%)
-test:  2024-07-01 ~ 2025-03-31  (15,718행, 양성 4.06%)
+train: 2014-01-01 ~ 2023-12-31  (211,816행, y_escalation 양성 4.29%)
+val:   2024-01-01 ~ 2024-06-30  (10,556행, 양성 4.07%)
+test:  2024-07-01 ~ 2025-03-28  (15,718행, 양성 4.06%)
 ```
 
 **규칙**:
@@ -184,19 +184,16 @@ python predict.py --test input/processed/dataset/test.parquet --out predictions.
 
 **현재 베이스라인** (참고용, test set 기준 `y_escalation`):
 
-| 모델 | PR-AUC | persistence_gain | P@top5% | R@P≥0.10 |
-|------|--------|-----------------|---------|----------|
-| Persistence (지속 가정) | 0.0354 | 0 (기준) | — | — |
-| Logistic Regression | 0.0534 | +0.0180 | 0.062 | N/A |
-| LightGBM | 0.0779 | +0.0424 | 0.120 | 0.194 |
-| **LightGBM + SE (현 1위)** | **0.1307** | **+0.0952** | **0.190** | **0.558** |
-| XGBoost | 0.0764 | +0.0410 | 0.125 | 0.204 |
-| LSTM | 0.0414 | +0.0060 | 0.033 | N/A |
-| Stacking Ensemble | 0.1263 | +0.0909 | 0.171 | N/A |
+| 모델 | PR-AUC | persistence_gain | P@top5% |
+|------|--------|-----------------|---------|
+| Persistence (지속 가정) | ≈ 0.04 | 0 (기준) | — |
+| Logistic Regression (12y 실측) | 0.0534 | +0.0180 | 0.062 |
+
+> 나머지 모델(LightGBM / LightGBM+SE / XGBoost / LSTM / Stacking)은 12년 합본 재학습 진행 중. 결과 나오는 대로 별도 공유 예정.
 
 **현실적 기대치**:
-- 양성 4.49% 희소 타겟이라 PR-AUC가 높지 않음. 0.10 넘으면 우수.
-- 우리 1위 모델은 random 대비 **2.9배** 더 정확.
+- 양성 4.29% 희소 타겟이라 PR-AUC가 높지 않음. 0.10 넘으면 우수.
+- **합격선**: 어느 모델이든 `persistence_gain > 0` 이어야 함 (Persistence baseline을 못 이기면 학술적 가치 없음).
 
 ---
 
