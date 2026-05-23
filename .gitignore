@@ -76,3 +76,6 @@ outputs/reports/time_feature_experiment_val.json
 
 # ── 제출용 압축 파일 ──────────────────────
 *.zip
+
+# ── 로컬 모델 산출물 (Macis 12y 등, 재현 가능) ────────────────────────────────
+output/
