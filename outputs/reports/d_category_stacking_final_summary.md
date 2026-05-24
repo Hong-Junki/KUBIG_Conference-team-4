@@ -2,7 +2,7 @@
 
 > **작성자**: byeonghyeon (Category D 담당)
 > **최초 작성**: 2026-05-23 | **최종 업데이트**: 2026-05-24
-> **대상 실험군**: `stacking_tree_only` 계열 (tree-only LightGBM + XGBoost)
+> **대상 실험군**: `stacking_tree_only` 계열 (tree-only LightGBM + XGBoost) + LSTM 추가 절제 실험
 > **수치 출처**: 각 실험별 `val_metrics.json` 자동 추출 (수동 기입 없음)
 
 ---
@@ -11,7 +11,7 @@
 
 `docs/model-study.md` Section 4 기준:
 
-- **Level 0 (기본 예측기)**: LightGBM, XGBoost, (추후 LSTM 추가 예정)
+- **Level 0 (기본 예측기)**: LightGBM, XGBoost (LSTM 추가 실험 완료 → 현재 버전에서는 제외, 아래 Section 6 참고)
 - **Level 1 (메타 러너)**: Logistic Regression (OOF 예측값으로 학습)
 - **OOF 전략**: Expanding-window 6-fold (F1: 2014–2017→2018, …, F6: 2014–2022→2023)
 - **캘리브레이션**: Platt Scaling (LogReg on raw stack probs) + Isotonic Regression
@@ -50,7 +50,7 @@
 
 ---
 
-## 3. 완료된 절제 실험 (5개)
+## 3. 완료된 절제 실험 (6개)
 
 | 실험명 | 변경 내용 | 스크립트 |
 |--------|-----------|----------|
@@ -59,6 +59,7 @@
 | `stacking_tree_only_12y_with_mask_feature` | acled_missing_mask 피처 추가 | `run_stacking_d_with_mask_feature_ablation.py` |
 | `stacking_tree_only_12y_mask0` | mask=1 행 학습에서 제외 | `run_stacking_d_mask0_ablation.py` |
 | `stacking_tree_only_8y_with_mask_feature` | Train 시작일 2016으로 후행화 (2014-2015 제외) | `run_stacking_d_train2016_ablation.py` |
+| `stacking_lgbm_xgb_lstm_12y_with_mask_feature` | Level 0에 LSTM Classifier 30d 추가 (기존 예측 파일 재사용) | `run_stacking_d_lgbm_xgb_lstm_ablation.py` |
 
 ---
 
@@ -66,13 +67,14 @@
 
 > 수치는 각 실험의 `val_metrics.json`에서 자동 추출. delta 기준: 해당 실험 − 기준 실험(12y_wmf 또는 이전 단계).
 
-| 구분 | 실험명 | SE | mask=1 행 | mask feature | Train 시작 | Platt PR-AUC | P@5% | ECE | 결론 |
-|------|--------|----|-----------|--------------|-----------|-------------|------|-----|------|
-| 기준선 | `stacking_tree_only_12y` | ✓ | 유지 | ✗ | 2014 | 0.2656 | 0.2614 | 0.0074 | 기준 |
-| SE 절제 | `stacking_tree_only_12y_no_se` | ✗ | 유지 | ✗ | 2014 | 0.1057 | 0.1591 | 0.0035 | SE 필수 (**−0.1599**) |
-| mask feature 추가 | `stacking_tree_only_12y_with_mask_feature` | ✓ | 유지 | ✓ | 2014 | **0.2714** | **0.2689** | 0.0083 | ★ 현재 최선 (+0.0059 vs 기준) |
-| mask=0 only | `stacking_tree_only_12y_mask0` | ✓ | 제외 | ✗ | 2014 | 0.2512 | 0.2614 | 0.0066 | mask=1 유지 (−0.0202 vs wmf) |
-| 2016-start | `stacking_tree_only_8y_with_mask_feature` | ✓ | 유지 | ✓ | **2016** | 0.2496 | 0.2576 | 0.0081 | 2014-start 유지 (−0.0218 vs wmf) |
+| 구분 | 실험명 | SE | mask=1 행 | mask feature | Level 0 | Train 시작 | Platt PR-AUC | P@5% | ECE | 결론 |
+|------|--------|----|-----------|--------------|---------|-----------|-------------|------|-----|------|
+| 기준선 | `stacking_tree_only_12y` | ✓ | 유지 | ✗ | LGBM+XGB | 2014 | 0.2656 | 0.2614 | 0.0074 | 기준 |
+| SE 절제 | `stacking_tree_only_12y_no_se` | ✗ | 유지 | ✗ | LGBM+XGB | 2014 | 0.1057 | 0.1591 | 0.0035 | SE 필수 (**−0.1599**) |
+| mask feature 추가 | `stacking_tree_only_12y_with_mask_feature` | ✓ | 유지 | ✓ | LGBM+XGB | 2014 | **0.2714** | **0.2689** | 0.0083 | ★ **현재 최선** (+0.0059 vs 기준) |
+| mask=0 only | `stacking_tree_only_12y_mask0` | ✓ | 제외 | ✗ | LGBM+XGB | 2014 | 0.2512 | 0.2614 | 0.0066 | mask=1 유지 (−0.0202 vs wmf) |
+| 2016-start | `stacking_tree_only_8y_with_mask_feature` | ✓ | 유지 | ✓ | LGBM+XGB | **2016** | 0.2496 | 0.2576 | 0.0081 | 2014-start 유지 (−0.0218 vs wmf) |
+| LSTM 추가 | `stacking_lgbm_xgb_lstm_12y_with_mask_feature` | ✓ | 유지 | ✓ | LGBM+XGB+**LSTM** | 2014 | 0.2656 | 0.2670 | 0.0067 | LSTM 제외 유지 (**−0.0058** vs wmf) |
 
 **범례**: ✓ 포함 / ✗ 미포함 / wmf = with_mask_feature
 
@@ -138,6 +140,16 @@ outputs/predictions/val_predictions__stacking_tree_only_12y_with_mask_feature__D
 - 2014~2015년 ACLED mask_rate(40~49%)가 높지만, `acled_missing_mask` 피처가 이미 데이터 부재를 모델에게 알려주므로 굳이 제거하지 않아도 됨
 - **결론: 2014-start(12y) 유지. 2016-start로의 전환 불필요**
 
+### LSTM Level 0 추가: 성능 저하로 제외
+
+- LSTM 단독 val PR-AUC = 0.1030 — 트리 기반 모델(0.26~0.27) 대비 현저히 낮음
+- LGBM-LSTM 확률 상관관계: **0.487**, XGB-LSTM: **0.519** → 다양성은 존재
+- 그러나 LSTM 추가 시 Stacking Platt PR-AUC: 0.2714 → 0.2656 (**−0.0058 ↓**)
+- P@5%도 0.2689 → 0.2670 (**−0.0019 ↓**) — ECE만 0.0083 → 0.0067로 소폭 개선
+- Top-5% 알람 집합 Jaccard: tree-only vs +LSTM stack = **0.899** → 최종 출력 거의 동일
+- 메타 러너 LSTM 계수: 0.69 (LGBM: 2.09, XGB: 2.21) — LSTM 낮은 신뢰도 반영
+- **결론: 현재 LSTM 품질로는 스태킹 편입 시 잡음 효과가 다양성 효과를 압도. LSTM 제외 유지.**
+
 ### Platt vs Isotonic 캘리브레이션
 
 - Isotonic ECE≈0 : 검증셋에서 과적합 (검증셋 31개 고유값 → 완벽 보정처럼 보임)
@@ -159,13 +171,13 @@ outputs/predictions/val_predictions__stacking_tree_only_12y_with_mask_feature__D
 
 5. **현재 D-category 최선 모델은 `stacking_tree_only_12y_with_mask_feature` + Platt** — val Stacking Platt PR-AUC = **0.2714**, P@5% = 0.2689, ECE = 0.0083.
 
-6. **LSTM은 아직 포함되지 않았으며, C-category LSTM OOF/val/test 예측이 준비되면 Level 0 base model로 추가 가능** — 추가 후 재실험 필요.
+6. **LSTM은 현재 버전에서 Level 0에서 제외** — 자체 제작 LSTM(PR-AUC 0.1030)을 추가한 결과 PR-AUC −0.0058 하락. 다양성은 있으나 품질이 낮아 잡음 효과가 우세. LSTM PR-AUC가 0.20 이상으로 개선되면 재편입 검토.
 
 ---
 
 ## 8. 한계 및 주의사항
 
-1. **LSTM 미포함**: Level 0에 LSTM이 없어 앙상블 다양성 미달. C-category 팀원의 OOF/val/test 예측 파일 수령 후 `BASE_MODELS`에 추가 예정.
+1. **LSTM 실험 완료 → 현재 버전 제외**: 자체 제작 LSTM Classifier 30d를 Level 0에 추가한 결과 PR-AUC −0.0058 하락. 현재 구현(hidden_size=64, 10 epochs)으로는 메타 러너 편입 효과 없음. LSTM 성능(PR-AUC 0.20+) 개선 후 재편입 검토.
 
 2. **검증 성능 낙관 편향**: val 데이터를 메타 C 탐색 + Platt 학습 + 성능 평가에 모두 사용하므로 val 지표가 실제 일반화 성능보다 높을 수 있음.
 
@@ -175,19 +187,19 @@ outputs/predictions/val_predictions__stacking_tree_only_12y_with_mask_feature__D
 
 5. **SE 경로 의존성**: `output/macis_12y/se_scores.parquet` 부재 시 no-SE 수준으로 성능 급락. 파일 경로 고정 필요.
 
-6. **2018-start 미실행**: 2016-start가 이미 열위를 보였으므로 2018-start는 더 낮은 성능이 예상됨. LSTM 수령이 우선.
+6. **2018-start 미실행**: 2016-start가 이미 열위를 보였으므로 2018-start는 더 낮은 성능이 예상됨. 우선순위 낮음.
 
 ---
 
 ## 9. 권고 다음 단계
 
-1. **[우선순위 1] C-category LSTM OOF 수령**: `outputs/oof/oof__lstm_*__C_*.csv` 형식으로 수령 시 `BASE_MODELS`에 추가 → 앙상블 다양성 확대 후 재실험.
+1. **[우선순위 1] 대시보드 업데이트**: 최종 모델(`stacking_tree_only_12y_with_mask_feature` + Platt)이 확정되었으므로 `dashboard/` 업데이트 검토 가능.
 
-2. **[우선순위 2] 대시보드 업데이트**: 최종 모델 결정 후 `dashboard/` 업데이트. 현재 PR-AUC 0.2714가 D 최선이나, LSTM 추가 후 재평가 필요.
+2. **[우선순위 2] LSTM 성능 개선 후 재편입 검토**: hidden_size 128~256, seq_len 60~90일, LR 스케줄, 더 많은 에포크 등으로 LSTM PR-AUC 0.20+ 달성 시 Level 0 재추가 가능.
 
 3. **[우선순위 3] Lookahead 2d 절제**: 팀 협의 후 결정. `conflict_indicator_2d_ahead` 타깃 사용 시 실용성 향상 여부 검토.
 
-4. **[참고] 제출 파일 경로**:
+4. **[참고] 최종 제출 파일 경로**:
    - Test: `outputs/predictions/predictions__stacking_tree_only_12y_with_mask_feature_platt__D_byeonghyeon.csv`
    - Val: `outputs/predictions/val_predictions__stacking_tree_only_12y_with_mask_feature__D_byeonghyeon.csv`
 
@@ -201,3 +213,5 @@ outputs/predictions/val_predictions__stacking_tree_only_12y_with_mask_feature__D
 | `outputs/reports/stacking_tree_only_12y_mask_feature_ablation_comparison.md` | mask 피처 추가 vs 미추가 비교 |
 | `outputs/reports/stacking_tree_only_12y_mask0_ablation_comparison.md` | mask0-only vs full-train 3-way 비교 |
 | `outputs/reports/stacking_tree_only_12y_train_start_ablation_comparison.md` | Train 시작일 12y vs 8y 비교 |
+| `outputs/reports/stacking_lgbm_xgb_lstm_12y_with_mask_feature_val_metrics.md` | LGBM+XGB+LSTM 스태킹 검증 지표 |
+| `outputs/reports/stacking_lgbm_xgb_lstm_vs_tree_only_comparison.md` | tree-only vs +LSTM 스태킹 비교 |
