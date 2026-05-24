@@ -2,7 +2,7 @@
 
 > **작성자**: byeonghyeon (Category D 담당)
 > **최초 작성**: 2026-05-23 | **최종 업데이트**: 2026-05-24
-> **대상 실험군**: `stacking_tree_only` 계열 (tree-only LightGBM + XGBoost) + LSTM 추가 절제 실험 + 피처 그룹 기여도 절제 실험 v2
+> **대상 실험군**: `stacking_tree_only` 계열 (tree-only LightGBM + XGBoost) + LSTM 추가 절제 실험 + 피처 그룹 기여도 절제 실험 v2 + 하이퍼파라미터 민감도 절제 실험
 > **수치 출처**: 각 실험별 `val_metrics.json` 자동 추출 (수동 기입 없음)
 
 ---
@@ -50,7 +50,7 @@
 
 ---
 
-## 3. 완료된 절제 실험 (7개)
+## 3. 완료된 절제 실험 (8개)
 
 | 실험명 | 변경 내용 | 스크립트 |
 |--------|-----------|----------|
@@ -61,6 +61,7 @@
 | `stacking_tree_only_8y_with_mask_feature` | Train 시작일 2016으로 후행화 (2014-2015 제외) | `run_stacking_d_train2016_ablation.py` |
 | `stacking_lgbm_xgb_lstm_12y_with_mask_feature` | Level 0에 LSTM Classifier 30d 추가 (기존 예측 파일 재사용) | `run_stacking_d_lgbm_xgb_lstm_ablation.py` |
 | `stacking_tree_only_12y_feature_group_ablation_v2` | 피처 그룹 기여도 분석 8종 — ACLED/GDELT/ECON/SE+mask 단독 및 제거 (country 포함 수정 버전; v1은 country 누락 버그로 폐기) | `run_stacking_d_feature_group_ablation.py` |
+| `stacking_tree_only_12y_hyperparam_sensitivity_ablation` | 하이퍼파라미터 민감도 분석 9종 — num_leaves/scale_pos_weight/min_child_samples/max_depth를 한 번에 하나씩 변경 (one-factor-at-a-time) | `run_stacking_d_hyperparam_sensitivity_ablation.py` |
 
 ---
 
@@ -95,6 +96,24 @@
 | `se_mask_only` | 2 | 0.0608 | 0.0628 | 0.0620 | 0.0814 | 0.0000 | −0.2094 | SE+mask 단독 불충분 |
 
 어떤 그룹도 현재 최선(0.2714)을 초과하지 않음 → 현재 57개 피처 구성 유지.
+
+### 하이퍼파라미터 민감도 절제 (9개 변형, one-factor-at-a-time)
+
+> 베이스라인: LightGBM num_leaves=63 / scale_pos_weight=22 / min_child_samples=20, XGBoost max_depth=4 / scale_pos_weight=22. delta 기준: 현재 최선 0.2714.
+
+| 변형 | 변경 내용 | Platt PR-AUC | P@5% | ECE | delta |
+|------|----------|-------------|------|-----|-------|
+| `lgbm_spw_sqrt` | LGBM scale_pos_weight=4.73 (√(neg/pos)) | **0.2551** | 0.2595 | 0.0063 | −0.0163 |
+| `xgb_depth_5` | XGB max_depth=5 (더 깊게) | 0.2493 | 0.2500 | 0.0072 | −0.0221 |
+| `xgb_spw_sqrt` | XGB scale_pos_weight=4.73 (√(neg/pos)) | 0.2466 | 0.2481 | 0.0040 | −0.0248 |
+| `lgbm_spw_10` | LGBM scale_pos_weight=10 | 0.2457 | 0.2519 | 0.0064 | −0.0257 |
+| `lgbm_min_child_50` | LGBM min_child_samples=50 | 0.2442 | 0.2462 | 0.0062 | −0.0272 |
+| `lgbm_num_leaves_31` | LGBM num_leaves=31 (더 얕게) | 0.2413 | 0.2481 | 0.0062 | −0.0301 |
+| `xgb_depth_3` | XGB max_depth=3 (더 얕게) | 0.2386 | 0.2443 | 0.0067 | −0.0328 |
+| `lgbm_num_leaves_127` | LGBM num_leaves=127 (더 깊게) | 0.2374 | 0.2367 | 0.0056 | −0.0340 |
+| `xgb_spw_10` | XGB scale_pos_weight=10 | 0.2335 | 0.2424 | 0.0049 | −0.0379 |
+
+어떤 변형도 현재 최선(0.2714)을 초과하지 않음 → 현재 하이퍼파라미터 유지. 테스트 예측 파일 저장 없음.
 
 ---
 
@@ -179,6 +198,17 @@ outputs/predictions/val_predictions__stacking_tree_only_12y_with_mask_feature__D
 - **현재 최선 구성 유지**: 어떤 그룹도 0.2714 + 0.003 임계값(0.2744)을 초과하지 않아 테스트 예측 저장 없음.
 - **결론: ACLED 피처 그룹이 D-category 예측의 핵심 소스. 현재 57개 피처 구성(country 포함) 유지.**
 
+### 하이퍼파라미터 민감도 절제: 현재 설정이 로컬 최적점
+
+- **9개 변형** 테스트 (one-factor-at-a-time): num_leaves 31/127, scale_pos_weight sqrt/10 (LGBM·XGB 각각), min_child_samples 50, max_depth 3/5.
+- **최고 변형**: `lgbm_spw_sqrt` (LightGBM scale_pos_weight=4.73) — Platt PR-AUC=0.2551 (delta −0.0163). 기준 22 대비 ECE는 소폭 개선(0.0083→0.0063)하나 PR-AUC는 유의미하게 하락.
+- **num_leaves 민감도**: num_leaves=63(현재) > 31 (−0.030) > 127 (−0.034). 더 얕거나 더 깊은 트리 모두 성능 저하.
+- **max_depth 민감도**: depth=4(현재) > 5 (−0.022) > 3 (−0.033). depth=5가 3보다 낫지만 현재 설정이 최적.
+- **scale_pos_weight 민감도**: spw=22(현재)가 spw=sqrt(4.73)이나 spw=10보다 PR-AUC에서 우월. spw 감소 시 ECE 개선(0.003–0.006)이 관찰되나 PR-AUC 희생이 동반.
+- **min_child_samples**: 50으로 증가 시 PR-AUC −0.027. 정규화 강화가 이 데이터셋에서는 불리.
+- **어떤 변형도 0.2714+0.003=0.2744를 초과하지 않음** → 테스트 예측 저장 없음, 현재 하이퍼파라미터 유지.
+- **결론: 현재 LightGBM(num_leaves=63, spw=22, min_child=20) + XGBoost(depth=4, spw=22) 설정이 탐색 공간 내 로컬 최적점. 추가 하이퍼파라미터 튜닝 불필요.**
+
 ### Platt vs Isotonic 캘리브레이션
 
 - Isotonic ECE≈0 : 검증셋에서 과적합 (검증셋 31개 고유값 → 완벽 보정처럼 보임)
@@ -198,11 +228,13 @@ outputs/predictions/val_predictions__stacking_tree_only_12y_with_mask_feature__D
 
 4. **2014-2015를 제거한 2016-start는 성능이 하락했으므로 2014-start 유지** — 8y 실험 PR-AUC −0.022. 2014-2015 데이터가 모델에 유용한 패턴 정보를 제공함.
 
-5. **현재 D-category 최종 확정 모델: `stacking_tree_only_12y_with_mask_feature` + Platt** — val Stacking Platt PR-AUC = **0.2714**, P@5% = 0.2689, ECE = 0.0083. 모든 절제 실험(7종) 완료 후 어떤 변형도 이를 초과하지 못함.
+5. **현재 D-category 최종 확정 모델: `stacking_tree_only_12y_with_mask_feature` + Platt** — val Stacking Platt PR-AUC = **0.2714**, P@5% = 0.2689, ECE = 0.0083. 모든 절제 실험(8종) 완료 후 어떤 변형도 이를 초과하지 못함.
 
 6. **LSTM은 현재 버전에서 Level 0에서 제외** — 자체 제작 LSTM(PR-AUC 0.1030)을 추가한 결과 PR-AUC −0.0058 하락. 다양성은 있으나 품질이 낮아 잡음 효과가 우세. LSTM PR-AUC가 0.20 이상으로 개선되면 재편입 검토.
 
 7. **ACLED 피처 그룹이 D-category 예측의 핵심 입력 소스** — 피처 그룹 절제 v2 결과: ACLED 20개 피처 제거 시 PR-AUC 0.2697 → 0.1670 (−0.103 ↓). GDELT는 이차적 기여(−0.022), ECON은 기여 낮음(−0.016). 현재 57개 피처(country 포함) 구성 유지 권장.
+
+8. **하이퍼파라미터는 현재 설정 유지** — 9개 one-factor-at-a-time 변형 테스트 결과: LightGBM num_leaves=63, scale_pos_weight=22, min_child_samples=20 / XGBoost max_depth=4, scale_pos_weight=22가 탐색 공간 내 로컬 최적점임을 확인. 어떤 단일 변형도 현재 최선(0.2714)을 초과하지 못함. D-category 하이퍼파라미터 튜닝 추가 불필요.
 
 ---
 
@@ -248,3 +280,5 @@ outputs/predictions/val_predictions__stacking_tree_only_12y_with_mask_feature__D
 | `outputs/reports/stacking_lgbm_xgb_lstm_vs_tree_only_comparison.md` | tree-only vs +LSTM 스태킹 비교 |
 | `outputs/reports/stacking_tree_only_12y_feature_group_ablation_v2.csv` | 피처 그룹 기여도 절제 v2 — 8그룹 전체 지표 CSV |
 | `outputs/reports/stacking_tree_only_12y_feature_group_ablation_v2.md` | 피처 그룹 기여도 절제 v2 — 상세 리포트 (v1 버그 수정본) |
+| `outputs/reports/stacking_tree_only_12y_hyperparam_sensitivity_ablation.csv` | 하이퍼파라미터 민감도 절제 — 9개 변형 전체 지표 CSV |
+| `outputs/reports/stacking_tree_only_12y_hyperparam_sensitivity_ablation.md` | 하이퍼파라미터 민감도 절제 — 상세 리포트 (한국어 해석 포함) |
