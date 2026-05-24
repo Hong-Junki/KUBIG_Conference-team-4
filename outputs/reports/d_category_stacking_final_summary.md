@@ -2,7 +2,7 @@
 
 > **작성자**: byeonghyeon (Category D 담당)
 > **최초 작성**: 2026-05-23 | **최종 업데이트**: 2026-05-24
-> **대상 실험군**: `stacking_tree_only` 계열 (tree-only LightGBM + XGBoost) + LSTM 추가 절제 실험
+> **대상 실험군**: `stacking_tree_only` 계열 (tree-only LightGBM + XGBoost) + LSTM 추가 절제 실험 + 피처 그룹 기여도 절제 실험 v2
 > **수치 출처**: 각 실험별 `val_metrics.json` 자동 추출 (수동 기입 없음)
 
 ---
@@ -50,7 +50,7 @@
 
 ---
 
-## 3. 완료된 절제 실험 (6개)
+## 3. 완료된 절제 실험 (7개)
 
 | 실험명 | 변경 내용 | 스크립트 |
 |--------|-----------|----------|
@@ -60,6 +60,7 @@
 | `stacking_tree_only_12y_mask0` | mask=1 행 학습에서 제외 | `run_stacking_d_mask0_ablation.py` |
 | `stacking_tree_only_8y_with_mask_feature` | Train 시작일 2016으로 후행화 (2014-2015 제외) | `run_stacking_d_train2016_ablation.py` |
 | `stacking_lgbm_xgb_lstm_12y_with_mask_feature` | Level 0에 LSTM Classifier 30d 추가 (기존 예측 파일 재사용) | `run_stacking_d_lgbm_xgb_lstm_ablation.py` |
+| `stacking_tree_only_12y_feature_group_ablation_v2` | 피처 그룹 기여도 분석 8종 — ACLED/GDELT/ECON/SE+mask 단독 및 제거 (country 포함 수정 버전; v1은 country 누락 버그로 폐기) | `run_stacking_d_feature_group_ablation.py` |
 
 ---
 
@@ -77,6 +78,23 @@
 | LSTM 추가 | `stacking_lgbm_xgb_lstm_12y_with_mask_feature` | ✓ | 유지 | ✓ | LGBM+XGB+**LSTM** | 2014 | 0.2656 | 0.2670 | 0.0067 | LSTM 제외 유지 (**−0.0058** vs wmf) |
 
 **범례**: ✓ 포함 / ✗ 미포함 / wmf = with_mask_feature
+
+### 피처 그룹 기여도 절제 v2 (57개 피처, country 포함)
+
+> v1(country 누락 버그, full_best PR-AUC=0.2453)은 폐기. v2에서 country를 포함하여 재실행 (full_best PR-AUC=0.2697, 현재 최선 대비 −0.0017). delta 기준: 현재 최선 0.2714.
+
+| 그룹 | 피처 수 | LGBM PR-AUC | XGB PR-AUC | Platt PR-AUC | P@5% | ECE | delta | 결론 |
+|------|---------|-------------|------------|-------------|------|-----|-------|------|
+| `full_best` | 57 | 0.2654 | 0.2598 | **0.2697** | 0.2614 | 0.0074 | −0.0017 | 현재 최선 재현 ✓ |
+| `no_acled_features` | 37 | 0.1724 | 0.1219 | 0.1670 | 0.2008 | 0.0046 | **−0.1044** | ACLED 필수 |
+| `no_gdelt_features` | 38 | 0.2545 | 0.2278 | 0.2486 | 0.2557 | 0.0060 | −0.0228 | GDELT 유용 |
+| `no_economic_features` | 42 | 0.2687 | 0.2364 | 0.2552 | 0.2652 | 0.0076 | −0.0162 | ECON 기여 낮음 |
+| `acled_only_plus_se_mask` | 22 | 0.2319 | 0.2270 | 0.2302 | 0.2273 | 0.0057 | −0.0412 | ACLED 단독은 약함 |
+| `gdelt_only_plus_se_mask` | 21 | 0.1051 | 0.1073 | 0.1079 | 0.1364 | 0.0030 | −0.1635 | GDELT 단독 매우 약함 |
+| `economic_only_plus_se_mask` | 17 | 0.0623 | 0.0592 | 0.0625 | 0.0814 | 0.0000 | −0.2089 | ECON 단독 거의 무의미 |
+| `se_mask_only` | 2 | 0.0608 | 0.0628 | 0.0620 | 0.0814 | 0.0000 | −0.2094 | SE+mask 단독 불충분 |
+
+어떤 그룹도 현재 최선(0.2714)을 초과하지 않음 → 현재 57개 피처 구성 유지.
 
 ---
 
@@ -150,6 +168,17 @@ outputs/predictions/val_predictions__stacking_tree_only_12y_with_mask_feature__D
 - 메타 러너 LSTM 계수: 0.69 (LGBM: 2.09, XGB: 2.21) — LSTM 낮은 신뢰도 반영
 - **결론: 현재 LSTM 품질로는 스태킹 편입 시 잡음 효과가 다양성 효과를 압도. LSTM 제외 유지.**
 
+### 피처 그룹 기여도 절제 v2: ACLED이 핵심 소스
+
+- **v1 버그**: `ALWAYS_EXCLUDE`에 `country`가 잘못 포함되어 full_best PR-AUC = 0.2453 (실제보다 −0.0244 저평가). 56개 피처로 실행되었으며 결과 폐기.
+- **v2 수정**: country를 피처로 복원(57개), LightGBM categorical + XGBoost label-encoded 처리. full_best PR-AUC = **0.2697** (현재 최선 0.2714 대비 −0.0017, 정상 변동 범위).
+- **ACLED 피처 그룹 절대적 중요**: ACLED 20개 피처 제거 시 PR-AUC 0.2697 → 0.1670 (**−0.103 ↓**). 단독으로도 0.2302 수준 가능.
+- **GDELT 피처 이차적 기여**: GDELT 제거 시 0.2697 → 0.2486 (−0.021 ↓). GDELT 단독은 0.1079로 매우 낮음.
+- **ECON 피처 기여 낮음**: ECON 제거 시 0.2697 → 0.2552 (−0.015 ↓). 단독으로는 0.0625 수준 — 사실상 분쟁 예측력 없음.
+- **SE+mask 단독 불충분**: 2개 피처만으로는 0.0620 — 베이스라인 수준.
+- **현재 최선 구성 유지**: 어떤 그룹도 0.2714 + 0.003 임계값(0.2744)을 초과하지 않아 테스트 예측 저장 없음.
+- **결론: ACLED 피처 그룹이 D-category 예측의 핵심 소스. 현재 57개 피처 구성(country 포함) 유지.**
+
 ### Platt vs Isotonic 캘리브레이션
 
 - Isotonic ECE≈0 : 검증셋에서 과적합 (검증셋 31개 고유값 → 완벽 보정처럼 보임)
@@ -169,9 +198,11 @@ outputs/predictions/val_predictions__stacking_tree_only_12y_with_mask_feature__D
 
 4. **2014-2015를 제거한 2016-start는 성능이 하락했으므로 2014-start 유지** — 8y 실험 PR-AUC −0.022. 2014-2015 데이터가 모델에 유용한 패턴 정보를 제공함.
 
-5. **현재 D-category 최선 모델은 `stacking_tree_only_12y_with_mask_feature` + Platt** — val Stacking Platt PR-AUC = **0.2714**, P@5% = 0.2689, ECE = 0.0083.
+5. **현재 D-category 최종 확정 모델: `stacking_tree_only_12y_with_mask_feature` + Platt** — val Stacking Platt PR-AUC = **0.2714**, P@5% = 0.2689, ECE = 0.0083. 모든 절제 실험(7종) 완료 후 어떤 변형도 이를 초과하지 못함.
 
 6. **LSTM은 현재 버전에서 Level 0에서 제외** — 자체 제작 LSTM(PR-AUC 0.1030)을 추가한 결과 PR-AUC −0.0058 하락. 다양성은 있으나 품질이 낮아 잡음 효과가 우세. LSTM PR-AUC가 0.20 이상으로 개선되면 재편입 검토.
+
+7. **ACLED 피처 그룹이 D-category 예측의 핵심 입력 소스** — 피처 그룹 절제 v2 결과: ACLED 20개 피처 제거 시 PR-AUC 0.2697 → 0.1670 (−0.103 ↓). GDELT는 이차적 기여(−0.022), ECON은 기여 낮음(−0.016). 현재 57개 피처(country 포함) 구성 유지 권장.
 
 ---
 
@@ -215,3 +246,5 @@ outputs/predictions/val_predictions__stacking_tree_only_12y_with_mask_feature__D
 | `outputs/reports/stacking_tree_only_12y_train_start_ablation_comparison.md` | Train 시작일 12y vs 8y 비교 |
 | `outputs/reports/stacking_lgbm_xgb_lstm_12y_with_mask_feature_val_metrics.md` | LGBM+XGB+LSTM 스태킹 검증 지표 |
 | `outputs/reports/stacking_lgbm_xgb_lstm_vs_tree_only_comparison.md` | tree-only vs +LSTM 스태킹 비교 |
+| `outputs/reports/stacking_tree_only_12y_feature_group_ablation_v2.csv` | 피처 그룹 기여도 절제 v2 — 8그룹 전체 지표 CSV |
+| `outputs/reports/stacking_tree_only_12y_feature_group_ablation_v2.md` | 피처 그룹 기여도 절제 v2 — 상세 리포트 (v1 버그 수정본) |
