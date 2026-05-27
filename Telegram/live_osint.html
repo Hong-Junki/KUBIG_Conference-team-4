@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Live Telegram OSINT Feed</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    :root { --bg: #f5f6f1; --ink: #17201b; --muted: #667169; --line: #d8ded4; --panel: #fff; --red: #d94f45; --orange: #f08a4b; --blue: #2f6f9f; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, "Malgun Gothic", sans-serif; background: var(--bg); color: var(--ink); }
+    main { max-width: 1180px; margin: 0 auto; padding: 24px 18px 60px; }
+    header { border-bottom: 1px solid var(--line); margin-bottom: 18px; padding-bottom: 16px; }
+    h1 { margin: 0 0 8px; font-size: 30px; letter-spacing: 0; }
+    .desc { color: var(--muted); line-height: 1.55; max-width: 900px; }
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 10px; margin: 16px 0; }
+    .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+    .stat span { display: block; color: var(--muted); font-size: 12px; }
+    .stat strong { display: block; font-size: 24px; margin-top: 4px; }
+    .toolbar { display: grid; grid-template-columns: repeat(5, minmax(130px, 1fr)); gap: 8px; margin: 16px 0; }
+    select, input { width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 10px; background: white; color: var(--ink); font-size: 14px; }
+    .map-wrap { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: white; margin: 14px 0; }
+    #map { width: 100%; height: 430px; }
+    #fallbackMap { display: none; position: relative; width: 100%; height: 430px; overflow: hidden; background:
+      linear-gradient(90deg, rgba(47,111,159,.10) 1px, transparent 1px),
+      linear-gradient(0deg, rgba(47,111,159,.10) 1px, transparent 1px),
+      linear-gradient(180deg, #e8f0ef 0%, #f8fbf7 55%, #e8f0ef 100%);
+      background-size: 10% 100%, 100% 16.666%, 100% 100%; }
+    #fallbackMap::before { content: "Fallback coordinate view"; position: absolute; left: 12px; top: 10px; color: var(--muted); font-size: 13px; z-index: 1; }
+    .fallback-marker { position: absolute; width: 14px; height: 14px; border-radius: 50%; transform: translate(-50%, -50%); border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,.25); cursor: pointer; }
+    .fallback-marker.city { background: var(--red); }
+    .fallback-marker.country { background: var(--blue); opacity: .85; }
+    .legend { display: flex; flex-wrap: wrap; gap: 12px; padding: 10px 12px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
+    .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
+    .dot.city { background: var(--red); }
+    .dot.country { background: var(--blue); }
+    .dot.missing { background: #64706a; }
+    .count { color: var(--muted); margin: 6px 0 12px; font-size: 14px; }
+    .event { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin: 12px 0; }
+    .event:target { outline: 2px solid var(--blue); }
+    .event.hidden { display: none; }
+    .topline { display: flex; align-items: center; gap: 10px; }
+    .topline strong { font-size: 18px; }
+    .topline span { color: var(--muted); }
+    em { margin-left: auto; padding: 4px 8px; border-radius: 999px; color: white; font-style: normal; font-size: 12px; }
+    em.likely { background: var(--red); }
+    em.unverified { background: var(--orange); }
+    em.raw { background: #64706a; }
+    p { line-height: 1.55; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px 14px; color: var(--muted); font-size: 13px; }
+    a { color: var(--blue); font-weight: 700; }
+    @media (max-width: 820px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .toolbar { grid-template-columns: 1fr; }
+      #map { height: 320px; }
+      #fallbackMap { height: 320px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Live Telegram OSINT Feed</h1>
+      <div class="desc">
+        Messages collected from public or authorized Telegram channels are classified into conflict-related signals.
+        This feed is an unverified operational information layer, not a training dataset for the prediction model.
+        Generated at: 2026-05-27T14:36:54.310855+00:00 | Filters: {&quot;since_days&quot;: 14, &quot;min_confidence&quot;: 0.0, &quot;conflict_only&quot;: true}
+      </div>
+    </header>
+    <section class="stats"><div class="stat"><span>events</span><strong>20</strong></div>
+<div class="stat"><span>city coordinates</span><strong>11</strong></div>
+<div class="stat"><span>country fallback</span><strong>7</strong></div>
+<div class="stat"><span>missing location</span><strong>2</strong></div></section>
+    <section class="toolbar" aria-label="feed filters">
+      <select id="countryFilter"><option value="">All countries</option>
+<option value="IRN">IRN</option>
+<option value="LBN">LBN</option>
+<option value="UKR">UKR</option>
+<option value="UNK">UNK</option>
+<option value="USA">USA</option></select>
+      <select id="channelFilter"><option value="">All channels</option>
+<option value="KyivIndependent_official">KyivIndependent_official</option>
+<option value="liveuamap">liveuamap</option></select>
+      <select id="typeFilter"><option value="">All event types</option>
+<option value="conflict_signal">conflict_signal</option>
+<option value="military_movement">military_movement</option>
+<option value="strike">strike</option></select>
+      <select id="precisionFilter">
+        <option value="">All locations</option>
+        <option value="city">City coordinates</option>
+        <option value="country">Country fallback</option>
+        <option value="missing">Missing location</option>
+      </select>
+      <input id="searchFilter" type="search" placeholder="Search text or keyword" />
+    </section>
+    <section class="map-wrap" aria-label="event map">
+      <div id="map"></div>
+      <div id="fallbackMap"></div>
+      <div class="legend">
+        <span><i class="dot city"></i>city coordinate</span>
+        <span><i class="dot country"></i>country fallback</span>
+        <span><i class="dot missing"></i>not mappable</span>
+      </div>
+    </section>
+    <div class="count" id="visibleCount"></div>
+    <section id="events">
+            <article class="event" id="event-4c2df20ab79f03378c8e78c6"
+              data-event-id="4c2df20ab79f03378c8e78c6" data-country="UKR" data-channel="KyivIndependent_official"
+              data-type="strike" data-precision="city"
+              data-confidence="0.9700" data-search="ukr kyivindependent_official strike kyiv missile exclusive: zelensky sends trump urgent letter warning of ukraine’s critical missile defense shortages president volodymyr zelensky sent a letter to u.s. president donald trump warning about ukraine’s worsening shortage...">
+              <div class="topline">
+                <strong>UKR</strong>
+                <span>strike</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>Exclusive: Zelensky sends Trump urgent letter warning of Ukraine’s critical missile defense shortages President Volodymyr Zelensky sent a letter to U.S. President Donald Trump warning about Ukraine’s worsening shortage...</p>
+              <div class="meta">
+                <span>2026-05-27T12:51:38+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.97</span>
+                <span>severity: 0.90</span>
+                <span>location: city / kyiv</span>
+                <span>50.4501, 30.5234</span>
+                <span>missile</span>
+                <a href="https://t.me/KyivIndependent_official/53364" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-d6159b8854b42acd886ce93a"
+              data-event-id="d6159b8854b42acd886ce93a" data-country="UKR" data-channel="KyivIndependent_official"
+              data-type="strike" data-precision="country"
+              data-confidence="0.9700" data-search="ukr kyivindependent_official strike ukraine drone ⚡️ukraine drone commander warns belarus against deeper war involvement. robert brovdi, commander of ukraine&#x27;s unmanned systems forces, said ukrainian forces have identified potential military targets in belarus amid con...">
+              <div class="topline">
+                <strong>UKR</strong>
+                <span>strike</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>⚡️Ukraine drone commander warns Belarus against deeper war involvement. Robert Brovdi, commander of Ukraine&#x27;s Unmanned Systems Forces, said Ukrainian forces have identified potential military targets in Belarus amid con...</p>
+              <div class="meta">
+                <span>2026-05-26T21:30:44+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.97</span>
+                <span>severity: 0.75</span>
+                <span>location: country / ukraine</span>
+                <span>48.3794, 31.1656</span>
+                <span>drone</span>
+                <a href="https://t.me/KyivIndependent_official/53358" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-98797fce32cdb212717a2e55"
+              data-event-id="98797fce32cdb212717a2e55" data-country="UKR" data-channel="KyivIndependent_official"
+              data-type="strike" data-precision="city"
+              data-confidence="0.9700" data-search="ukr kyivindependent_official strike dnipro missile, drone ukraine war latest: russia&#x27;s syzran oil refinery halts operations following may 21 ukrainian drone strike an oil refinery in the russian city of syzran in the samara oblast had shut down following a may 21 ukrainian dro...">
+              <div class="topline">
+                <strong>UKR</strong>
+                <span>strike</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>Ukraine war latest: Russia&#x27;s Syzran oil refinery halts operations following May 21 Ukrainian drone strike An oil refinery in the Russian city of Syzran in the Samara Oblast had shut down following a May 21 Ukrainian dro...</p>
+              <div class="meta">
+                <span>2026-05-26T19:51:44+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.97</span>
+                <span>severity: 0.90</span>
+                <span>location: city / dnipro</span>
+                <span>48.4647, 35.0462</span>
+                <span>missile, drone</span>
+                <a href="https://t.me/KyivIndependent_official/53357" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-d113532a2922af50e3544eea"
+              data-event-id="d113532a2922af50e3544eea" data-country="UKR" data-channel="KyivIndependent_official"
+              data-type="strike" data-precision="country"
+              data-confidence="0.9700" data-search="ukr kyivindependent_official strike ukraine drone, attack ⚡️ukraine using &#x27;secret&#x27; strike drones to devastate russian logistics on crucial highway, nemesis brigade says. the 412th brigade nemesis said it had tested a new &quot;secret&quot; attack drone, which it claimed proved effective...">
+              <div class="topline">
+                <strong>UKR</strong>
+                <span>strike</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>⚡️Ukraine using &#x27;secret&#x27; strike drones to devastate Russian logistics on crucial highway, Nemesis Brigade says. The 412th Brigade Nemesis said it had tested a new &quot;secret&quot; attack drone, which it claimed proved effective...</p>
+              <div class="meta">
+                <span>2026-05-26T17:56:04+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.97</span>
+                <span>severity: 0.75</span>
+                <span>location: country / ukraine</span>
+                <span>48.3794, 31.1656</span>
+                <span>drone, attack</span>
+                <a href="https://t.me/KyivIndependent_official/53355" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-1628ef9130f59221b3fbc259"
+              data-event-id="1628ef9130f59221b3fbc259" data-country="UKR" data-channel="KyivIndependent_official"
+              data-type="strike" data-precision="city"
+              data-confidence="0.9700" data-search="ukr kyivindependent_official strike dnipro missile ⚡️&#x27;russia&#x27;s true attitude&#x27; — iskander missile strike damages un humanitarian warehouse in dnipro. the strike on the warehouse destroyed a significant amount of food intended for people in front-line areas, enough to fee...">
+              <div class="topline">
+                <strong>UKR</strong>
+                <span>strike</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>⚡️&#x27;Russia&#x27;s true attitude&#x27; — Iskander missile strike damages UN humanitarian warehouse in Dnipro. The strike on the warehouse destroyed a significant amount of food intended for people in front-line areas, enough to fee...</p>
+              <div class="meta">
+                <span>2026-05-26T17:21:35+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.97</span>
+                <span>severity: 0.90</span>
+                <span>location: city / dnipro</span>
+                <span>48.4647, 35.0462</span>
+                <span>missile</span>
+                <a href="https://t.me/KyivIndependent_official/53353" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-0db5571fd16ad3d321163f33"
+              data-event-id="0db5571fd16ad3d321163f33" data-country="UKR" data-channel="KyivIndependent_official"
+              data-type="strike" data-precision="city"
+              data-confidence="0.9700" data-search="ukr kyivindependent_official strike kyiv drone, battle battle for pipelines in kupiansk: &#x27;average lifespan of russian soldier is 10 minutes&#x27; in the new era of a drone-dominated battlefield, the russian army is taking advantage of an extensive system of underground soviet-er...">
+              <div class="topline">
+                <strong>UKR</strong>
+                <span>strike</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>Battle for pipelines in Kupiansk: &#x27;Average lifespan of Russian soldier is 10 minutes&#x27; In the new era of a drone-dominated battlefield, the Russian army is taking advantage of an extensive system of underground Soviet-er...</p>
+              <div class="meta">
+                <span>2026-05-26T17:18:16+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.97</span>
+                <span>severity: 0.80</span>
+                <span>location: city / kyiv</span>
+                <span>50.4501, 30.5234</span>
+                <span>drone, battle</span>
+                <a href="https://t.me/KyivIndependent_official/53352" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-e259efa0e4e5c31cbaee88aa"
+              data-event-id="e259efa0e4e5c31cbaee88aa" data-country="UKR" data-channel="KyivIndependent_official"
+              data-type="strike" data-precision="country"
+              data-confidence="0.9700" data-search="ukr kyivindependent_official strike ukraine drone ⚡️ syzran oil refinery halts operation after may 21 ukrainian drone strike, ukraine’s general staff reports. russia has not reacted to the general staff’s claim as of the publication time.">
+              <div class="topline">
+                <strong>UKR</strong>
+                <span>strike</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>⚡️ Syzran oil refinery halts operation after May 21 Ukrainian drone strike, Ukraine’s General Staff reports. Russia has not reacted to the General Staff’s claim as of the publication time.</p>
+              <div class="meta">
+                <span>2026-05-26T12:54:19+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.97</span>
+                <span>severity: 0.75</span>
+                <span>location: country / ukraine</span>
+                <span>48.3794, 31.1656</span>
+                <span>drone</span>
+                <a href="https://t.me/KyivIndependent_official/53342" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-fd0125a34157494c94ab5b3a"
+              data-event-id="fd0125a34157494c94ab5b3a" data-country="UKR" data-channel="KyivIndependent_official"
+              data-type="strike" data-precision="city"
+              data-confidence="0.9700" data-search="ukr kyivindependent_official strike kramatorsk airstrike ⚡️russian airstrike on central kramatorsk injures at least 12. russia carried out an airstrike on the center of kramatorsk in donetsk oblast on may 25, injuring at least 12 civilians, regional authorities reported.">
+              <div class="topline">
+                <strong>UKR</strong>
+                <span>strike</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>⚡️Russian airstrike on central Kramatorsk injures at least 12. Russia carried out an airstrike on the center of Kramatorsk in Donetsk Oblast on May 25, injuring at least 12 civilians, regional authorities reported.</p>
+              <div class="meta">
+                <span>2026-05-26T00:06:05+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.97</span>
+                <span>severity: 0.95</span>
+                <span>location: city / kramatorsk</span>
+                <span>48.7381, 37.5844</span>
+                <span>airstrike</span>
+                <a href="https://t.me/KyivIndependent_official/53336" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-21b17e0906d416e01da82bfc"
+              data-event-id="21b17e0906d416e01da82bfc" data-country="UKR" data-channel="KyivIndependent_official"
+              data-type="conflict_signal" data-precision="city"
+              data-confidence="0.9700" data-search="ukr kyivindependent_official conflict_signal kyiv attack russia&#x27;s latest assault on kyiv turns ukraine&#x27;s cultural heritage into another front line in one of the most devastating attacks on kyiv since the start of the full-scale war, russia’s missiles and drones targeted some...">
+              <div class="topline">
+                <strong>UKR</strong>
+                <span>conflict_signal</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>Russia&#x27;s latest assault on Kyiv turns Ukraine&#x27;s cultural heritage into another front line In one of the most devastating attacks on Kyiv since the start of the full-scale war, Russia’s missiles and drones targeted some...</p>
+              <div class="meta">
+                <span>2026-05-25T19:42:09+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.97</span>
+                <span>severity: 0.75</span>
+                <span>location: city / kyiv</span>
+                <span>50.4501, 30.5234</span>
+                <span>attack</span>
+                <a href="https://t.me/KyivIndependent_official/53333" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-867ccb21a2ec381fd19657a3"
+              data-event-id="867ccb21a2ec381fd19657a3" data-country="UKR" data-channel="KyivIndependent_official"
+              data-type="military_movement" data-precision="city"
+              data-confidence="0.9700" data-search="ukr kyivindependent_official military_movement kyiv evacuation ⚡️in call with rubio, fm lavrov conveys planned strikes on &#x27;decision-making centers&#x27; in kyiv, urges us embassy evacuation. russian foreign minister sergey lavrov held a phone call with u.s. secretary of state marco rubi...">
+              <div class="topline">
+                <strong>UKR</strong>
+                <span>military_movement</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>⚡️In call with Rubio, FM Lavrov conveys planned strikes on &#x27;decision-making centers&#x27; in Kyiv, urges US embassy evacuation. Russian Foreign Minister Sergey Lavrov held a phone call with U.S. Secretary of State Marco Rubi...</p>
+              <div class="meta">
+                <span>2026-05-25T19:35:24+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.97</span>
+                <span>severity: 0.40</span>
+                <span>location: city / kyiv</span>
+                <span>50.4501, 30.5234</span>
+                <span>evacuation</span>
+                <a href="https://t.me/KyivIndependent_official/53332" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-b6d625329677df75af2fb4e1"
+              data-event-id="b6d625329677df75af2fb4e1" data-country="UKR" data-channel="KyivIndependent_official"
+              data-type="strike" data-precision="city"
+              data-confidence="0.9700" data-search="ukr kyivindependent_official strike kyiv missile, drone, attack ukraine war latest: russia announces plans for new mass attacks on kyiv as capital continues clean-up russia&#x27;s foreign ministry has announced plans for a new round of mass long-range strikes on kyiv, including on ukrain...">
+              <div class="topline">
+                <strong>UKR</strong>
+                <span>strike</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>Ukraine war latest: Russia announces plans for new mass attacks on Kyiv as capital continues clean-up Russia&#x27;s Foreign Ministry has announced plans for a new round of mass long-range strikes on Kyiv, including on Ukrain...</p>
+              <div class="meta">
+                <span>2026-05-25T18:54:37+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.97</span>
+                <span>severity: 0.90</span>
+                <span>location: city / kyiv</span>
+                <span>50.4501, 30.5234</span>
+                <span>missile, drone, attack</span>
+                <a href="https://t.me/KyivIndependent_official/53331" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-3217fd44a21de87f23c6b36a"
+              data-event-id="3217fd44a21de87f23c6b36a" data-country="UNK" data-channel="KyivIndependent_official"
+              data-type="military_movement" data-precision="missing"
+              data-confidence="0.7700" data-search="unk kyivindependent_official military_movement unknown troop ⚡️putin signs law authorizing use of military force to &#x27;protect russian citizens&#x27; abroad. the legislation enables the russian president to order troop deployments abroad to &quot;protect&quot; russian citizens facing arrest, dete...">
+              <div class="topline">
+                <strong>UNK</strong>
+                <span>military_movement</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>⚡️Putin signs law authorizing use of military force to &#x27;protect Russian citizens&#x27; abroad. The legislation enables the Russian president to order troop deployments abroad to &quot;protect&quot; Russian citizens facing arrest, dete...</p>
+              <div class="meta">
+                <span>2026-05-25T16:41:26+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.77</span>
+                <span>severity: 0.45</span>
+                <span>location: missing / unknown</span>
+                <span></span>
+                <span>troop</span>
+                <a href="https://t.me/KyivIndependent_official/53327" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-33a50b6ceb66ae23033891b5"
+              data-event-id="33a50b6ceb66ae23033891b5" data-country="UKR" data-channel="KyivIndependent_official"
+              data-type="strike" data-precision="city"
+              data-confidence="0.9700" data-search="ukr kyivindependent_official strike kyiv missile ⚡️ after huge russian missile, oreshnik strike, kyiv cleanup operation continues for second day. “i am grateful to the medical workers treating and supporting our people. i thank everyone involved in recovery efforts, a...">
+              <div class="topline">
+                <strong>UKR</strong>
+                <span>strike</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>⚡️ After huge Russian missile, Oreshnik strike, Kyiv cleanup operation continues for second day. “I am grateful to the medical workers treating and supporting our people. I thank everyone involved in recovery efforts, a...</p>
+              <div class="meta">
+                <span>2026-05-25T13:55:07+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.97</span>
+                <span>severity: 0.90</span>
+                <span>location: city / kyiv</span>
+                <span>50.4501, 30.5234</span>
+                <span>missile</span>
+                <a href="https://t.me/KyivIndependent_official/53322" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-598cc37bfcecddb7f3f383dc"
+              data-event-id="598cc37bfcecddb7f3f383dc" data-country="UKR" data-channel="KyivIndependent_official"
+              data-type="strike" data-precision="city"
+              data-confidence="0.9700" data-search="ukr kyivindependent_official strike sumy drone, killed ⚡️ russian attacks kill 4, injure 69 across ukraine over past day, man killed in strike on civilian car. in sumy oblast, a russian drone strike on a civilian car killed a 24-year-old man in the krasnopillia community.">
+              <div class="topline">
+                <strong>UKR</strong>
+                <span>strike</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>⚡️ Russian attacks kill 4, injure 69 across Ukraine over past day, man killed in strike on civilian car. In Sumy Oblast, a Russian drone strike on a civilian car killed a 24-year-old man in the Krasnopillia community.</p>
+              <div class="meta">
+                <span>2026-05-25T10:23:26+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.97</span>
+                <span>severity: 0.83</span>
+                <span>location: city / sumy</span>
+                <span>50.9077, 34.7981</span>
+                <span>drone, killed</span>
+                <a href="https://t.me/KyivIndependent_official/53321" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-960287bb0b40d05f9d895d5a"
+              data-event-id="960287bb0b40d05f9d895d5a" data-country="UKR" data-channel="KyivIndependent_official"
+              data-type="conflict_signal" data-precision="city"
+              data-confidence="0.9700" data-search="ukr kyivindependent_official conflict_signal kyiv attack ⚡️ belarus’ exiled opposition leader tsikhanouskaya arrives in kyiv on first official visit. the visit follows a devastating russian aerial attack overnight on may 24 that primarily targeted kyiv and the surrounding reg...">
+              <div class="topline">
+                <strong>UKR</strong>
+                <span>conflict_signal</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>⚡️ Belarus’ exiled opposition leader Tsikhanouskaya arrives in Kyiv on first official visit. The visit follows a devastating Russian aerial attack overnight on May 24 that primarily targeted Kyiv and the surrounding reg...</p>
+              <div class="meta">
+                <span>2026-05-25T06:37:35+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.97</span>
+                <span>severity: 0.75</span>
+                <span>location: city / kyiv</span>
+                <span>50.4501, 30.5234</span>
+                <span>attack</span>
+                <a href="https://t.me/KyivIndependent_official/53317" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-ed4e0d69f60a2ce389f0f3ab"
+              data-event-id="ed4e0d69f60a2ce389f0f3ab" data-country="UNK" data-channel="KyivIndependent_official"
+              data-type="strike" data-precision="missing"
+              data-confidence="0.7700" data-search="unk kyivindependent_official strike unknown drone, attack ⚡️pro-ukrainian partisans &#x27;blinded&#x27; russian air defenses on night of drone attack on major oil depot, atesh group claims. the pro-ukrainian atesh partisan group claimed on may 25 that its members &quot;blinded&quot; russian air d...">
+              <div class="topline">
+                <strong>UNK</strong>
+                <span>strike</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>⚡️Pro-Ukrainian partisans &#x27;blinded&#x27; Russian air defenses on night of drone attack on major oil depot, Atesh group claims. The pro-Ukrainian Atesh partisan group claimed on May 25 that its members &quot;blinded&quot; Russian air d...</p>
+              <div class="meta">
+                <span>2026-05-25T05:02:36+00:00</span>
+                <span>channel: KyivIndependent_official</span>
+                <span>confidence: 0.77</span>
+                <span>severity: 0.75</span>
+                <span>location: missing / unknown</span>
+                <span></span>
+                <span>drone, attack</span>
+                <a href="https://t.me/KyivIndependent_official/53316" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-e5e2e1cc2b5595e66a2b88d6"
+              data-event-id="e5e2e1cc2b5595e66a2b88d6" data-country="LBN" data-channel="liveuamap"
+              data-type="conflict_signal" data-precision="country"
+              data-confidence="0.9500" data-search="lbn liveuamap conflict_signal lebanon killed civil defense in southern lebanon: two paramedics killed in an israeli raid on the town of deir qanoun al-nahr in southern lebanon https://lebanon.liveuamap.com/en/2026/22-may-07-civil-defense-in-southern-lebanon-two-pa...">
+              <div class="topline">
+                <strong>LBN</strong>
+                <span>conflict_signal</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>Civil Defense in southern Lebanon: Two paramedics killed in an Israeli raid on the town of Deir Qanoun al-Nahr in southern Lebanon https://lebanon.liveuamap.com/en/2026/22-may-07-civil-defense-in-southern-lebanon-two-pa...</p>
+              <div class="meta">
+                <span>2026-05-22T08:31:30+00:00</span>
+                <span>channel: liveuamap</span>
+                <span>confidence: 0.95</span>
+                <span>severity: 0.78</span>
+                <span>location: country / lebanon</span>
+                <span>33.8547, 35.8623</span>
+                <span>killed</span>
+                <a href="https://t.me/liveuamap/12116" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-ef1bb615041fe4e341703d40"
+              data-event-id="ef1bb615041fe4e341703d40" data-country="USA" data-channel="liveuamap"
+              data-type="conflict_signal" data-precision="country"
+              data-confidence="0.9500" data-search="usa liveuamap conflict_signal united states attack trump: “i have been asked by the emir of qatar, tamim bin hamad al thani, the crown prince of saudi arabia, mohammed bin salman al saud, and the president of the united arab emirates, mohamed bin zayed al nahyan, to hol...">
+              <div class="topline">
+                <strong>USA</strong>
+                <span>conflict_signal</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>Trump: “I have been asked by the Emir of Qatar, Tamim bin Hamad Al Thani, the Crown Prince of Saudi Arabia, Mohammed bin Salman Al Saud, and the President of the United Arab Emirates, Mohamed bin Zayed Al Nahyan, to hol...</p>
+              <div class="meta">
+                <span>2026-05-18T19:18:25+00:00</span>
+                <span>channel: liveuamap</span>
+                <span>confidence: 0.95</span>
+                <span>severity: 0.75</span>
+                <span>location: country / united states</span>
+                <span>37.0902, -95.7129</span>
+                <span>attack</span>
+                <a href="https://t.me/liveuamap/12113" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-63c4e75580b911e3d256ef73"
+              data-event-id="63c4e75580b911e3d256ef73" data-country="IRN" data-channel="liveuamap"
+              data-type="strike" data-precision="country"
+              data-confidence="0.9500" data-search="irn liveuamap strike iran drone, attack abu dhabi media office: competent authorities in abu dhabi dealt with a fire at an electrical generator outside the inner perimeter of the barakah nuclear power plant in al dhafra, caused by a drone attack. https://iran...">
+              <div class="topline">
+                <strong>IRN</strong>
+                <span>strike</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>Abu Dhabi Media Office: Competent authorities in Abu Dhabi dealt with a fire at an electrical generator outside the inner perimeter of the Barakah Nuclear Power Plant in Al Dhafra, caused by a drone attack. https://iran...</p>
+              <div class="meta">
+                <span>2026-05-17T11:20:04+00:00</span>
+                <span>channel: liveuamap</span>
+                <span>confidence: 0.95</span>
+                <span>severity: 0.75</span>
+                <span>location: country / iran</span>
+                <span>32.4279, 53.6880</span>
+                <span>drone, attack</span>
+                <a href="https://t.me/liveuamap/12111" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            
+
+            <article class="event" id="event-ad5a27481ac4fafa3b023bdf"
+              data-event-id="ad5a27481ac4fafa3b023bdf" data-country="LBN" data-channel="liveuamap"
+              data-type="conflict_signal" data-precision="country"
+              data-confidence="0.9500" data-search="lbn liveuamap conflict_signal lebanon attack the israeli army: we have begun an attack on hezbollah infrastructure in several areas of southern lebanon. https://lebanon.liveuamap.com/en/2026/16-may-08-the-israeli-army-we-have-begun-an-attack-on-hezbollah">
+              <div class="topline">
+                <strong>LBN</strong>
+                <span>conflict_signal</span>
+                <em class="likely">likely</em>
+              </div>
+              <p>The Israeli army: We have begun an attack on Hezbollah infrastructure in several areas of southern Lebanon. https://lebanon.liveuamap.com/en/2026/16-may-08-the-israeli-army-we-have-begun-an-attack-on-hezbollah</p>
+              <div class="meta">
+                <span>2026-05-16T08:23:00+00:00</span>
+                <span>channel: liveuamap</span>
+                <span>confidence: 0.95</span>
+                <span>severity: 0.75</span>
+                <span>location: country / lebanon</span>
+                <span>33.8547, 35.8623</span>
+                <span>attack</span>
+                <a href="https://t.me/liveuamap/12110" target="_blank" rel="noreferrer">source</a>
+              </div>
+            </article>
+            </section>
+  </main>
+  <script id="eventData" type="application/json">[{"event_id": "4c2df20ab79f03378c8e78c6", "is_conflict_related": true, "country": "UKR", "location_name": "kyiv", "latitude": 50.4501, "longitude": 30.5234, "location_precision": "city", "event_type": "strike", "severity": 0.9, "confidence": 0.97, "summary": "Exclusive: Zelensky sends Trump urgent letter warning of Ukraine’s critical missile defense shortages President Volodymyr Zelensky sent a letter to U.S. President Donald Trump warning about Ukraine’s worsening shortage...", "matched_keywords": ["missile"], "channel": "KyivIndependent_official", "message_id": "53364", "message_time": "2026-05-27T12:51:38+00:00", "url": "https://t.me/KyivIndependent_official/53364", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "d6159b8854b42acd886ce93a", "is_conflict_related": true, "country": "UKR", "location_name": "ukraine", "latitude": 48.3794, "longitude": 31.1656, "location_precision": "country", "event_type": "strike", "severity": 0.75, "confidence": 0.97, "summary": "⚡️Ukraine drone commander warns Belarus against deeper war involvement. Robert Brovdi, commander of Ukraine's Unmanned Systems Forces, said Ukrainian forces have identified potential military targets in Belarus amid con...", "matched_keywords": ["drone"], "channel": "KyivIndependent_official", "message_id": "53358", "message_time": "2026-05-26T21:30:44+00:00", "url": "https://t.me/KyivIndependent_official/53358", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "98797fce32cdb212717a2e55", "is_conflict_related": true, "country": "UKR", "location_name": "dnipro", "latitude": 48.4647, "longitude": 35.0462, "location_precision": "city", "event_type": "strike", "severity": 0.9, "confidence": 0.97, "summary": "Ukraine war latest: Russia's Syzran oil refinery halts operations following May 21 Ukrainian drone strike An oil refinery in the Russian city of Syzran in the Samara Oblast had shut down following a May 21 Ukrainian dro...", "matched_keywords": ["missile", "drone"], "channel": "KyivIndependent_official", "message_id": "53357", "message_time": "2026-05-26T19:51:44+00:00", "url": "https://t.me/KyivIndependent_official/53357", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "d113532a2922af50e3544eea", "is_conflict_related": true, "country": "UKR", "location_name": "ukraine", "latitude": 48.3794, "longitude": 31.1656, "location_precision": "country", "event_type": "strike", "severity": 0.75, "confidence": 0.97, "summary": "⚡️Ukraine using 'secret' strike drones to devastate Russian logistics on crucial highway, Nemesis Brigade says. The 412th Brigade Nemesis said it had tested a new \"secret\" attack drone, which it claimed proved effective...", "matched_keywords": ["drone", "attack"], "channel": "KyivIndependent_official", "message_id": "53355", "message_time": "2026-05-26T17:56:04+00:00", "url": "https://t.me/KyivIndependent_official/53355", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "1628ef9130f59221b3fbc259", "is_conflict_related": true, "country": "UKR", "location_name": "dnipro", "latitude": 48.4647, "longitude": 35.0462, "location_precision": "city", "event_type": "strike", "severity": 0.9, "confidence": 0.97, "summary": "⚡️'Russia's true attitude' — Iskander missile strike damages UN humanitarian warehouse in Dnipro. The strike on the warehouse destroyed a significant amount of food intended for people in front-line areas, enough to fee...", "matched_keywords": ["missile"], "channel": "KyivIndependent_official", "message_id": "53353", "message_time": "2026-05-26T17:21:35+00:00", "url": "https://t.me/KyivIndependent_official/53353", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "0db5571fd16ad3d321163f33", "is_conflict_related": true, "country": "UKR", "location_name": "kyiv", "latitude": 50.4501, "longitude": 30.5234, "location_precision": "city", "event_type": "strike", "severity": 0.8, "confidence": 0.97, "summary": "Battle for pipelines in Kupiansk: 'Average lifespan of Russian soldier is 10 minutes' In the new era of a drone-dominated battlefield, the Russian army is taking advantage of an extensive system of underground Soviet-er...", "matched_keywords": ["drone", "battle"], "channel": "KyivIndependent_official", "message_id": "53352", "message_time": "2026-05-26T17:18:16+00:00", "url": "https://t.me/KyivIndependent_official/53352", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "e259efa0e4e5c31cbaee88aa", "is_conflict_related": true, "country": "UKR", "location_name": "ukraine", "latitude": 48.3794, "longitude": 31.1656, "location_precision": "country", "event_type": "strike", "severity": 0.75, "confidence": 0.97, "summary": "⚡️ Syzran oil refinery halts operation after May 21 Ukrainian drone strike, Ukraine’s General Staff reports. Russia has not reacted to the General Staff’s claim as of the publication time.", "matched_keywords": ["drone"], "channel": "KyivIndependent_official", "message_id": "53342", "message_time": "2026-05-26T12:54:19+00:00", "url": "https://t.me/KyivIndependent_official/53342", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "fd0125a34157494c94ab5b3a", "is_conflict_related": true, "country": "UKR", "location_name": "kramatorsk", "latitude": 48.7381, "longitude": 37.5844, "location_precision": "city", "event_type": "strike", "severity": 0.95, "confidence": 0.97, "summary": "⚡️Russian airstrike on central Kramatorsk injures at least 12. Russia carried out an airstrike on the center of Kramatorsk in Donetsk Oblast on May 25, injuring at least 12 civilians, regional authorities reported.", "matched_keywords": ["airstrike"], "channel": "KyivIndependent_official", "message_id": "53336", "message_time": "2026-05-26T00:06:05+00:00", "url": "https://t.me/KyivIndependent_official/53336", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "21b17e0906d416e01da82bfc", "is_conflict_related": true, "country": "UKR", "location_name": "kyiv", "latitude": 50.4501, "longitude": 30.5234, "location_precision": "city", "event_type": "conflict_signal", "severity": 0.75, "confidence": 0.97, "summary": "Russia's latest assault on Kyiv turns Ukraine's cultural heritage into another front line In one of the most devastating attacks on Kyiv since the start of the full-scale war, Russia’s missiles and drones targeted some...", "matched_keywords": ["attack"], "channel": "KyivIndependent_official", "message_id": "53333", "message_time": "2026-05-25T19:42:09+00:00", "url": "https://t.me/KyivIndependent_official/53333", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "867ccb21a2ec381fd19657a3", "is_conflict_related": true, "country": "UKR", "location_name": "kyiv", "latitude": 50.4501, "longitude": 30.5234, "location_precision": "city", "event_type": "military_movement", "severity": 0.4, "confidence": 0.97, "summary": "⚡️In call with Rubio, FM Lavrov conveys planned strikes on 'decision-making centers' in Kyiv, urges US embassy evacuation. Russian Foreign Minister Sergey Lavrov held a phone call with U.S. Secretary of State Marco Rubi...", "matched_keywords": ["evacuation"], "channel": "KyivIndependent_official", "message_id": "53332", "message_time": "2026-05-25T19:35:24+00:00", "url": "https://t.me/KyivIndependent_official/53332", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "b6d625329677df75af2fb4e1", "is_conflict_related": true, "country": "UKR", "location_name": "kyiv", "latitude": 50.4501, "longitude": 30.5234, "location_precision": "city", "event_type": "strike", "severity": 0.9, "confidence": 0.97, "summary": "Ukraine war latest: Russia announces plans for new mass attacks on Kyiv as capital continues clean-up Russia's Foreign Ministry has announced plans for a new round of mass long-range strikes on Kyiv, including on Ukrain...", "matched_keywords": ["missile", "drone", "attack"], "channel": "KyivIndependent_official", "message_id": "53331", "message_time": "2026-05-25T18:54:37+00:00", "url": "https://t.me/KyivIndependent_official/53331", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "3217fd44a21de87f23c6b36a", "is_conflict_related": true, "country": null, "location_name": null, "latitude": null, "longitude": null, "location_precision": "missing", "event_type": "military_movement", "severity": 0.45, "confidence": 0.77, "summary": "⚡️Putin signs law authorizing use of military force to 'protect Russian citizens' abroad. The legislation enables the Russian president to order troop deployments abroad to \"protect\" Russian citizens facing arrest, dete...", "matched_keywords": ["troop"], "channel": "KyivIndependent_official", "message_id": "53327", "message_time": "2026-05-25T16:41:26+00:00", "url": "https://t.me/KyivIndependent_official/53327", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "33a50b6ceb66ae23033891b5", "is_conflict_related": true, "country": "UKR", "location_name": "kyiv", "latitude": 50.4501, "longitude": 30.5234, "location_precision": "city", "event_type": "strike", "severity": 0.9, "confidence": 0.97, "summary": "⚡️ After huge Russian missile, Oreshnik strike, Kyiv cleanup operation continues for second day. “I am grateful to the medical workers treating and supporting our people. I thank everyone involved in recovery efforts, a...", "matched_keywords": ["missile"], "channel": "KyivIndependent_official", "message_id": "53322", "message_time": "2026-05-25T13:55:07+00:00", "url": "https://t.me/KyivIndependent_official/53322", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "598cc37bfcecddb7f3f383dc", "is_conflict_related": true, "country": "UKR", "location_name": "sumy", "latitude": 50.9077, "longitude": 34.7981, "location_precision": "city", "event_type": "strike", "severity": 0.83, "confidence": 0.97, "summary": "⚡️ Russian attacks kill 4, injure 69 across Ukraine over past day, man killed in strike on civilian car. In Sumy Oblast, a Russian drone strike on a civilian car killed a 24-year-old man in the Krasnopillia community.", "matched_keywords": ["drone", "killed"], "channel": "KyivIndependent_official", "message_id": "53321", "message_time": "2026-05-25T10:23:26+00:00", "url": "https://t.me/KyivIndependent_official/53321", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "960287bb0b40d05f9d895d5a", "is_conflict_related": true, "country": "UKR", "location_name": "kyiv", "latitude": 50.4501, "longitude": 30.5234, "location_precision": "city", "event_type": "conflict_signal", "severity": 0.75, "confidence": 0.97, "summary": "⚡️ Belarus’ exiled opposition leader Tsikhanouskaya arrives in Kyiv on first official visit. The visit follows a devastating Russian aerial attack overnight on May 24 that primarily targeted Kyiv and the surrounding reg...", "matched_keywords": ["attack"], "channel": "KyivIndependent_official", "message_id": "53317", "message_time": "2026-05-25T06:37:35+00:00", "url": "https://t.me/KyivIndependent_official/53317", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "ed4e0d69f60a2ce389f0f3ab", "is_conflict_related": true, "country": null, "location_name": null, "latitude": null, "longitude": null, "location_precision": "missing", "event_type": "strike", "severity": 0.75, "confidence": 0.77, "summary": "⚡️Pro-Ukrainian partisans 'blinded' Russian air defenses on night of drone attack on major oil depot, Atesh group claims. The pro-Ukrainian Atesh partisan group claimed on May 25 that its members \"blinded\" Russian air d...", "matched_keywords": ["drone", "attack"], "channel": "KyivIndependent_official", "message_id": "53316", "message_time": "2026-05-25T05:02:36+00:00", "url": "https://t.me/KyivIndependent_official/53316", "source_reliability": 0.85, "region_hint": "ukraine"}, {"event_id": "e5e2e1cc2b5595e66a2b88d6", "is_conflict_related": true, "country": "LBN", "location_name": "lebanon", "latitude": 33.8547, "longitude": 35.8623, "location_precision": "country", "event_type": "conflict_signal", "severity": 0.78, "confidence": 0.95, "summary": "Civil Defense in southern Lebanon: Two paramedics killed in an Israeli raid on the town of Deir Qanoun al-Nahr in southern Lebanon https://lebanon.liveuamap.com/en/2026/22-may-07-civil-defense-in-southern-lebanon-two-pa...", "matched_keywords": ["killed"], "channel": "liveuamap", "message_id": "12116", "message_time": "2026-05-22T08:31:30+00:00", "url": "https://t.me/liveuamap/12116", "source_reliability": 0.75, "region_hint": "global"}, {"event_id": "ef1bb615041fe4e341703d40", "is_conflict_related": true, "country": "USA", "location_name": "united states", "latitude": 37.0902, "longitude": -95.7129, "location_precision": "country", "event_type": "conflict_signal", "severity": 0.75, "confidence": 0.95, "summary": "Trump: “I have been asked by the Emir of Qatar, Tamim bin Hamad Al Thani, the Crown Prince of Saudi Arabia, Mohammed bin Salman Al Saud, and the President of the United Arab Emirates, Mohamed bin Zayed Al Nahyan, to hol...", "matched_keywords": ["attack"], "channel": "liveuamap", "message_id": "12113", "message_time": "2026-05-18T19:18:25+00:00", "url": "https://t.me/liveuamap/12113", "source_reliability": 0.75, "region_hint": "global"}, {"event_id": "63c4e75580b911e3d256ef73", "is_conflict_related": true, "country": "IRN", "location_name": "iran", "latitude": 32.4279, "longitude": 53.688, "location_precision": "country", "event_type": "strike", "severity": 0.75, "confidence": 0.95, "summary": "Abu Dhabi Media Office: Competent authorities in Abu Dhabi dealt with a fire at an electrical generator outside the inner perimeter of the Barakah Nuclear Power Plant in Al Dhafra, caused by a drone attack. https://iran...", "matched_keywords": ["drone", "attack"], "channel": "liveuamap", "message_id": "12111", "message_time": "2026-05-17T11:20:04+00:00", "url": "https://t.me/liveuamap/12111", "source_reliability": 0.75, "region_hint": "global"}, {"event_id": "ad5a27481ac4fafa3b023bdf", "is_conflict_related": true, "country": "LBN", "location_name": "lebanon", "latitude": 33.8547, "longitude": 35.8623, "location_precision": "country", "event_type": "conflict_signal", "severity": 0.75, "confidence": 0.95, "summary": "The Israeli army: We have begun an attack on Hezbollah infrastructure in several areas of southern Lebanon. https://lebanon.liveuamap.com/en/2026/16-may-08-the-israeli-army-we-have-begun-an-attack-on-hezbollah", "matched_keywords": ["attack"], "channel": "liveuamap", "message_id": "12110", "message_time": "2026-05-16T08:23:00+00:00", "url": "https://t.me/liveuamap/12110", "source_reliability": 0.75, "region_hint": "global"}]</script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const events = JSON.parse(document.getElementById("eventData").textContent);
+    const controls = {
+      country: document.getElementById("countryFilter"),
+      channel: document.getElementById("channelFilter"),
+      type: document.getElementById("typeFilter"),
+      precision: document.getElementById("precisionFilter"),
+      search: document.getElementById("searchFilter"),
+    };
+    const cards = Array.from(document.querySelectorAll(".event"));
+    const count = document.getElementById("visibleCount");
+    const fallbackMap = document.getElementById("fallbackMap");
+    const leafletMap = document.getElementById("map");
+    const eventById = new Map(events.map((event) => [event.event_id, event]));
+    const mappableEvents = events.filter((event) => event.latitude !== null && event.longitude !== null);
+    const mapAvailable = typeof L !== "undefined";
+    let map = null;
+    let markerLayer = null;
+
+    function markerColor(precision) {
+      if (precision === "city") return "#d94f45";
+      if (precision === "country") return "#2f6f9f";
+      return "#64706a";
+    }
+
+    function initMap() {
+      if (!mapAvailable) {
+        leafletMap.style.display = "none";
+        fallbackMap.style.display = "block";
+        return;
+      }
+      map = L.map("map", { worldCopyJump: true, scrollWheelZoom: true }).setView([20, 10], 2);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 8,
+        attribution: "&copy; OpenStreetMap contributors",
+      }).addTo(map);
+      markerLayer = L.layerGroup().addTo(map);
+    }
+
+    function fallbackPosition(lat, lon) {
+      const x = ((Number(lon) + 180) / 360) * 100;
+      const y = ((90 - Number(lat)) / 180) * 100;
+      return { x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) };
+    }
+
+    function renderFallbackMarkers(visibleIds) {
+      fallbackMap.innerHTML = "";
+      for (const event of mappableEvents) {
+        if (!visibleIds.has(event.event_id)) continue;
+        const pos = fallbackPosition(event.latitude, event.longitude);
+        const marker = document.createElement("a");
+        marker.className = `fallback-marker ${event.location_precision === "city" ? "city" : "country"}`;
+        marker.href = `#event-${event.event_id}`;
+        marker.title = `${event.country || "UNK"} ${event.event_type || "signal"}`;
+        marker.style.left = `${pos.x}%`;
+        marker.style.top = `${pos.y}%`;
+        fallbackMap.appendChild(marker);
+      }
+    }
+
+    function markerPopup(event) {
+      const summary = (event.summary || "").replace(/[<>&]/g, (char) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[char]));
+      return `<strong>${event.country || "UNK"}</strong> ${event.event_type || "signal"}<br>${summary}<br><a href="#event-${event.event_id}">open card</a>`;
+    }
+
+    function renderMarkers(visibleIds) {
+      if (!mapAvailable || !markerLayer) return;
+      markerLayer.clearLayers();
+      const bounds = [];
+      for (const event of mappableEvents) {
+        if (!visibleIds.has(event.event_id)) continue;
+        const latLng = [Number(event.latitude), Number(event.longitude)];
+        bounds.push(latLng);
+        L.circleMarker(latLng, {
+          radius: event.location_precision === "city" ? 7 : 6,
+          color: markerColor(event.location_precision),
+          fillColor: markerColor(event.location_precision),
+          fillOpacity: event.location_precision === "city" ? 0.75 : 0.45,
+          weight: 2,
+        }).bindPopup(markerPopup(event)).addTo(markerLayer);
+      }
+      if (bounds.length > 1) {
+        map.fitBounds(bounds, { padding: [35, 35], maxZoom: 5 });
+      } else if (bounds.length === 1) {
+        map.setView(bounds[0], 5);
+      }
+    }
+
+    function applyFilters() {
+      const search = controls.search.value.trim().toLowerCase();
+      let visible = 0;
+      const visibleIds = new Set();
+      for (const card of cards) {
+        const ok =
+          (!controls.country.value || card.dataset.country === controls.country.value) &&
+          (!controls.channel.value || card.dataset.channel === controls.channel.value) &&
+          (!controls.type.value || card.dataset.type === controls.type.value) &&
+          (!controls.precision.value || card.dataset.precision === controls.precision.value) &&
+          (!search || card.dataset.search.includes(search));
+        card.classList.toggle("hidden", !ok);
+        if (ok) {
+          visible += 1;
+          visibleIds.add(card.dataset.eventId);
+        }
+      }
+      count.textContent = `${visible} of ${cards.length} events visible`;
+      renderMarkers(visibleIds);
+      renderFallbackMarkers(visibleIds);
+    }
+
+    initMap();
+    Object.values(controls).forEach((control) => control.addEventListener("input", applyFilters));
+    applyFilters();
+  </script>
+</body>
+</html>
