@@ -9,11 +9,11 @@
   - gdelt-bq.gdeltv2.gkg_partitioned (파티션 필터 적용, 스캔량 절감)
   - 커버리지: 2015-02-17 ~ 현재 (DOC API 2015-02-19 보다 2일 빠른 시작)
 
-PoC 결과 (SYR 2024-03-01~07, 2000건 샘플; 2026-05-29)
-  - PAGE_TITLE 추출률 99.15%
+PoC 결과 (2026-05-29)
+  - PAGE_TITLE 추출률 99.15% (SYR 2024-03-01~07, 2000건 샘플)
   - DocumentIdentifier / V2Tone 100%
-  - V2Themes 94%, V2Persons 61%
-  - 1주일 1국가 스캔 5.78 GB → 12년 전체 약 3.6 TB ≈ $18
+  - 1주×58국가: 스캔 2.9 GB / 130만 행 / 디스크 170 MB
+  - 12년 추산: 디스크 ~104 GB, 비용 ~$9, 시간 ~31h (단일 직렬)
 
 저장 구조 (DOC 스크립트와 동일 — 다운스트림 호환)
   input/raw/gdelt_titles/
@@ -29,8 +29,10 @@ PoC 결과 (SYR 2024-03-01~07, 2000건 샘플; 2026-05-29)
   language      : TranslationInfo srclc (예: ara, eng; 없으면 'eng')
   sourcecountry : (GKG 미제공) — 빈 문자열
   seendate      : DATE (YYYYMMDDHHMMSS → ISO8601 UTC)
-  v2themes      : V2Themes 원본 (LLM 입력 보조)
   v2tone_avg    : V2Tone 첫 필드 (tone score)
+
+  ※ V2Themes 는 행당 평균 2,450자로 12년 용량을 ~560GB 까지 키워 제거.
+     필요해지면 url 매칭으로 재수집 가능 (GCP 키·스크립트 보관)
 
 CLI
   python -m src.collect.collect_gdelt_titles_gkg --start 2015-02-19 --end 2026-05-29
@@ -77,7 +79,6 @@ KEEP_COLS = [
     "language",
     "sourcecountry",
     "seendate",
-    "v2themes",
     "v2tone_avg",
 ]
 
@@ -96,7 +97,6 @@ def _build_query(fips_codes: list[str], start: date, end: date) -> str:
         DATE,
         DocumentIdentifier,
         SourceCommonName,
-        V2Themes,
         V2Tone,
         TranslationInfo,
         Extras,
@@ -116,7 +116,6 @@ def _build_query(fips_codes: list[str], start: date, end: date) -> str:
       DATE,
       DocumentIdentifier,
       SourceCommonName,
-      V2Themes,
       V2Tone,
       TranslationInfo,
       Extras,
@@ -192,7 +191,6 @@ def _transform(df_raw: pd.DataFrame, fips_to_iso3: dict[str, str]) -> pd.DataFra
         + "T" + date_str.str.slice(8, 10) + ":" + date_str.str.slice(10, 12) + ":"
         + date_str.str.slice(12, 14) + "Z"
     )
-    out["v2themes"] = df_raw["V2Themes"]
     out["v2tone_avg"] = df_raw["V2Tone"].apply(_extract_tone_avg)
 
     out = out.dropna(subset=["title", "url"])
