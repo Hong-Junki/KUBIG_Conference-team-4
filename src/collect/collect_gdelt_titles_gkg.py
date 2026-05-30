@@ -1,59 +1,44 @@
-"""GDELT 2.0 GKG 기반 기사 제목 수집 (BigQuery)
+"""GDELT 2.0 GKG 기반 기사 제목 수집 (BigQuery → BigQuery 직접 적재)
 
 목적
-  - DOC 2.0 API 가 throttle(429) 로 비현실적(~30일 소요) → BigQuery GKG 우회
-  - 기존 events 수집과 동일한 BigQuery 인프라 재사용
-  - 실시간 호환: GKG 도 15분 주기 갱신 (events/mentions/gkg 동시 릴리즈)
+  - DOC 2.0 API throttle 회피 + 노트북 디스크 부담 0 + 4명 작업 결과 자동 통합
+  - SELECT 결과를 노트북 parquet 으로 다운로드하지 않고 같은 GCP 프로젝트의
+    BigQuery 테이블에 INSERT (네트워크 무료, capacitor 압축)
 
-데이터 소스
-  - gdelt-bq.gdeltv2.gkg_partitioned (파티션 필터 적용, 스캔량 절감)
-  - 커버리지: 2015-02-17 ~ 현재 (DOC API 2015-02-19 보다 2일 빠른 시작)
+데이터 흐름
+  gdelt-bq.gdeltv2.gkg_partitioned (공개 데이터)
+    → REGEXP_EXTRACT + UNNEST + FIPS→ISO3 매핑 (SQL 안에서 변환)
+    → conflict-early-warning.conflict_ew.gdelt_titles (INSERT)
 
-PoC 결과 (2026-05-29)
-  - PAGE_TITLE 추출률 99.15% (SYR 2024-03-01~07, 2000건 샘플)
-  - DocumentIdentifier / V2Tone 100%
-  - 1주×58국가: 스캔 2.9 GB / 130만 행 / 디스크 170 MB
-  - 12년 추산: 디스크 ~104 GB, 비용 ~$9, 시간 ~31h (단일 직렬)
+대상 테이블 스키마 (PARTITION BY MONTH(date), CLUSTER BY iso3)
+  date         DATE      — UTC, DATE 앞 8자리
+  iso3         STRING    — 3-letter (V2Locations FIPS UNNEST 후 매핑)
+  title        STRING    — Extras<PAGE_TITLE> (2019-09-23 이전 NULL)
+  url          STRING    — DocumentIdentifier (dedup 키)
+  domain       STRING    — SourceCommonName
+  language     STRING    — TranslationInfo srclc (없으면 'eng')
+  v2tone_avg   FLOAT64   — V2Tone 첫 필드
+  v2themes     STRING    — raw (snappy 압축으로 평균 ~170B/행)
+  v2persons    STRING    — raw
 
-저장 구조 (DOC 스크립트와 동일 — 다운스트림 호환)
-  input/raw/gdelt_titles/
-    {iso3}/{YYYY-MM}.parquet
-    .ckpt_titles_gkg.json
+체크포인트
+  input/raw/gdelt_titles/.ckpt_titles_gkg.json (월 단위, 노트북 로컬)
 
-스키마(parquet)
-  date          : YYYY-MM-DD (UTC, DATE 앞 8자리)
-  iso3          : 3-letter country code (V2Locations 매칭 → 국가별 행 복제)
-  title         : 기사 제목 (Extras<PAGE_TITLE> html.unescape)
-  url           : DocumentIdentifier (중복 제거 키)
-  domain        : SourceCommonName
-  language      : TranslationInfo srclc (예: ara, eng; 없으면 'eng')
-  sourcecountry : (GKG 미제공) — 빈 문자열
-  seendate      : DATE (YYYYMMDDHHMMSS → ISO8601 UTC)
-  v2tone_avg    : V2Tone 첫 필드 (tone score)
-
-  ※ V2Themes 는 행당 평균 2,450자로 12년 용량을 ~560GB 까지 키워 제거.
-     필요해지면 url 매칭으로 재수집 가능 (GCP 키·스크립트 보관)
+월 단위 idempotency
+  같은 월 재실행 시 해당 월·담당 ISO3 데이터를 먼저 DELETE 후 INSERT.
+  분담은 월 단위로 사람별 다르게 잡으므로 동시 실행 충돌 없음.
 
 CLI
-  python -m src.collect.collect_gdelt_titles_gkg --start 2015-02-19 --end 2026-05-29
-  python -m src.collect.collect_gdelt_titles_gkg --start 2024-01-01 --end 2024-12-31 --countries UKR SYR
-
-운영 메모
-  1. 월 단위 분할 쿼리 + 체크포인트 (월 단위 idempotent)
-  2. 쿼리당 dry_run 비용 확인 → max_gb_per_query 초과 시 스킵
-  3. V2Locations 의 모든 매칭 FIPS 를 UNNEST → iso3 별 행 분리
-  4. 기존 DOC 스크립트와 폴더 / 스키마 호환 (이미 수집된 DOC parquet 와 url 중복 제거)
+  python -m src.collect.collect_gdelt_titles_gkg --start 2020-01-01 --end 2021-12-31
+  python -m src.collect.collect_gdelt_titles_gkg --start 2024-01-01 --end 2026-05-29 --countries UKR SYR
 """
 
 from __future__ import annotations
 
 import argparse
-import html
-import re
 from datetime import date, datetime
 from pathlib import Path
 
-import pandas as pd
 from google.cloud import bigquery
 
 from .config import COUNTRIES, COUNTRY_BY_ISO3
@@ -63,35 +48,32 @@ logger = get_logger(__name__)
 
 RAW_DIR = Path("input/raw/gdelt_titles")
 CKPT_PATH = RAW_DIR / ".ckpt_titles_gkg.json"
+
 GKG_TABLE = "gdelt-bq.gdeltv2.gkg_partitioned"
+TARGET_PROJECT = "conflict-early-warning"
+TARGET_DATASET = "conflict_ew"
+TARGET_TABLE = "gdelt_titles"
+TARGET_FQN = f"{TARGET_PROJECT}.{TARGET_DATASET}.{TARGET_TABLE}"
 
 DEFAULT_MAX_GB_PER_QUERY = 50.0
 
-PAGE_TITLE_RE = re.compile(r"<PAGE_TITLE>(.*?)</PAGE_TITLE>", re.DOTALL)
-SRCLC_RE = re.compile(r"srclc:([a-z]+)", re.IGNORECASE)
 
-KEEP_COLS = [
-    "date",
-    "iso3",
-    "title",
-    "url",
-    "domain",
-    "language",
-    "sourcecountry",
-    "seendate",
-    "v2tone_avg",
-]
-
-
-def _build_query(fips_codes: list[str], start: date, end: date) -> str:
-    """월 단위 GKG 쿼리. V2Locations 의 FIPS 코드 추출 → 매칭 국가별 행 분리.
-
-    end 는 month_end (포함). _PARTITIONTIME 은 [start, end+1day) 반열림.
-    """
+def _build_insert_query(
+    fips_codes: list[str],
+    fips_to_iso3: dict[str, str],
+    m_start: date,
+    m_end: date,
+) -> str:
+    """월 단위 INSERT 쿼리. FIPS UNNEST + ISO3 매핑 + dedup 모두 SQL 안에서 처리."""
     fips_array = ", ".join(f"'{c}'" for c in fips_codes)
     like_or = " OR ".join(f"V2Locations LIKE '%#{c}#%'" for c in fips_codes)
+    map_cases = "\n          ".join(
+        f"WHEN '{f}' THEN '{i}'" for f, i in fips_to_iso3.items()
+    )
 
     return f"""
+    INSERT INTO `{TARGET_FQN}`
+      (date, iso3, title, url, domain, language, v2tone_avg, v2themes, v2persons)
     WITH gkg AS (
       SELECT
         DATE,
@@ -100,28 +82,73 @@ def _build_query(fips_codes: list[str], start: date, end: date) -> str:
         V2Tone,
         TranslationInfo,
         Extras,
+        V2Themes,
+        V2Persons,
         ARRAY(
           SELECT DISTINCT SPLIT(loc, '#')[SAFE_OFFSET(2)] AS fips
           FROM UNNEST(SPLIT(V2Locations, ';')) AS loc
           WHERE SPLIT(loc, '#')[SAFE_OFFSET(2)] IN ({fips_array})
         ) AS matched_fips
       FROM `{GKG_TABLE}`
-      WHERE _PARTITIONTIME BETWEEN TIMESTAMP('{start}') AND TIMESTAMP('{end}')
+      WHERE _PARTITIONTIME BETWEEN TIMESTAMP('{m_start}') AND TIMESTAMP('{m_end}')
         AND CAST(SUBSTR(CAST(DATE AS STRING), 1, 8) AS INT64)
-            BETWEEN {start:%Y%m%d} AND {end:%Y%m%d}
+            BETWEEN {m_start:%Y%m%d} AND {m_end:%Y%m%d}
         AND V2Locations IS NOT NULL
+        AND DocumentIdentifier IS NOT NULL
         AND ({like_or})
+    ),
+    exploded AS (
+      SELECT
+        PARSE_DATE('%Y%m%d', SUBSTR(CAST(g.DATE AS STRING), 1, 8)) AS date,
+        CASE fips
+          {map_cases}
+        END AS iso3,
+        NULLIF(TRIM(REGEXP_EXTRACT(g.Extras, r'<PAGE_TITLE>(.*?)</PAGE_TITLE>')), '') AS title,
+        g.DocumentIdentifier AS url,
+        g.SourceCommonName AS domain,
+        COALESCE(LOWER(REGEXP_EXTRACT(g.TranslationInfo, r'srclc:([a-zA-Z]+)')), 'eng') AS language,
+        SAFE_CAST(SPLIT(g.V2Tone, ',')[SAFE_OFFSET(0)] AS FLOAT64) AS v2tone_avg,
+        g.V2Themes AS v2themes,
+        g.V2Persons AS v2persons
+      FROM gkg AS g, UNNEST(g.matched_fips) AS fips
+    ),
+    deduped AS (
+      SELECT
+        date, iso3, title, url, domain, language, v2tone_avg, v2themes, v2persons,
+        ROW_NUMBER() OVER (PARTITION BY iso3, url ORDER BY date) AS rn
+      FROM exploded
+      WHERE iso3 IS NOT NULL
     )
+    SELECT date, iso3, title, url, domain, language, v2tone_avg, v2themes, v2persons
+    FROM deduped
+    WHERE rn = 1
+    """
+
+
+def _build_delete_query(iso3_list: list[str], m_start: date, m_end: date) -> str:
+    """월·담당 ISO3 한정 DELETE — INSERT 전 idempotency 보장.
+
+    partitioned table 의 해당 월 partition 만 스캔 → 비용 미미.
+    """
+    iso3_array = ", ".join(f"'{i}'" for i in iso3_list)
+    return f"""
+    DELETE FROM `{TARGET_FQN}`
+    WHERE date BETWEEN DATE('{m_start}') AND DATE('{m_end}')
+      AND iso3 IN ({iso3_array})
+    """
+
+
+def _build_count_query(iso3_list: list[str], m_start: date, m_end: date) -> str:
+    iso3_array = ", ".join(f"'{i}'" for i in iso3_list)
+    return f"""
     SELECT
-      DATE,
-      DocumentIdentifier,
-      SourceCommonName,
-      V2Tone,
-      TranslationInfo,
-      Extras,
-      fips
-    FROM gkg, UNNEST(matched_fips) AS fips
-    WHERE ARRAY_LENGTH(matched_fips) > 0
+      COUNT(*) AS total,
+      COUNTIF(title IS NOT NULL) AS with_title,
+      COUNTIF(v2themes IS NOT NULL) AS with_themes,
+      COUNT(DISTINCT iso3) AS n_iso3
+    FROM `{TARGET_FQN}`
+    WHERE date BETWEEN DATE('{m_start}') AND DATE('{m_end}')
+      AND iso3 IN ({iso3_array})
     """
 
 
@@ -134,87 +161,10 @@ def _dry_run_gb(client: bigquery.Client, query: str) -> float:
 
 
 @retry(max_attempts=3, base_delay=10.0, exceptions=(Exception,))
-def _run_query(client: bigquery.Client, query: str) -> pd.DataFrame:
-    return client.query(query).to_dataframe()
-
-
-def _extract_page_title(extras: str | None) -> str | None:
-    if not extras:
-        return None
-    m = PAGE_TITLE_RE.search(extras)
-    if not m:
-        return None
-    title = m.group(1).strip()
-    if not title:
-        return None
-    return html.unescape(title)
-
-
-def _extract_language(translation_info: str | None) -> str:
-    if not translation_info:
-        return "eng"
-    m = SRCLC_RE.search(translation_info)
-    return m.group(1).lower() if m else "eng"
-
-
-def _extract_tone_avg(v2tone: str | None) -> float | None:
-    if not v2tone:
-        return None
-    first = v2tone.split(",", 1)[0].strip()
-    try:
-        return float(first)
-    except ValueError:
-        return None
-
-
-def _transform(df_raw: pd.DataFrame, fips_to_iso3: dict[str, str]) -> pd.DataFrame:
-    """BigQuery 결과 → 다운스트림 호환 스키마로 변환."""
-    if df_raw.empty:
-        return pd.DataFrame(columns=KEEP_COLS)
-
-    out = pd.DataFrame()
-    out["iso3"] = df_raw["fips"].map(fips_to_iso3)
-    out = out.dropna(subset=["iso3"])
-    df_raw = df_raw.loc[out.index]
-
-    date_str = df_raw["DATE"].astype(str).str.zfill(14)
-    out["date"] = (
-        date_str.str.slice(0, 4) + "-" + date_str.str.slice(4, 6) + "-" + date_str.str.slice(6, 8)
-    )
-    out["title"] = df_raw["Extras"].apply(_extract_page_title)
-    out["url"] = df_raw["DocumentIdentifier"]
-    out["domain"] = df_raw["SourceCommonName"]
-    out["language"] = df_raw["TranslationInfo"].apply(_extract_language)
-    out["sourcecountry"] = ""
-    out["seendate"] = (
-        date_str.str.slice(0, 4) + "-" + date_str.str.slice(4, 6) + "-" + date_str.str.slice(6, 8)
-        + "T" + date_str.str.slice(8, 10) + ":" + date_str.str.slice(10, 12) + ":"
-        + date_str.str.slice(12, 14) + "Z"
-    )
-    out["v2tone_avg"] = df_raw["V2Tone"].apply(_extract_tone_avg)
-
-    out = out.dropna(subset=["title", "url"])
-    out = out.drop_duplicates(subset=["iso3", "url"], keep="first")
-    return out[KEEP_COLS].reset_index(drop=True)
-
-
-def _save_month_parquet(iso3: str, year_month: str, new_rows: pd.DataFrame) -> int:
-    """월 단위 parquet 에 append (url 중복 제거). 총 행 수 반환."""
-    if new_rows.empty:
-        return 0
-    out_dir = RAW_DIR / iso3
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / f"{year_month}.parquet"
-
-    if out_path.exists():
-        existing = pd.read_parquet(out_path)
-        merged = pd.concat([existing, new_rows], ignore_index=True).drop_duplicates(
-            subset=["url"], keep="last"
-        )
-    else:
-        merged = new_rows
-    merged.to_parquet(out_path, index=False)
-    return len(merged)
+def _run_query(client: bigquery.Client, query: str) -> bigquery.QueryJob:
+    job = client.query(query)
+    job.result()
+    return job
 
 
 def collect_titles_gkg(
@@ -225,25 +175,28 @@ def collect_titles_gkg(
 ) -> None:
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     ckpt = Checkpoint(CKPT_PATH)
-    client = bigquery.Client()
+    client = bigquery.Client(project=TARGET_PROJECT)
 
     target = countries or COUNTRIES
     fips_codes: list[str] = []
     fips_to_iso3: dict[str, str] = {}
+    iso3_list: list[str] = []
     for c in target:
         codes = c["gdelt"] if isinstance(c["gdelt"], list) else [c["gdelt"]]
         for fips in codes:
             fips_codes.append(fips)
             fips_to_iso3[fips] = c["iso3"]
+        iso3_list.append(c["iso3"])
 
     months = date_range_months(start, end)
     total = len(months)
     logger.info(
-        f"GKG 수집 시작: {start} ~ {end} ({total}개월) × {len(target)}개국 (FIPS {len(fips_codes)}개)"
+        f"GKG → BigQuery 적재 시작: {start} ~ {end} ({total}개월) × {len(target)}개국 "
+        f"(FIPS {len(fips_codes)}개) → {TARGET_FQN}"
     )
 
     total_scanned_gb = 0.0
-    total_rows = 0
+    total_inserted = 0
 
     for idx, (m_start, m_end) in enumerate(months, 1):
         key = f"gkg_{m_start:%Y%m}"
@@ -251,58 +204,70 @@ def collect_titles_gkg(
             logger.info(f"[{idx}/{total}] {m_start:%Y-%m} — 이미 완료, 건너뜀")
             continue
 
-        query = _build_query(fips_codes, m_start, m_end)
-
+        insert_q = _build_insert_query(fips_codes, fips_to_iso3, m_start, m_end)
         try:
-            gb = _dry_run_gb(client, query)
+            gb = _dry_run_gb(client, insert_q)
         except Exception as e:
             logger.error(f"[{idx}/{total}] {m_start:%Y-%m} dry_run 실패: {e}")
             continue
 
         if gb > max_gb_per_query:
             logger.error(
-                f"[{idx}/{total}] {m_start:%Y-%m} 스캔량 {gb:.1f} GB > 한도 {max_gb_per_query} GB. 스킵."
+                f"[{idx}/{total}] {m_start:%Y-%m} 스캔량 {gb:.1f} GB > 한도 "
+                f"{max_gb_per_query} GB. 스킵."
             )
             continue
 
-        logger.info(f"[{idx}/{total}] {m_start:%Y-%m} 쿼리 실행 중 ({gb:.2f} GB)...")
-        df_raw = _run_query(client, query)
-        total_scanned_gb += gb
-        logger.info(f"  수신 {len(df_raw):,} 행 → 변환 중...")
-
-        df = _transform(df_raw, fips_to_iso3)
-        if df.empty:
-            ckpt.mark_done(key, {"rows_in": len(df_raw), "rows_out": 0, "gb_scanned": round(gb, 2)})
+        # 1) idempotent DELETE (해당 월·담당 ISO3)
+        delete_q = _build_delete_query(iso3_list, m_start, m_end)
+        try:
+            del_job = _run_query(client, delete_q)
+            del_rows = del_job.num_dml_affected_rows or 0
+            if del_rows:
+                logger.info(f"[{idx}/{total}] {m_start:%Y-%m} 기존 {del_rows:,}행 DELETE (재실행)")
+        except Exception as e:
+            logger.error(f"[{idx}/{total}] {m_start:%Y-%m} DELETE 실패: {e}")
             continue
 
-        year_month = m_start.strftime("%Y-%m")
-        saved_total = 0
-        for iso3, group in df.groupby("iso3"):
-            n_total = _save_month_parquet(iso3, year_month, group)
-            saved_total += n_total
+        # 2) INSERT
+        logger.info(f"[{idx}/{total}] {m_start:%Y-%m} INSERT 실행 중 ({gb:.2f} GB scan)...")
+        try:
+            ins_job = _run_query(client, insert_q)
+        except Exception as e:
+            logger.error(f"[{idx}/{total}] {m_start:%Y-%m} INSERT 실패: {e}")
+            continue
+        total_scanned_gb += gb
+        inserted = ins_job.num_dml_affected_rows or 0
+        total_inserted += inserted
 
-        total_rows += len(df)
+        # 3) 검증 카운트
+        count_row = next(iter(client.query(_build_count_query(iso3_list, m_start, m_end))))
+        logger.info(
+            f"  {m_start:%Y-%m}: 적재 {inserted:,}행 / "
+            f"제목 {count_row.with_title:,} ({count_row.with_title/max(count_row.total,1)*100:.1f}%) / "
+            f"테마 {count_row.with_themes:,} / 국가 {count_row.n_iso3}개"
+        )
+
         ckpt.mark_done(
             key,
             {
-                "rows_in": len(df_raw),
-                "rows_out": int(len(df)),
-                "saved_month_total": int(saved_total),
+                "inserted": int(inserted),
+                "with_title": int(count_row.with_title),
+                "with_themes": int(count_row.with_themes),
+                "n_iso3": int(count_row.n_iso3),
                 "gb_scanned": round(gb, 2),
             },
         )
-        logger.info(
-            f"  {m_start:%Y-%m}: 변환 {len(df):,}행 / {df['iso3'].nunique()}개국 저장"
-        )
 
     logger.info(
-        f"GKG 수집 완료: 총 스캔 {total_scanned_gb:.1f} GB / 신규 변환 {total_rows:,}행"
+        f"GKG → BigQuery 적재 완료: 총 스캔 {total_scanned_gb:.1f} GB / "
+        f"신규 적재 {total_inserted:,}행 → {TARGET_FQN}"
     )
 
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
-        description="GDELT GKG 기반 기사 제목 수집 (BigQuery)",
+        description="GDELT GKG 기반 기사 제목 수집 (BigQuery → BigQuery)",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
