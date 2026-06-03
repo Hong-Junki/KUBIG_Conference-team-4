@@ -1,0 +1,36 @@
+# 데이터 수집
+acled
+google-cloud-bigquery
+gdeltdoc
+yfinance
+fredapi
+praw
+telethon
+
+# 전처리
+pandas
+numpy
+
+# ML
+lightgbm
+torch
+scikit-learn
+optuna
+shap
+
+# 평가/시각화
+plotly
+matplotlib
+
+# 서빙
+fastapi
+uvicorn
+
+# 유틸
+python-dotenv
+requests
+tqdm
+certifi
+pyarrow
+db-dtypes
+tabulate
