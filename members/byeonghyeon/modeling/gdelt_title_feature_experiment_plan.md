@@ -45,11 +45,11 @@ macis_se_score에 크게 의존한다. 팀 내부에서도 SE leakage 가능성�
 
 ---
 
-### D. ACLED-free + GDELT title/tone + themes/persons features
+### D. ACLED-free + GDELT title/tone + themes/persons features ✅ 진행 가능
 
-- **진행 조건**: BQ 테이블에 `themes`, `persons` 컬럼이 실제로 존재하는 경우만
-- themes/persons 컬럼이 없으면 D는 후속 데이터 수집 과제로 분리
-- 진행 조건 미충족 시: `collect_gdelt_titles_gkg.py`로 GKG 수집 후 재시도
+- **BQ 확인 완료**: v2themes(91.7% fill), v2persons(64.3% fill) 존재 확인
+- 실험 C 결과가 B 대비 의미 있는 개선을 보일 경우 이어서 진행
+- v2themes 파싱: `;` split → `,` 앞 테마명 추출 → 분쟁 관련 키워드 카운트
 
 ---
 
@@ -67,26 +67,36 @@ D          (C + themes/persons)  → 조건부 확장 실험
 
 ---
 
-## 3. BigQuery 테이블 스키마
+## 3. BigQuery 테이블 스키마 ✅ 확인 완료 (2026-06-03)
 
-현재 확인된 로컬 백업 스키마 (`input/raw/gdelt_titles/AFG/2022-01.parquet` 기준):
+**실제 BQ 스키마** (`INFORMATION_SCHEMA.COLUMNS` 직접 조회):
 
 ```
-컬럼명         타입      설명
------------   -------   ------------------------------------------------
-date          DATE      보도 날짜 (UTC)
-iso3          STRING    대상 국가 ISO3
-title         STRING    기사 제목 (nullable)
-url           STRING    기사 URL
-domain        STRING    출처 도메인
-language      STRING    언어 코드 (eng, ara, fra, rus, ...)
-sourcecountry STRING    출처 국가 (nullable)
-seendate      TIMESTAMP GDELT 수집 시각
-v2tone_avg    FLOAT     기사 톤 점수 (음수=부정적)
+컬럼명       타입      nullable  설명
+-----------  -------   --------  ------------------------------------------------
+date         DATE      NOT NULL  보도 날짜 (UTC)
+iso3         STRING    NOT NULL  대상 국가 ISO3
+title        STRING    nullable  기사 제목
+url          STRING    NOT NULL  기사 URL
+domain       STRING    nullable  출처 도메인
+language     STRING    nullable  언어 코드 (eng, ara, fra, rus, ...)
+v2tone_avg   FLOAT64   nullable  기사 톤 점수 (음수=부정적)
+v2themes     STRING    nullable  GKG 테마 목록 (`;` 구분, `,`로 위치 포함)
+v2persons    STRING    nullable  GKG 인물 목록 (`;` 구분, `,`로 위치 포함)
 ```
 
-**themes, persons 컬럼**: 현재 로컬 백업에서 미확인. BQ 직접 조회 필요.  
-→ 실험 D 진행 가능 여부는 BQ 확인 후 결정.
+**로컬 백업과 차이**: BQ는 sourcecountry/seendate 없음, v2themes/v2persons 있음
+
+**기간 및 규모**:
+- MIN(date): **2015-02-17** (2014 없음 — 해당 구간 0 처리 필요)
+- MAX(date): 2026-05-29
+- 총 행수: **859,303,212** / 58개국
+- v2themes fill: **91.7%** → 실험 D 가능 ✅
+- v2persons fill: **64.3%** → 실험 D 가능 ✅
+
+**v2themes/v2persons 포맷**: `테마명,문자위치;테마명,문자위치;...`
+- 숫자는 기사 내 character offset (count 아님)
+- 집계: `;` split → `,` 앞 테마명만 추출 → 키워드 매칭
 
 ---
 

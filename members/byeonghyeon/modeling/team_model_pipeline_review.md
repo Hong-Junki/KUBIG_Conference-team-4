@@ -154,17 +154,20 @@ country      ← LightGBM categorical, XGBoost label-encoded
 
 ---
 
-## 5. ACLED-free baseline에서의 피처 수
+## 5. ACLED-free baseline에서의 피처 수 (train.parquet 실제 확인 기준)
 
-| 카테고리 | 기존 | ACLED-free 제거 | 유지 |
-|----------|------|----------------|------|
-| ACLED raw | 20 | -20 | 0 |
-| acled_missing_mask | 1 | -1 | 0 |
-| macis_se_score | 1 | -1 | 0 |
-| GDELT events | ~19 | 0 | ~19 |
-| economic | 15 | 0 | 15 |
-| country | 1 | 0 | 1 |
-| **합계** | **57** | **-22** | **~35** |
+| 카테고리 | 기존 full | ACLED-free 제거 | 실험 B 유지 |
+|----------|----------|----------------|------------|
+| ACLED raw (parquet) | 20 | -20 | 0 |
+| acled_missing_mask (parquet) | 1 | -1 | 0 |
+| macis_se_score (외부 merge) | 1 | -1 (merge 건너뜀) | 0 |
+| GDELT events (parquet) | 19 | 0 | **19** |
+| economic (parquet) | 15 | 0 | **15** |
+| country (parquet) | 1 | 0 | **1** |
+| **합계** | **57** | **-22** | **35** |
+
+> train.parquet 직접 확인 완료 ✅ (211,816행 × 64컬럼)  
+> 상세 컬럼 목록 → `acled_free_feature_inventory.md` 참조
 
 ---
 
@@ -199,23 +202,33 @@ SE merge 단계도 제거해야 한다:
 
 ---
 
-## 7. 현재 GDELT titles 데이터 현황
+## 7. GDELT titles 데이터 현황 (BQ 확인 완료)
 
-로컬 백업: `input/raw/gdelt_titles/{iso3}/{YYYY-MM}.parquet`  
-스키마: `date, iso3, title, url, domain, language, sourcecountry, seendate, v2tone_avg`  
-기간: 2022-01 ~ (로컬 기준)
+**BigQuery `conflict-early-warning.conflict_ew.gdelt_titles`** (2026-06-03 확인):
 
-BigQuery: `conflict-early-warning.conflict_ew.gdelt_titles`  
-→ 기간·themes/persons 컬럼 존재 여부 미확인. 실험 전 반드시 확인 필요.
+```
+기간: 2015-02-17 ~ 2026-05-29  (2014 없음 ⚠️)
+행수: 859,303,212
+국가: 58개국
+컬럼: date, iso3, title, url, domain, language, v2tone_avg, v2themes, v2persons
+  v2themes  fill: 91.7%  → 실험 D 가능 ✅
+  v2persons fill: 64.3%  → 실험 D 가능 ✅
+```
+
+로컬 백업 `input/raw/gdelt_titles/{iso3}/{YYYY-MM}.parquet`는 2022-01~만 존재하며  
+BQ 스키마와 다름 (sourcecountry/seendate 있음, v2themes/v2persons 없음).  
+실험 C/D는 BQ 테이블 기준으로 진행.
 
 ---
 
-## 8. 미확인 리스크
+## 8. 리스크 최종 상태
 
 | 항목 | 상태 | 비고 |
 |------|------|------|
-| train/val/test.parquet 실제 컬럼 목록 | ⚠️ 미확인 | 직접 read 후 확인 필요 |
-| BQ gdelt_titles 기간 범위 | ⚠️ 미확인 | MIN(date) 2014 여부 미확인 |
-| BQ themes/persons 컬럼 존재 여부 | ⚠️ 미확인 | 실험 D 진행 가능 여부 결정 요소 |
-| macis_se_score leakage 여부 | ⚠️ 미확인 | ACLED-free에서 제거로 우회 |
-| GDELT events shift(1) lag 확인 | ✅ 확인 | feature_builder.py shift(1) 명시 |
+| train/val/test.parquet 실제 컬럼 목록 | ✅ 확인 완료 | 64컬럼, ACLED-free 35개 확정 |
+| BQ gdelt_titles 기간 범위 | ✅ 확인 완료 | 2015-02-17 시작 (2014 없음) |
+| BQ v2themes/v2persons 존재 | ✅ 확인 완료 | 91.7% / 64.3% fill → 실험 D 가능 |
+| macis_se_score leakage | ⚠️ 미확인 | B/C/D 모두 SE 미사용으로 우회 |
+| GDELT events shift(1) lag | ✅ 확인 완료 | feature_builder.py 명시 |
+| 2014~2015-02-16 titles 없음 | ⚠️ 주의 필요 | 해당 구간 0 채움. coverage_mask 피처 검토 |
+| 팀 레포에 parquet 없음 | ⚠️ 주의 필요 | 실험은 개인 레포 기준으로 실행 필요 |

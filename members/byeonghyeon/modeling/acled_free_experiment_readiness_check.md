@@ -10,81 +10,139 @@
 | 실험 | 피처 구성 | 상태 |
 |------|----------|------|
 | **B** (ACLED-free baseline) | GDELT events + 경제 + country | 🟡 구현 필요 |
-| **C** (B + GDELT titles) | B + titles 집계 피처 | 🟡 데이터 확인 필요 |
-| **D** (C + themes/persons) | C + GKG 키워드 피처 | 🔴 BQ 확인 후 결정 |
+| **C** (B + GDELT titles) | B + titles count/tone 집계 피처 | 🟢 데이터 확인 완료 (2015~) |
+| **D** (C + themes/persons) | C + v2themes/v2persons 키워드 피처 | 🟢 진행 가능 (91.7% / 64.3% fill) |
 | **Reference** (기존 full model) | ACLED + SE + full 57개 | ✅ 기존 결과, 재실험 불필요 |
 
 **핵심 비교**: B → C (GDELT titles 피처의 독립 기여)
 
 ---
 
-## 2. BigQuery gdelt_titles 스키마 확인
+## 2. BigQuery gdelt_titles 스키마 확인 결과 ✅ BLOCK-1 완료
 
-### 2-1. 현재 로컬 백업 스키마 확인 결과
+**확인 일시**: 2026-06-03  
+**인증**: `conflict-early-warning-4672e791d960.json` (서비스 계정)
 
-```
-파일: input/raw/gdelt_titles/AFG/2022-01.parquet
-shape: (80,963행, 9컬럼)
+### 2-1. 기간 및 규모
 
-컬럼              타입         설명
------------      ---------    --------------------------------
-date             object/date  보도 날짜
-iso3             string       국가 ISO3
-title            string       기사 제목 (nullable)
-url              string       기사 URL
-domain           string       출처 도메인
-language         string       언어 코드 (eng, ara, rus, ...)
-sourcecountry    string       출처 국가 (nullable)
-seendate         string/ts    GDELT 수집 시각
-v2tone_avg       float64      기사 톤 점수 (mean ≈ -2.8, range -28 ~ +16)
-```
+| 항목 | 값 |
+|------|-----|
+| MIN(date) | **2015-02-17** |
+| MAX(date) | 2026-05-29 |
+| 전체 행수 | **859,303,212** (8억 5천만 행) |
+| 국가 수 | **58개국** (train/val/test와 동일) |
 
-### 2-2. themes / persons 컬럼 존재 여부
+> ⚠️ **중요**: 데이터가 **2015-02-17**부터 시작된다.  
+> train 시작일(2014-01-01)~2015-02-16 약 13.5개월이 완전 결측.  
+> 이 기간 GDELT titles 피처는 0으로 채워지며, OOF F1(2018 예측)에 영향.
+
+### 2-2. BQ 실제 컬럼 목록
 
 ```
-로컬 백업 기준: ❌ themes 없음, ❌ persons 없음
-→ 실험 D는 현재 로컬 데이터로 불가
-→ BigQuery 테이블에 추가 컬럼이 있을 수 있음 — BQ 직접 확인 필요
+컬럼명          타입       nullable   설명
+-----------    --------   --------   --------------------------------
+date           DATE       NOT NULL   보도 날짜
+iso3           STRING     NOT NULL   국가 ISO3
+title          STRING     nullable   기사 제목
+url            STRING     NOT NULL   기사 URL
+domain         STRING     nullable   출처 도메인
+language       STRING     nullable   언어 코드
+v2tone_avg     FLOAT64    nullable   기사 톤 점수
+v2themes       STRING     nullable   GKG 테마 목록 (세미콜론 구분)  ← 실험 D 가능
+v2persons      STRING     nullable   GKG 인물 목록 (세미콜론 구분)  ← 실험 D 가능
 ```
 
-### 2-3. BigQuery 확인 SQL (실행 필요)
+**로컬 백업과의 차이**:
+- BQ에 있고 로컬에 없음: `v2themes`, `v2persons`
+- 로컬에 있고 BQ에 없음: `sourcecountry`, `seendate`
 
-```sql
--- [REQUIRED-1] 기간 및 규모 확인
-SELECT
-  MIN(date)             AS min_date,
-  MAX(date)             AS max_date,
-  COUNT(*)              AS total_rows,
-  COUNT(DISTINCT iso3)  AS n_countries
-FROM `conflict-early-warning.conflict_ew.gdelt_titles`;
+### 2-3. themes / persons 컬럼 fill 비율
 
--- [REQUIRED-2] 컬럼 목록 및 themes/persons 존재 여부
-SELECT column_name, data_type
-FROM `conflict-early-warning.conflict_ew.INFORMATION_SCHEMA.COLUMNS`
-WHERE table_name = 'gdelt_titles';
+| 컬럼 | non-null 행수 | fill 비율 |
+|------|-------------|----------|
+| `v2themes` | 787,990,601 | **91.7%** → 실험 D 가능 ✅ |
+| `v2persons` | 552,570,230 | **64.3%** → 실험 D 가능 ✅ |
 
--- [REQUIRED-3] 연도별 row 수 (2014 이전 커버 여부 확인)
-SELECT
-  EXTRACT(YEAR FROM date) AS year,
-  COUNT(*) AS rows,
-  COUNT(DISTINCT iso3) AS n_countries
-FROM `conflict-early-warning.conflict_ew.gdelt_titles`
-GROUP BY year ORDER BY year;
+### 2-4. v2themes / v2persons 포맷
 
--- [OPTIONAL-4] 국가별 coverage 요약
-SELECT iso3, MIN(date) AS first, MAX(date) AS last, COUNT(*) AS rows
-FROM `conflict-early-warning.conflict_ew.gdelt_titles`
-GROUP BY iso3 ORDER BY iso3;
+GDELT GKG 형식 — `테마명,문자위치;테마명,문자위치;...`
+
+```
+v2themes 예시:
+  CEASEFIRE,65;CEASEFIRE,146;BLOCKADE,4133;SEIGE,4133;TAX_FNCACT_LEADER,14...
+
+v2persons 예시:
+  Donald Trump,858;Scott Bessent,1867;Ali Khamenei,1476;Masoud Pezeshkian,6144...
 ```
 
-### 2-4. BQ 확인 결과에 따른 분기
+→ **집계 방식**: 세미콜론으로 split → 콤마 앞 테마명만 추출 → 키워드 매칭  
+→ 위치 숫자(예: `,65`)는 기사 내 character offset이며, count 집계와 무관
 
-| BQ 결과 | 실험 진행 방향 |
-|---------|--------------|
-| 2014 이전 데이터 있음 | 실험 C 전 기간(2014~2025) 진행 가능 |
-| 2022 이후만 있음 | 실험 C를 val/test 기간만으로 제한하거나 실험 축소 |
-| themes 컬럼 있음 | 실험 D 진행 가능 |
-| themes 컬럼 없음 | 실험 D 후속 GKG 수집 과제로 분리 |
+### 2-5. 연도별 row 수
+
+| 연도 | row_count | n_countries |
+|------|-----------|-------------|
+| 2015 | 94,911,369 | 58 |
+| 2016 | 135,291,743 | 58 |
+| 2017 | 114,059,222 | 58 |
+| 2018 | 91,668,772 | 58 |
+| 2019 | 67,902,081 | 58 |
+| 2020 | 50,776,207 | 58 |
+| 2021 | 46,223,097 | 58 |
+| 2022 | 52,015,805 | 58 |
+| 2023 | 66,579,262 | 58 |
+| 2024 | 62,090,091 | 58 |
+| 2025 | 53,656,192 | 58 |
+| 2026 | 24,129,371 | 58 |
+
+> 2015년이 가장 많고(1.35억), 2021년이 가장 적음(4.6천만).  
+> 2016년 이후부터 모든 연도에 58개국이 존재.
+
+### 2-6. 국가별 row 수 (상위 10 / 하위 10)
+
+**상위 10** (보도량 많음)
+
+| iso3 | row_count | first_date | last_date |
+|------|-----------|------------|-----------|
+| RUS | 125,944,321 | 2015-02-18 | 2026-05-29 |
+| TUR | 71,874,358 | 2015-02-17 | 2026-05-29 |
+| IND | 70,810,641 | 2015-02-17 | 2026-05-29 |
+| UKR | 66,078,474 | 2015-02-18 | 2026-05-29 |
+| MEX | 48,318,445 | 2015-02-18 | 2026-05-29 |
+| ISR | 45,952,006 | 2015-02-17 | 2026-05-29 |
+| EGY | 35,073,578 | 2015-02-18 | 2026-05-29 |
+| SYR | 33,721,264 | 2015-02-18 | 2026-05-29 |
+| IDN | 32,166,829 | 2015-02-18 | 2026-05-29 |
+| IRN | 30,160,070 | 2015-02-18 | 2026-05-29 |
+
+**하위 10** (보도량 적음)
+
+| iso3 | row_count | first_date | last_date |
+|------|-----------|------------|-----------|
+| MOZ | 1,410,801 | 2015-02-18 | 2026-05-29 |
+| SSD | 1,401,147 | 2015-02-18 | 2026-05-29 |
+| TJK | 1,275,569 | 2015-02-18 | 2026-05-29 |
+| MDG | 1,046,129 | 2015-02-18 | 2026-05-29 |
+| ERI | 968,845 | 2015-02-18 | 2026-05-29 |
+| COD | 877,548 | 2015-02-18 | 2026-05-29 |
+| TGO | 794,561 | 2015-02-18 | 2026-05-29 |
+| SLE | 768,929 | 2015-02-18 | 2026-05-29 |
+| CAF | 671,282 | 2015-02-18 | 2026-05-29 |
+| GNB | 314,009 | 2015-02-18 | 2026-05-29 |
+
+> 최하위 GNB(기니비사우) 31만 건 vs 최상위 RUS 1.26억 건 — 400배 차이.  
+> 보도량 편차가 크므로 집계 피처는 **절대값 + 비율 모두** 사용 필요.
+
+### 2-7. BLOCK-1 해결 결론
+
+| 항목 | 결과 |
+|------|------|
+| 데이터 시작일 | 2015-02-17 (2014 없음 → 0 채움 처리 필요) |
+| v2themes 컬럼 | ✅ 있음 (91.7% fill) |
+| v2persons 컬럼 | ✅ 있음 (64.3% fill) |
+| 실험 C 가능 여부 | ✅ 가능 (2015-2025 데이터 충분) |
+| 실험 D 가능 여부 | ✅ 가능 (themes/persons 모두 존재) |
+| 2014 결측 처리 | → 0 채움 (기사 0건으로 간주) |
 
 ---
 
@@ -276,28 +334,37 @@ EXPERIMENT = "stacking_acled_free_baseline"
 
 | 항목 | 리스크 수준 | 설명 | 대응 |
 |------|-----------|------|------|
-| BQ gdelt_titles 2014 이전 없음 | 🔴 HIGH | train 기간 커버 불가 → 실험 C 대폭 축소 | BQ 확인이 최우선 |
-| themes/persons 컬럼 없음 | 🟡 MEDIUM | D 불가 → 후속 GKG 수집 과제 | 실험 D 제외 후 B/C만 진행 |
-| train.parquet 로컬 없음 | 🟡 MEDIUM | 컬럼 확인 및 실험 B 실행 불가 | 전처리 파이프라인 재실행 필요 |
-| B 성능이 매우 낮음 (<0.05) | 🟡 MEDIUM | 실험 구조 재검토 필요 | B 실행 후 판단 |
-| GDELT titles vs events 중복 | 🟢 LOW | v2tone과 gdelt_tone_mean 상관 | 상관 확인 후 중복 시 titles 쪽 제거 가능 |
-| macis_se_score leakage | 🟢 LOW (우회됨) | ACLED-free에서 SE 제거로 우회 | B/C/D 모두 SE 미사용으로 해결 |
+| 2014 데이터 없음 (2015-02-17 시작) | 🟡 MEDIUM | 2014~2015-02-16 titles 피처 = 0. OOF F1(train ≤2017)에서 초기 연도 신호 약함 | 0 채움 처리. 필요 시 OOF 기간 2015 이후로 조정 가능 |
+| 국가별 보도량 400배 편차 | 🟡 MEDIUM | GNB(31만) vs RUS(1.26억). 절대값 피처가 국가 크기 편향을 학습할 수 있음 | 절대값 + 국가별 z-score 또는 비율 피처 병행 |
+| v2themes/v2persons 파싱 | 🟡 MEDIUM | 세미콜론 split → 콤마 앞 추출 필요. BQ 문자열 처리 비용 큼 | BQ에서 일별 집계 후 로컬 저장. 전체 재처리는 1회만 |
+| train.parquet 로컬 없음 | 🟡 MEDIUM | 컬럼 확인 및 실험 B 실행 불가 | 전처리 파이프라인 재실행 필요 (BLOCK-2) |
+| GDELT titles v2tone vs events tone 중복 | 🟢 LOW | v2tone_avg와 기존 gdelt_tone_mean 상관 가능성 | 상관관계 확인 후 중복 시 titles 쪽 조정 |
+| macis_se_score leakage | 🟢 LOW (우회됨) | ACLED-free에서 SE 제거로 우회 | B/C/D 모두 SE 미사용 |
 
 ---
 
-## 8. 현재 블로킹 항목
+## 8. 블로킹 항목 상태
 
-실험을 시작하기 전에 아래 두 가지가 반드시 해결되어야 한다:
+| 항목 | 상태 |
+|------|------|
+| **BLOCK-1**: BQ gdelt_titles 기간/스키마 확인 | ✅ **완료** — 2015-02-17 시작, v2themes/v2persons 확인 |
+| **BLOCK-2**: train.parquet 실제 컬럼 확인 | ✅ **완료** — 개인 레포에서 확인 (64컬럼, ACLED-free 35개 확정) |
+
+### BLOCK-2 결과 요약
 
 ```
-[BLOCK-1] BQ gdelt_titles 기간 범위 확인
-  → 실험 C가 2014부터 가능한지 결정. 불가하면 실험 축소 필요.
-
-[BLOCK-2] train.parquet 실제 컬럼 확인
-  → 코드에서 추론한 컬럼 목록과 실제 컬럼이 일치하는지 검증.
-     컬럼명이 다르면 ALWAYS_EXCLUDE 목록 수정 필요.
+파일 위치: conflict-early-warning/input/processed/dataset/train.parquet
+  shape: (211,816 × 64)
+  실제 컬럼: key 2 + label 7 + ACLED 21 + GDELT 19 + econ 15 + country 1 = 64
+  ACLED-free feature_cols (B): 35개 확정 (GDELT 19 + econ 15 + country 1)
+  macis_se_score: train.parquet에 없음 (stacking script에서 외부 merge)
+  Telegram/시간 피처: 없음
 ```
+
+> 상세 컬럼 분류 → `acled_free_feature_inventory.md` 참조
+
+두 블로킹 항목이 모두 해결되었다. **실험 B 스크립트 작성 가능 상태.**
 
 ---
 
-*이 문서는 실험 가능 여부 점검 보고서입니다. 학습 실행 및 코드 수정은 블로킹 항목 해결 후 진행합니다.*
+*이 문서는 실험 가능 여부 점검 보고서입니다. 두 BLOCK이 완료되어 실험 B 구현 단계로 진행 가능합니다.*
