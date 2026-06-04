@@ -182,6 +182,9 @@ site/live_osint.html
 - 채널 필터
 - 이벤트 타입 필터
 - 위치 정밀도 필터
+- 최근 24시간/7일 시간 필터
+- 지도 클릭 시 오른쪽 이벤트 상세 패널
+- GDELT 기사 제목 컨텍스트 섹션
 - 키워드/본문 검색
 - 원문 텔레그램 링크 이동
 
@@ -192,6 +195,15 @@ start site\live_osint.html
 ```
 
 주의: Leaflet/OpenStreetMap 타일은 인터넷 연결이 필요하다. 외부 타일 로딩이 실패해도 fallback coordinate view가 나오도록 처리해두었다.
+
+GDELT 기사 제목 컨텍스트는 현재 BigQuery service account 키를 받기 전 단계라 샘플 JSON으로 UI만 먼저 연결했다.
+
+```text
+artifacts/live_osint/gdelt_context.sample.json
+artifacts/live_osint/gdelt_context.json
+```
+
+나중에 팀원이 수집한 `conflict-early-warning.conflict_ew.gdelt_titles`에 접근 가능해지면, BigQuery에서 국가별 최근 24시간/7일 기사 수와 대표 제목을 export해서 `gdelt_context.json`을 교체하면 된다.
 
 ---
 
@@ -241,10 +253,10 @@ TELEGRAM_SESSION
 
 ```text
 .env.local
-kubig_conflict_monitor.session
+<TELEGRAM_SESSION>.session
 ```
 
-위 두 파일은 민감 파일이다. 절대 GitHub에 올리면 안 된다. 현재 `.gitignore`에 `.env*`, `*.session`, `*.session-journal`을 제외하도록 추가해두었다.
+위 파일들은 민감 파일이다. 절대 GitHub에 올리면 안 된다. 현재 `.gitignore`에 `.env*`, `*.session`, `*.session-journal`을 제외하도록 추가해두었다.
 
 팀원에게 코드를 공유할 때는 `.env.local`과 `.session` 파일을 제외하고 공유해야 한다.
 
@@ -261,20 +273,26 @@ kubig_conflict_monitor.session
 ```text
 서버에 repo 배포
 → 환경변수/세션 등록
-→ cron으로 6시간마다 run_live_pipeline.py 실행
+→ cron으로 12시간마다 run_live_pipeline_job.sh 실행
 → live_events.json / live_osint.html 갱신
 → Nginx 또는 대시보드 서버가 파일/API 제공
+```
+
+배포 상세 문서:
+
+```text
+docs/deployment_vps_cron.md
 ```
 
 cron 예시:
 
 ```bash
-0 */6 * * * cd /opt/kubig-telegram-osint && /usr/bin/python3 scripts/run_live_pipeline.py --limit-per-channel 50 --since-days 14 >> logs/pipeline.log 2>&1
+0 */12 * * * APP_DIR=/opt/kubig-telegram-osint PYTHON_BIN=/opt/kubig-telegram-osint/.venv/bin/python /opt/kubig-telegram-osint/scripts/run_live_pipeline_job.sh >> /opt/kubig-telegram-osint/logs/pipeline.log 2>&1
 ```
 
 ### GitHub Actions도 가능하지만 주의 필요
 
-GitHub Actions는 6시간마다 실행할 수 있지만, Telethon `.session` 파일을 안전하게 Secret으로 관리해야 한다. `.session`은 로그인 토큰에 가까우므로 실운영 메인으로는 VPS 방식이 더 안정적이다.
+GitHub Actions도 주기 실행은 가능하지만, Telethon `.session` 파일을 안전하게 Secret으로 관리해야 한다. `.session`은 로그인 토큰에 가까우므로 실운영 메인으로는 VPS 방식이 더 안정적이다.
 
 ---
 
