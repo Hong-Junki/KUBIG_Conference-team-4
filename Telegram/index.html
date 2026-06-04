@@ -43,6 +43,10 @@
     .dot.missing { background: #64706a; }
     .area-pin { background: transparent; border: 0; }
     .area-pin span { display: block; width: 14px; height: 14px; transform: rotate(45deg); border: 2px solid rgba(255,255,255,.92); box-shadow: 0 0 0 2px rgba(40,45,42,.35), 0 2px 9px rgba(0,0,0,.28); }
+    .map-ko-label { background: transparent; border: 0; }
+    .map-ko-label span { display: inline-block; padding: 3px 7px; border-radius: 5px; background: rgba(255,255,255,.88); border: 1px solid rgba(55,64,58,.24); color: #1e2823; font-size: 12px; font-weight: 700; line-height: 1.2; white-space: nowrap; text-shadow: 0 1px 0 rgba(255,255,255,.65); box-shadow: 0 2px 7px rgba(0,0,0,.16); }
+    .map-ko-label.country span { background: rgba(255,249,237,.92); border-color: rgba(184,109,23,.35); }
+    .map-ko-label.gdelt span { border-color: rgba(36,118,74,.42); box-shadow: 0 0 0 2px rgba(36,118,74,.12), 0 2px 7px rgba(0,0,0,.16); }
     .count { color: var(--muted); margin: 6px 0 12px; font-size: 14px; }
     .detail { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; min-height: 430px; max-height: 520px; overflow: auto; }
     .detail-empty { color: var(--muted); line-height: 1.55; }
@@ -105,7 +109,7 @@
       <div class="desc">
         Messages collected from public or authorized Telegram channels are classified into conflict-related signals.
         This feed is an unverified operational information layer, not a training dataset for the prediction model.
-        Generated at: 2026-06-04T10:53:22.041102+00:00 | Filters: {&quot;since_days&quot;: 14, &quot;min_confidence&quot;: 0.0, &quot;conflict_only&quot;: true}
+        Generated at: 2026-06-04T10:58:49.130103+00:00 | Filters: {&quot;since_days&quot;: 14, &quot;min_confidence&quot;: 0.0, &quot;conflict_only&quot;: true}
       </div>
     </header>
     <section class="stats"><div class="stat"><span>events</span><strong>57</strong></div>
@@ -1557,11 +1561,59 @@
     let map = null;
     let markerLayer = null;
     let selectedEventId = null;
+    const countryKoNames = {
+      AFG: "아프가니스탄",
+      IND: "인도",
+      IRN: "이란",
+      IRQ: "이라크",
+      ISR: "이스라엘",
+      KWT: "쿠웨이트",
+      LBN: "레바논",
+      LTU: "리투아니아",
+      PSE: "팔레스타인",
+      ROU: "루마니아",
+      RUS: "러시아",
+      SDN: "수단",
+      SYR: "시리아",
+      TUR: "튀르키예",
+      UKR: "우크라이나",
+      USA: "미국",
+      YEM: "예멘",
+    };
+    const locationKoNames = {
+      beirut: "베이루트",
+      bucharest: "부쿠레슈티",
+      "gaza": "가자",
+      "gaza city": "가자시티",
+      kharkiv: "하르키우",
+      kherson: "헤르손",
+      kyiv: "키이우",
+      kramatorsk: "크라마토르스크",
+      kupiansk: "쿠피얀스크",
+      lebanon: "레바논",
+      lithuania: "리투아니아",
+      "st. petersburg": "상트페테르부르크",
+      sumy: "수미",
+      syzran: "시즈란",
+      "tambov oblast": "탐보프주",
+      ukraine: "우크라이나",
+    };
 
     function markerColor(precision) {
       if (precision === "city") return "#d73531";
       if (precision === "country") return "#dd8725";
       return "#64706a";
+    }
+
+    function koMapLabel(event) {
+      const rawLocation = String(event.location_name || "").toLowerCase();
+      if (event.location_precision === "city" && locationKoNames[rawLocation]) {
+        return locationKoNames[rawLocation];
+      }
+      if (countryKoNames[event.country]) {
+        return countryKoNames[event.country];
+      }
+      return event.location_name || event.country || "위치 미상";
     }
 
     function hasGdeltContext(event) {
@@ -1754,10 +1806,15 @@
       if (!mapAvailable || !markerLayer) return;
       markerLayer.clearLayers();
       const bounds = [];
+      const labelEvents = new Map();
       for (const event of mappableEvents) {
         if (!visibleIds.has(event.event_id)) continue;
         const latLng = [Number(event.latitude), Number(event.longitude)];
         bounds.push(latLng);
+        const labelKey = `${event.country || "UNK"}|${event.location_precision || "missing"}|${event.location_name || ""}`;
+        if (!labelEvents.has(labelKey)) {
+          labelEvents.set(labelKey, event);
+        }
         L.rectangle(areaBounds(event), areaStyle(event))
           .on("click", () => selectEvent(event.event_id))
           .addTo(markerLayer);
@@ -1769,6 +1826,18 @@
             iconAnchor: [9, 9],
           }),
         }).on("click", () => selectEvent(event.event_id)).addTo(markerLayer);
+      }
+      for (const event of labelEvents.values()) {
+        const latLng = [Number(event.latitude), Number(event.longitude)];
+        L.marker([latLng[0] + (event.location_precision === "city" ? 0.42 : 1.15), latLng[1]], {
+          interactive: false,
+          icon: L.divIcon({
+            className: `map-ko-label ${event.location_precision === "country" ? "country" : "city"} ${hasGdeltContext(event) ? "gdelt" : ""}`,
+            html: `<span>${escapeHtml(koMapLabel(event))}</span>`,
+            iconSize: [90, 24],
+            iconAnchor: [45, 12],
+          }),
+        }).addTo(markerLayer);
       }
       if (bounds.length > 1) {
         map.fitBounds(bounds, { padding: [35, 35], maxZoom: 5 });
