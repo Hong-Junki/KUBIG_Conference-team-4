@@ -196,14 +196,15 @@ start site\live_osint.html
 
 주의: Leaflet/OpenStreetMap 타일은 인터넷 연결이 필요하다. 외부 타일 로딩이 실패해도 fallback coordinate view가 나오도록 처리해두었다.
 
-GDELT 기사 제목 컨텍스트는 현재 BigQuery service account 키를 받기 전 단계라 샘플 JSON으로 UI만 먼저 연결했다.
+GDELT 기사 제목 컨텍스트는 BigQuery service account 키가 있을 때 아래 스크립트로 실제 데이터 기반 JSON을 생성할 수 있다.
 
 ```text
-artifacts/live_osint/gdelt_context.sample.json
+scripts/export_gdelt_context.py
 artifacts/live_osint/gdelt_context.json
+artifacts/live_osint/gdelt_context.sample.json
 ```
 
-나중에 팀원이 수집한 `conflict-early-warning.conflict_ew.gdelt_titles`에 접근 가능해지면, BigQuery에서 국가별 최근 24시간/7일 기사 수와 대표 제목을 export해서 `gdelt_context.json`을 교체하면 된다.
+현재 사이트는 `conflict-early-warning.conflict_ew.gdelt_titles`에서 국가별 최신 수집일/최근 7일 기사 수와 대표 제목을 export한 `gdelt_context.json`을 읽어 오른쪽 상세 패널의 `GDELT News Context` 섹션에 표시한다. BigQuery 접근이 없을 때는 `gdelt_context.sample.json`을 UI 개발용 샘플로 사용할 수 있다.
 
 ---
 
