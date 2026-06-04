@@ -20,29 +20,29 @@
     .toolbar { display: grid; grid-template-columns: repeat(6, minmax(120px, 1fr)); gap: 8px; margin: 16px 0; }
     select, input { width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 10px; background: white; color: var(--ink); font-size: 14px; }
     .dashboard { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(330px, .75fr); gap: 14px; align-items: stretch; margin: 14px 0; }
-    .map-wrap { border: 1px solid #252a2b; border-radius: 8px; overflow: hidden; background: #111; min-height: 100%; }
-    #map { width: 100%; height: 430px; background: #111; }
-    .leaflet-container { background: #111; }
-    .leaflet-tile-pane { filter: grayscale(1) contrast(1.08) brightness(.72); }
-    .leaflet-control-attribution { background: rgba(15, 18, 18, .72); color: #aab0ac; }
-    .leaflet-control-attribution a { color: #c8d2cc; }
+    .map-wrap { border: 1px solid #cfd6d1; border-radius: 8px; overflow: hidden; background: #dde2df; min-height: 100%; }
+    #map { width: 100%; height: 430px; background: #dde2df; }
+    .leaflet-container { background: #dde2df; }
+    .leaflet-tile-pane { filter: grayscale(1) contrast(1.18) brightness(1.03); }
+    .leaflet-control-attribution { background: rgba(248, 250, 247, .82); color: #59635d; }
+    .leaflet-control-attribution a { color: #2f6f9f; }
     #fallbackMap { display: none; position: relative; width: 100%; height: 430px; overflow: hidden; background:
-      linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px),
-      linear-gradient(0deg, rgba(255,255,255,.07) 1px, transparent 1px),
-      linear-gradient(180deg, #101313 0%, #202323 55%, #111 100%);
+      linear-gradient(90deg, rgba(50,60,54,.10) 1px, transparent 1px),
+      linear-gradient(0deg, rgba(50,60,54,.09) 1px, transparent 1px),
+      linear-gradient(180deg, #dbe1de 0%, #eef1ee 52%, #d5dbd8 100%);
       background-size: 10% 100%, 100% 16.666%, 100% 100%; }
-    #fallbackMap::before { content: "Fallback coordinate view"; position: absolute; left: 12px; top: 10px; color: #bcc4bf; font-size: 13px; z-index: 1; }
-    .fallback-marker { position: absolute; width: 22px; height: 22px; transform: translate(-50%, -50%) rotate(45deg); border: 1px solid rgba(255,255,255,.72); box-shadow: 0 0 0 3px rgba(0,0,0,.20), 0 0 22px currentColor; cursor: pointer; }
-    .fallback-marker.city { background: rgba(220, 74, 61, .70); color: rgba(220, 74, 61, .60); }
-    .fallback-marker.country { width: 34px; height: 34px; background: rgba(232, 160, 59, .45); color: rgba(232, 160, 59, .48); }
-    .legend { display: flex; flex-wrap: wrap; gap: 12px; padding: 10px 12px; color: #c1c7c2; font-size: 13px; border-top: 1px solid #252a2b; background: #161a1a; }
+    #fallbackMap::before { content: "Fallback coordinate view"; position: absolute; left: 12px; top: 10px; color: #59635d; font-size: 13px; z-index: 1; }
+    .fallback-marker { position: absolute; width: 22px; height: 22px; transform: translate(-50%, -50%) rotate(45deg); border: 1px solid rgba(255,255,255,.88); box-shadow: 0 0 0 2px rgba(30,36,32,.28), 0 3px 16px rgba(0,0,0,.20); cursor: pointer; }
+    .fallback-marker.city { background: rgba(215, 55, 49, .78); color: rgba(215, 55, 49, .72); }
+    .fallback-marker.country { width: 34px; height: 34px; background: rgba(224, 136, 31, .55); color: rgba(224, 136, 31, .58); }
+    .legend { display: flex; flex-wrap: wrap; gap: 12px; padding: 10px 12px; color: #47524b; font-size: 13px; border-top: 1px solid #cfd6d1; background: #f7f9f6; }
     .dot { display: inline-block; width: 12px; height: 12px; margin-right: 5px; transform: rotate(45deg); border: 1px solid rgba(255,255,255,.65); }
     .dot.city { background: rgba(220, 74, 61, .72); }
     .dot.country { background: rgba(232, 160, 59, .52); }
     .dot.gdelt { background: rgba(71, 123, 90, .75); }
     .dot.missing { background: #64706a; }
     .area-pin { background: transparent; border: 0; }
-    .area-pin span { display: block; width: 14px; height: 14px; transform: rotate(45deg); border: 2px solid rgba(255,255,255,.82); box-shadow: 0 0 0 2px rgba(0,0,0,.35), 0 0 16px currentColor; }
+    .area-pin span { display: block; width: 14px; height: 14px; transform: rotate(45deg); border: 2px solid rgba(255,255,255,.92); box-shadow: 0 0 0 2px rgba(40,45,42,.35), 0 2px 9px rgba(0,0,0,.28); }
     .count { color: var(--muted); margin: 6px 0 12px; font-size: 14px; }
     .detail { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; min-height: 430px; max-height: 520px; overflow: auto; }
     .detail-empty { color: var(--muted); line-height: 1.55; }
@@ -105,7 +105,7 @@
       <div class="desc">
         Messages collected from public or authorized Telegram channels are classified into conflict-related signals.
         This feed is an unverified operational information layer, not a training dataset for the prediction model.
-        Generated at: 2026-06-04T10:44:12.643949+00:00 | Filters: {&quot;since_days&quot;: 14, &quot;min_confidence&quot;: 0.0, &quot;conflict_only&quot;: true}
+        Generated at: 2026-06-04T10:48:18.772906+00:00 | Filters: {&quot;since_days&quot;: 14, &quot;min_confidence&quot;: 0.0, &quot;conflict_only&quot;: true}
       </div>
     </header>
     <section class="stats"><div class="stat"><span>events</span><strong>57</strong></div>
@@ -1559,8 +1559,8 @@
     let selectedEventId = null;
 
     function markerColor(precision) {
-      if (precision === "city") return "#dc4a3d";
-      if (precision === "country") return "#e8a03b";
+      if (precision === "city") return "#d73531";
+      if (precision === "country") return "#dd8725";
       return "#64706a";
     }
 
@@ -1580,14 +1580,14 @@
 
     function areaStyle(event) {
       const supported = hasGdeltContext(event);
-      const color = supported ? "#5fb079" : markerColor(event.location_precision);
+      const color = supported ? "#24764a" : markerColor(event.location_precision);
       const fill = markerColor(event.location_precision);
       return {
         color,
         fillColor: fill,
-        fillOpacity: event.location_precision === "city" ? 0.42 : 0.30,
+        fillOpacity: event.location_precision === "city" ? 0.36 : 0.24,
         opacity: 0.95,
-        weight: supported ? 2 : 1,
+        weight: supported ? 2.5 : 1.5,
         interactive: true,
       };
     }
@@ -1718,7 +1718,7 @@
         return;
       }
       map = L.map("map", { worldCopyJump: true, scrollWheelZoom: true }).setView([20, 10], 2);
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
         maxZoom: 8,
         attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
       }).addTo(map);
