@@ -8,6 +8,9 @@ input/
 # ── Model artifacts ───────────────────────────────────────────────────────────
 # 학습된 모델 파일은 용량이 크고 재현 가능하므로 제외
 outputs/models/
+
+# CatBoost 학습 로그 (자동 생성)
+catboost_info/
 *.pkl
 *.joblib
 
