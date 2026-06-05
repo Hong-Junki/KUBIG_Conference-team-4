@@ -1,5 +1,5 @@
 # ACLED-free Feature Inventory
-**작성자**: byeonghyeon  
+**작성자**: 김병현  
 **작성일**: 2026-06-03  
 **목적**: 실험 B/C/D를 위한 실제 학습 데이터 컬럼 전체 분류 및 ACLED-free feature_cols 확정
 

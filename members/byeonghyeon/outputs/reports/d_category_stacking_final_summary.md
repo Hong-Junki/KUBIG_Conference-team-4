@@ -1,6 +1,6 @@
 # D-Category 스태킹 앙상블 최종 요약 리포트
 
-> **작성자**: byeonghyeon (Category D 담당)
+> **작성자**: 김병현 (Category D 담당)
 > **최초 작성**: 2026-05-23 | **최종 업데이트**: 2026-05-24
 > **대상 실험군**: `stacking_tree_only` 계열 (tree-only LightGBM + XGBoost) + LSTM 추가 절제 실험 + 피처 그룹 기여도 절제 실험 v2 + 하이퍼파라미터 민감도 절제 실험
 > **수치 출처**: 각 실험별 `val_metrics.json` 자동 추출 (수동 기입 없음)

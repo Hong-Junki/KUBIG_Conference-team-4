@@ -1,5 +1,5 @@
 # 팀 레포 모델 파이프라인 리뷰
-**작성자**: byeonghyeon  
+**작성자**: 김병현  
 **작성일**: 2026-06-03  
 **브랜치**: `add-byeonghyeon-subtree`  
 **목적**: ACLED-free baseline + GDELT title 피처 실험 전, 팀 레포 파이프라인 구조 및 피처 분류 정리

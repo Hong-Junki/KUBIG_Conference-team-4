@@ -1,5 +1,5 @@
 # GDELT Title 피처 실험 계획 (ACLED-free 기준)
-**작성자**: byeonghyeon  
+**작성자**: 김병현  
 **작성일**: 2026-06-03  
 **핵심 질문**: ACLED과 macis_se_score 없이, 새 GDELT title/themes/persons 피처만으로 성능을 얼마나 확보할 수 있는가?
 
