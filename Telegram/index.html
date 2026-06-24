@@ -16,8 +16,11 @@
     .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
     .stat span { display: block; color: var(--muted); font-size: 12px; }
     .stat strong { display: block; font-size: 22px; margin-top: 4px; overflow-wrap: anywhere; }
-    .toolbar { display: grid; grid-template-columns: repeat(7, minmax(120px, 1fr)); gap: 8px; margin: 16px 0; }
+    .toolbar { display: grid; grid-template-columns: repeat(8, minmax(120px, 1fr)); gap: 8px; margin: 16px 0; }
     select, input { width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 10px; background: white; color: var(--ink); font-size: 14px; }
+    .zoom-control { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; background: white; color: var(--muted); font-size: 13px; min-width: 0; }
+    .zoom-control span { white-space: nowrap; }
+    .zoom-control input { border: 0; padding: 0; accent-color: var(--blue); }
     .dashboard { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(330px, .75fr); gap: 14px; align-items: stretch; margin: 14px 0; }
     .map-wrap { border: 1px solid #d6ddd5; border-radius: 8px; overflow: hidden; background: radial-gradient(circle at 50% 45%, #ffffff 0%, #f5f7f2 62%, #e8eee8 100%); min-height: 100%; padding: 14px 18px 0; }
     #map { width: 100%; max-width: 1120px; height: 560px; margin: 0 auto; background: transparent; }
@@ -117,6 +120,10 @@
         <option value="globe">Map view: Globe</option>
         <option value="flat">Map view: Flat</option>
       </select>
+      <label class="zoom-control" for="mapZoomFilter">
+        <span>Zoom</span>
+        <input id="mapZoomFilter" type="range" min="0.75" max="2.4" step="0.05" value="1" />
+      </label>
       <select id="timeFilter">
         <option value="">Export range</option>
         <option value="720">Last 1 month</option>
@@ -4536,6 +4543,7 @@
     const countryCentroids = JSON.parse(document.getElementById("countryCentroidData").textContent);
     const controls = {
       mapView: document.getElementById("mapViewFilter"),
+      mapZoom: document.getElementById("mapZoomFilter"),
       time: document.getElementById("timeFilter"),
       country: document.getElementById("countryFilter"),
       channel: document.getElementById("channelFilter"),
@@ -4865,6 +4873,7 @@
 
     function globeLayout() {
       const flatMode = controls.mapView && controls.mapView.value === "flat";
+      const zoom = Number(controls.mapZoom ? controls.mapZoom.value : 1) || 1;
       return {
         margin: { l: 0, r: 0, t: 0, b: 0 },
         paper_bgcolor: "rgba(0,0,0,0)",
@@ -4872,8 +4881,8 @@
         hovermode: "closest",
         geo: {
           projection: flatMode
-            ? { type: "natural earth" }
-            : { type: "orthographic", rotation: { lon: 35, lat: 18, roll: 0 } },
+            ? { type: "natural earth", scale: zoom }
+            : { type: "orthographic", scale: zoom, rotation: { lon: 35, lat: 18, roll: 0 } },
           bgcolor: "rgba(0,0,0,0)",
           showframe: false,
           showcoastlines: true,
