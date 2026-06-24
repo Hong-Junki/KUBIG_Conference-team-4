@@ -16,7 +16,7 @@
     .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
     .stat span { display: block; color: var(--muted); font-size: 12px; }
     .stat strong { display: block; font-size: 22px; margin-top: 4px; overflow-wrap: anywhere; }
-    .toolbar { display: grid; grid-template-columns: repeat(6, minmax(120px, 1fr)); gap: 8px; margin: 16px 0; }
+    .toolbar { display: grid; grid-template-columns: repeat(7, minmax(120px, 1fr)); gap: 8px; margin: 16px 0; }
     select, input { width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 10px; background: white; color: var(--ink); font-size: 14px; }
     .dashboard { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(330px, .75fr); gap: 14px; align-items: stretch; margin: 14px 0; }
     .map-wrap { border: 1px solid #d6ddd5; border-radius: 8px; overflow: hidden; background: radial-gradient(circle at 50% 45%, #ffffff 0%, #f5f7f2 62%, #e8eee8 100%); min-height: 100%; padding: 14px 18px 0; }
@@ -113,6 +113,10 @@
 <div class="stat"><span>country fallback</span><strong>96</strong></div>
 <div class="stat"><span>missing location</span><strong>13</strong></div></section>
     <section class="toolbar" aria-label="feed filters">
+      <select id="mapViewFilter">
+        <option value="globe">Map view: Globe</option>
+        <option value="flat">Map view: Flat</option>
+      </select>
       <select id="timeFilter">
         <option value="">Export range</option>
         <option value="720">Last 1 month</option>
@@ -4531,6 +4535,7 @@
     const gdeltContext = JSON.parse(document.getElementById("gdeltContextData").textContent);
     const countryCentroids = JSON.parse(document.getElementById("countryCentroidData").textContent);
     const controls = {
+      mapView: document.getElementById("mapViewFilter"),
       time: document.getElementById("timeFilter"),
       country: document.getElementById("countryFilter"),
       channel: document.getElementById("channelFilter"),
@@ -4859,16 +4864,16 @@
     }
 
     function globeLayout() {
+      const flatMode = controls.mapView && controls.mapView.value === "flat";
       return {
         margin: { l: 0, r: 0, t: 0, b: 0 },
         paper_bgcolor: "rgba(0,0,0,0)",
         plot_bgcolor: "rgba(0,0,0,0)",
         hovermode: "closest",
         geo: {
-          projection: {
-            type: "orthographic",
-            rotation: { lon: 35, lat: 18, roll: 0 },
-          },
+          projection: flatMode
+            ? { type: "natural earth" }
+            : { type: "orthographic", rotation: { lon: 35, lat: 18, roll: 0 } },
           bgcolor: "rgba(0,0,0,0)",
           showframe: false,
           showcoastlines: true,
@@ -4885,6 +4890,7 @@
           lakecolor: "#dce8ee",
           showrivers: false,
           resolution: 50,
+          lataxis: flatMode ? { range: [-58, 84] } : undefined,
         },
       };
     }
