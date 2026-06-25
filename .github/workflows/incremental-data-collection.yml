@@ -3,7 +3,9 @@ name: Incremental Data Collection
 # ──────────────────────────────────────────────
 # 실행 조건
 # ──────────────────────────────────────────────
-# 현재: 수동 실행만 허용. 검증 완료 후 schedule 주석 해제.
+# 수동 실행 및 자동 일일 실행
+#   schedule: 매일 01:20 UTC / 매일 10:20 KST
+#   workflow_dispatch: 수동 날짜 지정 및 dry-run 가능
 on:
   workflow_dispatch:
     inputs:
@@ -35,13 +37,9 @@ on:
         required: false
         default: ""
         type: string
-
-# cron 스케줄 (검증 성공 후 주석 해제)
-# schedule 활성화 시 UTC/KST 시간 병기:
-#   "20 1 * * *" = UTC 01:20 = KST 10:20 (매일)
-#
-# schedule:
-#   - cron: "20 1 * * *"
+  # 매일 01:20 UTC / 매일 10:20 KST
+  schedule:
+    - cron: "20 1 * * *"
 
 # ──────────────────────────────────────────────
 # 담당 범위: raw BQ 테이블 적재까지

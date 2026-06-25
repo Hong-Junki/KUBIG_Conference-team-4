@@ -503,14 +503,16 @@ class TestWorkflowConfig:
         # default 값에 gdelt_titles 포함 확인
         assert "gdelt_titles" in wf
 
-    def test_no_schedule_active(self):
-        """schedule cron이 비활성화(주석)되어 있음."""
+    def test_schedule_active_with_correct_cron(self):
+        """schedule cron이 활성화되어 있고 01:20 UTC 시간을 사용함."""
         wf = self._read_workflow()
         active_cron_lines = [
             l for l in wf.splitlines()
             if "cron:" in l and not l.strip().startswith("#")
         ]
-        assert len(active_cron_lines) == 0, f"활성 cron 발견: {active_cron_lines}"
+        assert len(active_cron_lines) >= 1, "활성 cron 없음 — schedule이 비활성 상태"
+        assert any("20 1 * * *" in l for l in active_cron_lines), \
+            f"01:20 UTC cron 없음. 발견된 cron: {active_cron_lines}"
 
     def test_validate_permissions_step_exists(self):
         """validate-permissions 단계가 workflow에 포함됨."""
@@ -666,14 +668,16 @@ class TestWorkflowDateInputs:
                'start.*greater.*end' in wf or \
                '"$START" > "$END"' in wf
 
-    def test_cron_still_disabled(self):
-        """schedule cron이 여전히 주석 처리되어 있음."""
+    def test_cron_is_active(self):
+        """schedule cron이 활성화되어 있음."""
         wf = self._read_workflow()
         active_cron = [
             l for l in wf.splitlines()
             if "cron:" in l and not l.strip().startswith("#")
         ]
-        assert len(active_cron) == 0, f"활성 cron 발견: {active_cron}"
+        assert len(active_cron) >= 1, "cron이 비활성화(주석) 상태"
+        assert any("20 1 * * *" in l for l in active_cron), \
+            f"01:20 UTC cron 없음: {active_cron}"
 
     def test_no_hardcoded_credential_filename(self):
         """
