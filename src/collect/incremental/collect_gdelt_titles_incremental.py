@@ -51,7 +51,7 @@ from .state import (
 
 logger = get_logger(__name__)
 
-MERGE_KEYS = ["iso3", "url"]
+MERGE_KEYS = ["date", "iso3", "url"]
 GDELT_TITLES_SCHEMA = [
     SchemaField("date", "DATE", mode="REQUIRED"),
     SchemaField("iso3", "STRING", mode="REQUIRED"),
@@ -127,7 +127,7 @@ def _build_staging_select_query(
     deduped AS (
       SELECT
         date, iso3, title, url, domain, language, v2tone_avg, v2themes, v2persons,
-        ROW_NUMBER() OVER (PARTITION BY iso3, url ORDER BY date) AS rn
+        ROW_NUMBER() OVER (PARTITION BY date, iso3, url ORDER BY date) AS rn
       FROM exploded
       WHERE iso3 IS NOT NULL
     )
@@ -282,16 +282,16 @@ def run_gdelt_titles_incremental(
         if null_row["null_url"] > 0:
             issues.append(f"null url: {null_row['null_url']}")
 
-        # merge key duplicate 검증
+        # merge key duplicate 검증 (date, iso3, url)
         dup_q = f"""
         SELECT COUNT(*) as dupes FROM (
-          SELECT iso3, url, COUNT(*) as cnt FROM `{staging_fqn}`
-          GROUP BY iso3, url HAVING cnt > 1
+          SELECT date, iso3, url, COUNT(*) as cnt FROM `{staging_fqn}`
+          GROUP BY date, iso3, url HAVING cnt > 1
         )
         """
         dup_count = list(client.query(dup_q))[0]["dupes"]
         if dup_count > 0:
-            issues.append(f"merge key (iso3,url) 중복: {dup_count}")
+            issues.append(f"merge key (date,iso3,url) 중복: {dup_count}")
 
         if issues:
             raise ValueError(f"staging validation 실패: {issues}")
@@ -299,6 +299,11 @@ def run_gdelt_titles_incremental(
         logger.info(f"  staging validation 통과: {stg_count:,}행, null=0, dup=0")
 
         # 5. MERGE into target
+        # target_partition_filter: 날짜 범위를 ON 절에 상수로 추가 → BQ partition pruning 활성화
+        # key가 date+iso3+url이어도 이 상수 필터 없이는 전체 테이블 스캔이 발생할 수 있음
+        partition_filter = (
+            f"T.date BETWEEN DATE('{start}') AND DATE('{end}')"
+        )
         affected = merge_into_target(
             client,
             staging_fqn=staging_fqn,
@@ -306,6 +311,7 @@ def run_gdelt_titles_incremental(
             merge_keys=MERGE_KEYS,
             columns=ALL_COLUMNS,
             update_on_match=True,  # v2tone 등 수정치 반영
+            target_partition_filter=partition_filter,
         )
 
         # 6. post-write validation
