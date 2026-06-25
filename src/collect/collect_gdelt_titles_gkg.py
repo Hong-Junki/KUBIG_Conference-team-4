@@ -8,7 +8,7 @@
 데이터 흐름
   gdelt-bq.gdeltv2.gkg_partitioned (공개 데이터)
     → REGEXP_EXTRACT + UNNEST + FIPS→ISO3 매핑 (SQL 안에서 변환)
-    → conflict-early-warning.conflict_ew.gdelt_titles (INSERT)
+    → {GCP_PROJECT_ID}.conflict_ew.gdelt_titles (INSERT)
 
 대상 테이블 스키마 (PARTITION BY MONTH(date), CLUSTER BY iso3)
   date         DATE      — UTC, DATE 앞 8자리
@@ -36,6 +36,7 @@ CLI
 from __future__ import annotations
 
 import argparse
+import os
 from datetime import date, datetime
 from pathlib import Path
 
@@ -50,7 +51,8 @@ RAW_DIR = Path("input/raw/gdelt_titles")
 CKPT_PATH = RAW_DIR / ".ckpt_titles_gkg.json"
 
 GKG_TABLE = "gdelt-bq.gdeltv2.gkg_partitioned"
-TARGET_PROJECT = "conflict-early-warning"
+# TARGET_PROJECT은 반드시 env 변수에서 읽는다. 하드코딩 금지.
+TARGET_PROJECT = os.getenv("GCP_PROJECT_ID", "conflict-ew-mvp-20260604")
 TARGET_DATASET = "conflict_ew"
 TARGET_TABLE = "gdelt_titles"
 TARGET_FQN = f"{TARGET_PROJECT}.{TARGET_DATASET}.{TARGET_TABLE}"
