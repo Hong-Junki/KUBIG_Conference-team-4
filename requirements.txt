@@ -34,3 +34,6 @@ certifi
 pyarrow
 db-dtypes
 tabulate
+
+# 테스트
+pytest
