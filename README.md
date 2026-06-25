@@ -107,6 +107,28 @@ python scripts/eda_2014_2026.py
 
 ---
 
+## 증분 수집 파이프라인
+
+과거 수집 완료 후 최신 데이터만 주기적으로 BigQuery에 적재하는 파이프라인.
+
+- 파이프라인 문서: [`docs/incremental-data-collection.md`](docs/incremental-data-collection.md)
+- 현황 감사: [`docs/data-pipeline-audit.md`](docs/data-pipeline-audit.md)
+- GitHub Actions workflow: [`.github/workflows/incremental-data-collection.yml`](.github/workflows/incremental-data-collection.yml)
+- **현재 schedule 상태: 비활성** (수동 실행 `workflow_dispatch`만 가능)
+
+### 로컬 dry-run (BQ 쓰기 없음)
+
+```bash
+cp .env.example .env  # GCP_PROJECT_ID, GOOGLE_APPLICATION_CREDENTIALS 등 입력
+python -m src.collect.incremental.run_incremental --sources gdelt economic --dry-run
+```
+
+### GitHub Actions 수동 실행
+
+GitHub → Actions → Incremental Data Collection → Run workflow
+
+---
+
 ## 데이터 수집 가이드
 
 수집기별 옵션·체크포인트 위치·재시작 절차는 각 모듈 docstring 참조:
@@ -114,4 +136,5 @@ python scripts/eda_2014_2026.py
 - `src/collect/acled_collector.py`
 - `src/collect/gdelt_collector.py`
 - `src/collect/economic_collector.py`
-- `src/collect/run_historical.py` (통합 진입점)
+- `src/collect/run_historical.py` (통합 진입점 — 과거 수집)
+- `src/collect/incremental/run_incremental.py` (증분 수집 진입점)
