@@ -96,6 +96,7 @@ def merge_into_target(
     columns: list[str],
     update_on_match: bool = False,
     max_bytes_billed: int = _MAX_BYTES_BILLED_DEFAULT,
+    target_partition_filter: str | None = None,
 ) -> int:
     """
     staging → target MERGE.
@@ -105,11 +106,18 @@ def merge_into_target(
         columns: INSERT 컬럼 목록
         update_on_match: True이면 MATCHED 시 UPDATE, False이면 NOT MATCHED만 INSERT
         max_bytes_billed: 비용 안전장치
+        target_partition_filter: ON 절에 추가할 target 상수 필터 (partition pruning용).
+            예: "T.date BETWEEN DATE('2026-05-28') AND DATE('2026-05-29')"
+            이 조건이 있어야 BigQuery가 target 파티션을 pruning할 수 있음.
 
     Returns:
         변경된 row 수 (삽입 + 수정)
     """
-    on_clause = " AND ".join(f"T.{k} = S.{k}" for k in merge_keys)
+    key_clause = " AND ".join(f"T.{k} = S.{k}" for k in merge_keys)
+    if target_partition_filter:
+        on_clause = f"{key_clause}\n  AND ({target_partition_filter})"
+    else:
+        on_clause = key_clause
     col_list = ", ".join(columns)
     s_col_list = ", ".join(f"S.{c}" for c in columns)
 

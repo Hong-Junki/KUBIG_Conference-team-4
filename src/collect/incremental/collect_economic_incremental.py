@@ -17,6 +17,8 @@
   5. staging 삭제
 """
 
+import os
+import re
 from datetime import date, timedelta
 
 import pandas as pd
@@ -40,6 +42,23 @@ from .state import (
 )
 
 logger = get_logger(__name__)
+
+_FRED_KEY_SAFE_MSG = (
+    "FRED_API_KEY 형식이 올바르지 않습니다.\n"
+    "GitHub Secret에는 FRED_API_KEY= 접두어, 따옴표, 공백 없이\n"
+    "32자리 키 값만 등록해야 합니다."
+)
+_FRED_KEY_RE = re.compile(r"^[a-z0-9]{32}$")
+
+
+def validate_fred_api_key() -> None:
+    """FRED_API_KEY 형식 사전 검증. 키 값은 절대 로그에 출력하지 않는다."""
+    key = os.getenv("FRED_API_KEY", "")
+    if not key:
+        raise ValueError(_FRED_KEY_SAFE_MSG)
+    if len(key) != 32 or not _FRED_KEY_RE.match(key):
+        raise ValueError(_FRED_KEY_SAFE_MSG)
+
 
 TARGET_DATASET = "conflict_ew"
 TARGET_TABLE = "economic_daily"
@@ -160,7 +179,10 @@ def run_economic_incremental(
             "estimated_gb": 0.0,
         }
 
-    # 2. 수집
+    # 2. FRED API 키 형식 사전 검증 (API 호출 전, 키 값은 로그에 출력하지 않음)
+    validate_fred_api_key()
+
+    # 3. 수집
     df = _build_economic_df(start, end)
     if df is None:
         logger.warning("  수집된 경제지표 없음 (원천에 신규 데이터 없음)")
@@ -175,7 +197,7 @@ def run_economic_incremental(
 
     logger.info(f"  수집 완료: {len(df):,}행 ({start} ~ {end})")
 
-    # 3. staging → MERGE
+    # 4. staging → MERGE
     available_schema = [f for f in ECONOMIC_SCHEMA if f.name in df.columns]
     staging_fqn = load_dataframe_to_staging(
         client, df, project_id, TARGET_DATASET,
@@ -195,7 +217,7 @@ def run_economic_incremental(
     finally:
         drop_table(client, staging_fqn)
 
-    # 4. 검증
+    # 5. 검증
     validation = validate_after_load(
         client, target_fqn, "date", None,
         expected_min_date=start,

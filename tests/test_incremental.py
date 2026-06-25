@@ -400,17 +400,24 @@ class TestRequireMaxDateFromBq:
 # ──────────────────────────────────────────────
 
 class TestGdeltTitlesMergeKey:
-    def test_merge_keys_are_iso3_and_url(self):
-        """MERGE_KEYS가 ['iso3', 'url']임을 확인."""
+    def test_merge_keys_include_date(self):
+        """MERGE_KEYS가 ['date', 'iso3', 'url']임을 확인 (partition pruning 필요)."""
         from src.collect.incremental.collect_gdelt_titles_incremental import MERGE_KEYS
-        assert MERGE_KEYS == ["iso3", "url"]
+        assert MERGE_KEYS == ["date", "iso3", "url"]
+
+    def test_merge_keys_has_date_first(self):
+        """partition column인 date가 MERGE_KEYS 첫 번째 항목."""
+        from src.collect.incremental.collect_gdelt_titles_incremental import MERGE_KEYS
+        assert MERGE_KEYS[0] == "date"
 
     def test_schema_has_required_merge_columns(self):
-        """GDELT_TITLES_SCHEMA에 iso3, url이 REQUIRED 필드로 존재."""
+        """GDELT_TITLES_SCHEMA에 date, iso3, url이 REQUIRED 필드로 존재."""
         from src.collect.incremental.collect_gdelt_titles_incremental import GDELT_TITLES_SCHEMA
         schema_map = {f.name: f for f in GDELT_TITLES_SCHEMA}
+        assert "date" in schema_map
         assert "iso3" in schema_map
         assert "url" in schema_map
+        assert schema_map["date"].mode == "REQUIRED"
         assert schema_map["iso3"].mode == "REQUIRED"
         assert schema_map["url"].mode == "REQUIRED"
 
@@ -435,6 +442,18 @@ class TestGdeltTitlesMergeKey:
         )
         for col in ALL_COLUMNS:
             assert col in query, f"컬럼 '{col}'이 쿼리에 없음"
+
+    def test_staging_query_dedup_uses_date_iso3_url(self):
+        """staging 쿼리 dedup이 (date, iso3, url) 키 기준임을 확인."""
+        from src.collect.incremental.collect_gdelt_titles_incremental import _build_staging_select_query
+        query = _build_staging_select_query(
+            fips_codes=["US"],
+            fips_to_iso3={"US": "USA"},
+            m_start=date(2026, 5, 1),
+            m_end=date(2026, 5, 31),
+            staging_fqn="proj.dataset.staging",
+        )
+        assert "PARTITION BY date, iso3, url" in query
 
 
 # ──────────────────────────────────────────────
@@ -676,3 +695,274 @@ class TestWorkflowDateInputs:
                 content = doc.read_text()
                 assert not cred_pattern.search(content), \
                     f"{doc.name}에 credential 파일명 하드코딩"
+
+
+# ──────────────────────────────────────────────
+# MERGE partition filter 구조 검증
+# ──────────────────────────────────────────────
+
+class TestMergePartitionFilter:
+    def test_merge_sql_contains_partition_filter(self):
+        """merge_into_target에 target_partition_filter가 ON 절에 포함됨."""
+        from src.collect.incremental.bigquery_io import merge_into_target
+
+        client = MagicMock()
+        mock_job = MagicMock()
+        mock_job.num_dml_affected_rows = 10
+        mock_job.result.return_value = None
+        client.query.return_value = mock_job
+
+        merge_into_target(
+            client,
+            staging_fqn="p.d.staging",
+            target_fqn="p.d.target",
+            merge_keys=["date", "iso3", "url"],
+            columns=["date", "iso3", "url", "title"],
+            update_on_match=True,
+            target_partition_filter="T.date BETWEEN DATE('2026-05-28') AND DATE('2026-05-29')",
+        )
+
+        sql = client.query.call_args[0][0]
+        assert "T.date BETWEEN DATE('2026-05-28') AND DATE('2026-05-29')" in sql
+        assert "T.date = S.date" in sql
+        assert "T.iso3 = S.iso3" in sql
+        assert "T.url = S.url" in sql
+
+    def test_merge_sql_no_filter_when_not_provided(self):
+        """target_partition_filter 없으면 ON 절에 추가 조건 없음."""
+        from src.collect.incremental.bigquery_io import merge_into_target
+
+        client = MagicMock()
+        mock_job = MagicMock()
+        mock_job.num_dml_affected_rows = 5
+        mock_job.result.return_value = None
+        client.query.return_value = mock_job
+
+        merge_into_target(
+            client,
+            staging_fqn="p.d.staging",
+            target_fqn="p.d.target",
+            merge_keys=["GLOBALEVENTID"],
+            columns=["GLOBALEVENTID", "iso3"],
+            update_on_match=False,
+        )
+
+        sql = client.query.call_args[0][0]
+        assert "BETWEEN" not in sql
+
+    def test_gdelt_titles_merge_call_passes_partition_filter(self):
+        """run_gdelt_titles_incremental의 MERGE 호출에 partition_filter 전달됨."""
+        import src.collect.incremental.collect_gdelt_titles_incremental as mod
+        captured = {}
+
+        def fake_merge(client, staging_fqn, target_fqn, merge_keys, columns,
+                       update_on_match=False, max_bytes_billed=None,
+                       target_partition_filter=None):
+            captured["filter"] = target_partition_filter
+            captured["keys"] = merge_keys
+            return 100
+
+        def fake_query(q, *args, **kwargs):
+            result = MagicMock()
+            row = MagicMock()
+            # staging null check → 0
+            row.__getitem__ = MagicMock(return_value=0)
+            result.__iter__ = MagicMock(return_value=iter([row]))
+            result.num_dml_affected_rows = 4224397
+            return result
+
+        with (
+            patch.object(mod, "require_max_date_from_bq", return_value=date(2026, 5, 29)),
+            patch.object(mod, "compute_collection_window",
+                         return_value=(date(2026, 5, 26), date(2026, 5, 29))),
+            patch.object(mod, "date_range_months", return_value=[]),
+            patch.object(mod, "_create_empty_staging"),
+            patch.object(mod, "drop_table"),
+            patch.object(mod, "merge_into_target", side_effect=fake_merge),
+            patch("google.cloud.bigquery.Client") as mock_bq,
+        ):
+            mock_client = MagicMock()
+            mock_client.query.side_effect = fake_query
+            mock_bq.return_value = mock_client
+
+            count_row = MagicMock()
+            # staging row count → non-zero (to reach MERGE)
+            count_row.__getitem__ = MagicMock(return_value=4224397)
+            stg_iter = iter([count_row])
+
+            null_row = MagicMock()
+            null_row.__getitem__ = MagicMock(return_value=0)
+
+            call_count = [0]
+            def query_side(q, *a, **kw):
+                r = MagicMock()
+                call_count[0] += 1
+                if call_count[0] == 1:
+                    # staging count
+                    row = MagicMock()
+                    row.__getitem__ = MagicMock(return_value=4224397)
+                    r.__iter__ = MagicMock(return_value=iter([row]))
+                elif call_count[0] in (2, 3):
+                    # null check / dup check → 0
+                    row = MagicMock()
+                    row.__getitem__ = MagicMock(return_value=0)
+                    r.__iter__ = MagicMock(return_value=iter([row]))
+                else:
+                    r.__iter__ = MagicMock(return_value=iter([]))
+                r.num_dml_affected_rows = 100
+                return r
+
+            mock_client.query.side_effect = query_side
+
+            with patch.object(mod, "validate_after_load", return_value={"passed": True}):
+                mod.run_gdelt_titles_incremental(project_id="test-proj", dry_run=False)
+
+        assert "filter" in captured, "merge_into_target에 target_partition_filter가 전달되지 않음"
+        assert captured["filter"] is not None
+        assert "T.date BETWEEN" in captured["filter"]
+        assert captured["keys"] == ["date", "iso3", "url"]
+
+    def test_partition_filter_dates_are_literals_not_variables(self):
+        """partition filter의 날짜가 SQL 변수 아닌 리터럴 DATE() 함수로 전달됨."""
+        import re as re_mod
+        import src.collect.incremental.collect_gdelt_titles_incremental as mod
+
+        with (
+            patch.object(mod, "require_max_date_from_bq", return_value=date(2026, 5, 29)),
+            patch.object(mod, "compute_collection_window",
+                         return_value=(date(2026, 5, 26), date(2026, 5, 29))),
+            patch.object(mod, "date_range_months", return_value=[]),
+            patch.object(mod, "_create_empty_staging"),
+            patch.object(mod, "drop_table"),
+            patch.object(mod, "merge_into_target") as mock_merge,
+            patch("google.cloud.bigquery.Client") as mock_bq,
+            patch.object(mod, "validate_after_load", return_value={"passed": True}),
+        ):
+            mock_merge.return_value = 0
+            mock_client = MagicMock()
+            mock_bq.return_value = mock_client
+
+            call_count = [0]
+            def query_side(q, *a, **kw):
+                r = MagicMock()
+                call_count[0] += 1
+                v = 4224397 if call_count[0] == 1 else 0
+                row = MagicMock()
+                row.__getitem__ = MagicMock(return_value=v)
+                r.__iter__ = MagicMock(return_value=iter([row]))
+                r.num_dml_affected_rows = 0
+                return r
+
+            mock_client.query.side_effect = query_side
+            mod.run_gdelt_titles_incremental(project_id="test-proj", dry_run=False)
+
+        assert mock_merge.called, "merge_into_target이 호출되지 않음"
+        _, kwargs = mock_merge.call_args
+        f = kwargs.get("target_partition_filter", "")
+        # DATE('YYYY-MM-DD') 리터럴이어야 하며, @파라미터 변수 형식이면 안 됨
+        assert re_mod.search(r"DATE\('\d{4}-\d{2}-\d{2}'\)", f), \
+            f"partition_filter가 DATE() 리터럴을 사용하지 않음: {f}"
+        assert "@" not in f, f"partition_filter에 SQL 파라미터 변수 사용됨: {f}"
+
+
+# ──────────────────────────────────────────────
+# FRED API 키 형식 검증
+# ──────────────────────────────────────────────
+
+class TestFredApiKeyValidation:
+    def test_valid_key_passes(self):
+        """32자리 소문자+숫자 키는 통과."""
+        from src.collect.incremental.collect_economic_incremental import validate_fred_api_key
+        with patch.dict("os.environ", {"FRED_API_KEY": "a" * 32}):
+            validate_fred_api_key()  # 예외 없음
+
+    def test_valid_mixed_key_passes(self):
+        """소문자+숫자 혼합 32자리 키 통과."""
+        from src.collect.incremental.collect_economic_incremental import validate_fred_api_key
+        with patch.dict("os.environ", {"FRED_API_KEY": "ab1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e"}):
+            validate_fred_api_key()
+
+    def test_empty_key_raises(self):
+        """키가 없으면 ValueError."""
+        from src.collect.incremental.collect_economic_incremental import validate_fred_api_key
+        with patch.dict("os.environ", {}, clear=True):
+            os_env = {}
+            with patch("os.getenv", return_value=""):
+                with pytest.raises(ValueError) as exc_info:
+                    validate_fred_api_key()
+        assert "32자리" in str(exc_info.value)
+        assert "접두어" in str(exc_info.value)
+
+    def test_wrong_length_raises(self):
+        """31자리 키는 ValueError."""
+        from src.collect.incremental.collect_economic_incremental import validate_fred_api_key
+        with patch.dict("os.environ", {"FRED_API_KEY": "a" * 31}):
+            with pytest.raises(ValueError):
+                validate_fred_api_key()
+
+    def test_key_with_prefix_raises(self):
+        """'FRED_API_KEY=...' 형식으로 등록된 키는 실패."""
+        from src.collect.incremental.collect_economic_incremental import validate_fred_api_key
+        bad_key = "FRED_API_KEY=" + "a" * 20
+        with patch.dict("os.environ", {"FRED_API_KEY": bad_key}):
+            with pytest.raises(ValueError) as exc_info:
+                validate_fred_api_key()
+        # 오류 메시지에 실제 키 값이 포함되지 않아야 함
+        assert bad_key not in str(exc_info.value)
+        assert "a" * 20 not in str(exc_info.value)
+
+    def test_key_with_quotes_raises(self):
+        """따옴표로 감싼 키는 실패."""
+        from src.collect.incremental.collect_economic_incremental import validate_fred_api_key
+        with patch.dict("os.environ", {"FRED_API_KEY": '"' + "a" * 32 + '"'}):
+            with pytest.raises(ValueError):
+                validate_fred_api_key()
+
+    def test_key_with_spaces_raises(self):
+        """앞뒤 공백 포함 키는 실패."""
+        from src.collect.incremental.collect_economic_incremental import validate_fred_api_key
+        with patch.dict("os.environ", {"FRED_API_KEY": " " + "a" * 32}):
+            with pytest.raises(ValueError):
+                validate_fred_api_key()
+
+    def test_uppercase_key_raises(self):
+        """대문자 포함 키는 실패 (FRED는 소문자+숫자만 허용)."""
+        from src.collect.incremental.collect_economic_incremental import validate_fred_api_key
+        with patch.dict("os.environ", {"FRED_API_KEY": "A" * 32}):
+            with pytest.raises(ValueError):
+                validate_fred_api_key()
+
+    def test_error_message_safe(self):
+        """오류 메시지에 실제 키 값 포함되지 않음."""
+        from src.collect.incremental.collect_economic_incremental import validate_fred_api_key
+        secret_key = "x" * 31  # 잘못된 길이
+        with patch.dict("os.environ", {"FRED_API_KEY": secret_key}):
+            with pytest.raises(ValueError) as exc_info:
+                validate_fred_api_key()
+        assert secret_key not in str(exc_info.value)
+
+    def test_validate_called_before_api_in_run(self):
+        """run_economic_incremental이 실제 수집 전에 키 검증을 호출함."""
+        import src.collect.incremental.collect_economic_incremental as mod
+
+        call_order = []
+
+        def fake_validate():
+            call_order.append("validate")
+            raise ValueError("키 오류")
+
+        def fake_build_df(*args, **kwargs):
+            call_order.append("build_df")
+            return None
+
+        with (
+            patch.object(mod, "require_max_date_from_bq", return_value=date(2026, 5, 29)),
+            patch.object(mod, "validate_fred_api_key", side_effect=fake_validate),
+            patch.object(mod, "_build_economic_df", side_effect=fake_build_df),
+            patch("google.cloud.bigquery.Client"),
+        ):
+            with pytest.raises(ValueError, match="키 오류"):
+                mod.run_economic_incremental(project_id="test-proj", dry_run=False)
+
+        assert "validate" in call_order
+        assert "build_df" not in call_order, "키 검증 실패 후 수집 함수가 호출됨"
