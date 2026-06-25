@@ -3,6 +3,9 @@
 *.session
 *.session-journal
 conflict-early-warning-*.json
+conflict-ew-mvp-*.json
+*-service-account*.json
+*-sa-key*.json
 
 # 데이터 (raw + 빌드 산출물)
 input/raw/
@@ -19,7 +22,7 @@ output/
 catboost_info/
 
 # 내부 명세 문서 (회의·12년 재학습 후 정리해서 별도 공유)
-docs/
+# docs/ 는 파이프라인 문서를 포함하므로 추적 대상으로 변경
 
 # 모델 코드 (모델링 단계 진행 예정)
 src/model/*
