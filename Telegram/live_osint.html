@@ -16,13 +16,14 @@
     .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
     .stat span { display: block; color: var(--muted); font-size: 12px; }
     .stat strong { display: block; font-size: 22px; margin-top: 4px; overflow-wrap: anywhere; }
-    .toolbar { display: grid; grid-template-columns: repeat(8, minmax(120px, 1fr)); gap: 8px; margin: 16px 0; }
+    .toolbar { display: grid; grid-template-columns: repeat(7, minmax(120px, 1fr)); gap: 8px; margin: 16px 0; }
     select, input { width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 10px; background: white; color: var(--ink); font-size: 14px; }
-    .zoom-control { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; background: white; color: var(--muted); font-size: 13px; min-width: 0; }
+    .zoom-control { display: flex; align-items: center; gap: 8px; border: 1px solid rgba(197, 207, 199, .94); border-radius: 6px; padding: 8px 10px; background: rgba(255,255,255,.92); color: var(--muted); font-size: 13px; min-width: 0; box-shadow: 0 6px 16px rgba(48,57,51,.12); backdrop-filter: blur(6px); }
     .zoom-control span { white-space: nowrap; }
-    .zoom-control input { border: 0; padding: 0; accent-color: var(--blue); }
+    .zoom-control input { border: 0; padding: 0; accent-color: var(--blue); width: 128px; }
     .dashboard { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(330px, .75fr); gap: 14px; align-items: stretch; margin: 14px 0; }
-    .map-wrap { border: 1px solid #d6ddd5; border-radius: 8px; overflow: hidden; background: radial-gradient(circle at 50% 45%, #ffffff 0%, #f5f7f2 62%, #e8eee8 100%); min-height: 100%; padding: 14px 18px 0; }
+    .map-wrap { position: relative; border: 1px solid #d6ddd5; border-radius: 8px; overflow: hidden; background: radial-gradient(circle at 50% 45%, #ffffff 0%, #f5f7f2 62%, #e8eee8 100%); min-height: 100%; padding: 14px 18px 0; }
+    .map-wrap .zoom-control { position: absolute; top: 14px; right: 14px; z-index: 5; }
     #map { width: 100%; max-width: 1120px; height: 560px; margin: 0 auto; background: transparent; }
     .js-plotly-plot .plotly .modebar { display: none; }
     #fallbackMap { display: none; position: relative; width: 100%; height: 430px; overflow: hidden; background:
@@ -90,6 +91,8 @@
       .toolbar { grid-template-columns: 1fr; }
       .dashboard { grid-template-columns: 1fr; }
       .map-wrap { padding: 10px 10px 0; }
+      .map-wrap .zoom-control { top: 10px; right: 10px; }
+      .zoom-control input { width: 92px; }
       #map { height: 380px; }
       #fallbackMap { height: 320px; }
       .detail { min-height: 0; max-height: none; }
@@ -107,9 +110,9 @@
       </div>
     </header>
     <section class="stats"><div class="stat"><span>events</span><strong>181</strong></div>
-<div class="stat"><span>last 1mo</span><strong>181</strong></div>
-<div class="stat"><span>last 24h</span><strong>7</strong></div>
-<div class="stat"><span>last 7d</span><strong>49</strong></div>
+<div class="stat"><span>last 1mo</span><strong>174</strong></div>
+<div class="stat"><span>last 24h</span><strong>4</strong></div>
+<div class="stat"><span>last 7d</span><strong>48</strong></div>
 <div class="stat"><span>top country</span><strong>UKR</strong></div>
 <div class="stat"><span>top keyword</span><strong>drone</strong></div>
 <div class="stat"><span>city coordinates</span><strong>72</strong></div>
@@ -120,10 +123,6 @@
         <option value="globe">Map view: Globe</option>
         <option value="flat">Map view: Flat</option>
       </select>
-      <label class="zoom-control" for="mapZoomFilter">
-        <span>Zoom</span>
-        <input id="mapZoomFilter" type="range" min="0.75" max="2.4" step="0.05" value="1" />
-      </label>
       <select id="timeFilter">
         <option value="">Export range</option>
         <option value="720">Last 1 month</option>
@@ -174,6 +173,10 @@
     </section>
     <section class="dashboard" aria-label="event dashboard">
       <div class="map-wrap" aria-label="event map">
+        <label class="zoom-control" for="mapZoomFilter">
+          <span>Zoom</span>
+          <input id="mapZoomFilter" type="range" min="0.75" max="2.4" step="0.05" value="1" />
+        </label>
         <div id="map"></div>
         <div id="fallbackMap"></div>
         <div class="legend">
