@@ -160,12 +160,16 @@ def _build_acled_features(
 def _build_gdelt_features(
     iso3: str,
     date_range: pd.DatetimeIndex,
+    gdelt_df: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     """
     단일 국가의 GDELT 기반 피처 생성.
 
+    소스: gdelt_df(BQ 서빙, 해당 iso3 events) 우선, 없으면 로컬 parquet(학습).
+    컬럼 동일(event_date, GoldsteinScale, AvgTone, NumMentions, GLOBALEVENTID, QuadClass).
+
     GDELT는 15분 단위 업데이트 → lag 불필요.
-    단, 당일 데이터는 피처 계산에서 제외 (CLAUDE.md 알려진 함정 #6).
+    단, 당일 데이터는 피처 계산에서 제외 (알려진 함정: GDELT 당일 데이터 미확정).
     → shift(1)로 전일까지만 사용.
     """
     gdelt_path = PROCESSED_DIR / "gdelt" / f"{iso3}.parquet"
@@ -180,13 +184,19 @@ def _build_gdelt_features(
     for qc in range(1, 5):
         empty_cols[f"gdelt_quadclass_{qc}_ratio"] = 0.0
 
-    if not gdelt_path.exists():
+    if gdelt_df is not None:
+        df = gdelt_df
+    elif gdelt_path.exists():
+        df = pd.read_parquet(gdelt_path)
+    else:
+        df = None
+    if df is None or len(df) == 0:
         df_empty = pd.DataFrame({"date": date_range})
         for col, val in empty_cols.items():
             df_empty[col] = val
         return df_empty
 
-    df = pd.read_parquet(gdelt_path)
+    df = df.copy()
     df["event_date"] = pd.to_datetime(df["event_date"], utc=True).dt.normalize()
 
     # 일별 집계
@@ -250,12 +260,14 @@ def _build_gdelt_features(
 # 경제 피처
 # ───��──────────────────────────────────────────
 
-def _build_economic_features(date_range: pd.DatetimeIndex) -> pd.DataFrame:
+def _build_economic_features(date_range: pd.DatetimeIndex,
+                             econ_df: pd.DataFrame | None = None) -> pd.DataFrame:
     """
     글로벌 경제지표 피처 (국가 공통).
 
-    VIX/WTI/Gold/DXY: 일간값 + 변화율(1d, 7d)
-    STLFSI4: 일간값 (ffill 적용됨)
+    소스: econ_df(BQ 서빙, economic_daily) 우선, 없으면 로컬 parquet(학습).
+    컬럼 VIX/WTI/Gold/DXY/STLFSI4. econ_df 는 'date' 컬럼 또는 date 인덱스.
+    VIX/WTI/Gold/DXY: 일간값 + 변화율(1d, 7d) / STLFSI4: 일간값 (ffill 적용됨)
     """
     econ_path = PROCESSED_DIR / "economic" / "indicators.parquet"
 
@@ -266,13 +278,20 @@ def _build_economic_features(date_range: pd.DatetimeIndex) -> pd.DataFrame:
         empty_cols[f"econ_{ind.lower()}_pct_1d"] = 0.0
         empty_cols[f"econ_{ind.lower()}_pct_7d"] = 0.0
 
-    if not econ_path.exists():
+    if econ_df is not None:
+        df = econ_df.copy()
+        if "date" in df.columns:
+            df = df.set_index("date")
+    elif econ_path.exists():
+        df = pd.read_parquet(econ_path)
+    else:
+        df = None
+    if df is None or len(df) == 0:
         df_empty = pd.DataFrame({"date": date_range})
         for col, val in empty_cols.items():
             df_empty[col] = val
         return df_empty
 
-    df = pd.read_parquet(econ_path)
     df.index = pd.to_datetime(df.index, utc=True).normalize()
     df = df.reindex(date_range)
     # 수집 시작 전 날짜(신년 연휴 등) 결측 → bfill 후 ffill
@@ -302,9 +321,15 @@ def build_features(
     start: date = COLLECT_START,
     end: date = COLLECT_END,
     countries: list[dict] | None = None,
+    gdelt_by_iso3: dict[str, pd.DataFrame] | None = None,
+    econ_df: pd.DataFrame | None = None,
+    save: bool = True,
 ) -> pd.DataFrame:
     """
     전체 국가x일 피처 테이블 생성.
+
+    서빙(BQ): gdelt_by_iso3(iso3→events df) + econ_df(economic_daily) 주입 → 로컬 parquet 미사용.
+    학습: 둘 다 None → 로컬 parquet 읽기(기존 동작).
 
     Returns:
         DataFrame: date, country, + 피처 컬럼들
@@ -313,7 +338,7 @@ def build_features(
     target = countries or COUNTRIES
 
     date_range = pd.date_range(start=start, end=end, freq="D", tz="UTC")
-    econ_features = _build_economic_features(date_range)
+    econ_features = _build_economic_features(date_range, econ_df=econ_df)
 
     all_features = []
 
@@ -323,7 +348,9 @@ def build_features(
         print(f"  [{i+1}/{len(target)}] {name} ({iso3}) 피처 생성 중...")
 
         acled_feat = _build_acled_features(iso3, date_range)
-        gdelt_feat = _build_gdelt_features(iso3, date_range)
+        gdelt_feat = _build_gdelt_features(
+            iso3, date_range,
+            gdelt_df=(gdelt_by_iso3.get(iso3) if gdelt_by_iso3 is not None else None))
 
         # 경제 피처는 국가 공통
         df_country = acled_feat.copy()
@@ -347,16 +374,17 @@ def build_features(
     feature_cols = [c for c in df_all.columns if c not in ("date", "country")]
     df_all[feature_cols] = df_all[feature_cols].fillna(0)
 
-    # 저장
+    # 저장 (서빙 시 save=False 로 로컬 features.parquet 덮어쓰기 방지)
     out_path = FEATURES_DIR / "features.parquet"
-    df_all.to_parquet(out_path, index=False)
+    if save:
+        df_all.to_parquet(out_path, index=False)
 
     print(f"\n피처 테이블 생성 완료:")
     print(f"  shape: {df_all.shape}")
     print(f"  기간: {df_all['date'].min().date()} ~ {df_all['date'].max().date()}")
     print(f"  국가: {df_all['country'].nunique()}개")
     print(f"  피처 수: {len(feature_cols)}개")
-    print(f"  저장: {out_path}")
+    print(f"  저장: {out_path}" if save else "  (save=False, 메모리만 — 파일 미저장)")
 
     return df_all
 
