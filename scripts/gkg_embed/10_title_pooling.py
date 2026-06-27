@@ -32,6 +32,8 @@ from __future__ import annotations
 
 import argparse
 import os
+_PSS, _PSE = os.environ.get('SERVE_START'), os.environ.get('SERVE_END')
+_POOL_WHERE = f"WHERE e.date BETWEEN DATE('{_PSS}') AND DATE('{_PSE}')" if _PSS and _PSE else ''
 import warnings
 from pathlib import Path
 
@@ -103,6 +105,7 @@ def main() -> None:
            (1 - ML.DISTANCE(e.embedding, a.vec, 'COSINE')) AS cos
     FROM `{EMB_TBL}` e
     CROSS JOIN `{ANCHOR_TBL}` a
+    {_POOL_WHERE}
     """
 
     if args.dry_run:

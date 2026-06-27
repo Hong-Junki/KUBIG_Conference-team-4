@@ -68,7 +68,7 @@ def build_features(start: str, end: str, write_bq: bool = True,
 
     if not groups_ready:
         print("[2] 그 외 그룹 빌더 실행(임베딩 적재 + Track1/pool/gdev/subnational/mirror)")
-        run_group_builders()
+        run_group_builders({"SERVE_START": start, "SERVE_END": end})  # 윈도잉(전체스캔 방지)
 
     print("[3] 임베딩 파생 214 (저장 아티팩트 transform)")
     art = load_artifacts(ROOT)

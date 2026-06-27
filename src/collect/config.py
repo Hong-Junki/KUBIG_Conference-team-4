@@ -145,6 +145,12 @@ ACLED_EVENT_TYPES = [
 # ──────────────────────────────────────────────
 GOOGLE_APPLICATION_CREDENTIALS = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 GDELT_BQ_TABLE = "gdelt-bq.gdeltv2.events_partitioned"  # 파티션 필터 실제 적용되는 테이블 (events 대비 스캔량 28배 절감)
+
+# 서빙/피처 파이프라인용 BQ 위치 (수집 raw 테이블이 적재되는 곳). env로 오버라이드, 하드코딩 금지.
+GCP_PROJECT = os.getenv("GCP_PROJECT", "conflict-ew-mvp-20260604")
+BQ_DATASET = os.getenv("BQ_DATASET", "conflict_ew")
+GDELT_TITLES_FQN = f"{GCP_PROJECT}.{BQ_DATASET}.gdelt_titles"
+GKG_EMBEDDINGS_FQN = f"{GCP_PROJECT}.{BQ_DATASET}.gkg_embeddings"
 GDELT_FIELDS = [
     "SQLDATE",
     "ActionGeo_CountryCode",

@@ -26,6 +26,8 @@ from google.cloud import bigquery
 
 load_dotenv(".env", override=True)
 import os
+_ESS, _ESE = os.environ.get('SERVE_START'), os.environ.get('SERVE_END')
+_ENR_FILTER = f"AND DATE(event_date) BETWEEN DATE('{_ESS}') AND DATE('{_ESE}')" if _ESS and _ESE else ''
 GCP_PROJECT = os.getenv("GCP_PROJECT", "conflict-ew-mvp-20260604")
 BQ_DATASET = os.getenv("BQ_DATASET", "conflict_ew")
 SRC = f"{GCP_PROJECT}.{BQ_DATASET}.gdelt_processed_events"
@@ -49,6 +51,7 @@ def main() -> None:
       SUM(IF(QuadClass = 4, NumMentions, 0)) AS quad4_mentions
     FROM `{SRC}`
     WHERE iso3 IN ({','.join(repr(c) for c in iso3s)})
+    {_ENR_FILTER}
     GROUP BY iso3, date
     """
     job = client.query(q)

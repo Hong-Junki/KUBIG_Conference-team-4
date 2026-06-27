@@ -16,6 +16,8 @@ material conflict(QuadClass=4) 이벤트만 사용.
 from __future__ import annotations
 
 import os
+_SI = int((os.environ.get('SERVE_START') or '2014-01-01').replace('-',''))
+_EI = int((os.environ.get('SERVE_END') or '2026-12-31').replace('-',''))
 import sys
 import warnings
 from pathlib import Path
@@ -50,7 +52,7 @@ def main() -> None:
       FROM `{PUBLIC}`
       WHERE ActionGeo_CountryCode IN ({','.join(repr(f) for f in fips)})
         AND QuadClass = 4 AND ActionGeo_ADM1Code IS NOT NULL AND ActionGeo_ADM1Code != ''
-        AND SQLDATE BETWEEN 20140101 AND 20261231
+        AND SQLDATE BETWEEN {_SI} AND {_EI}
     ),
     adm1_daily AS (
       SELECT fips, SQLDATE, adm1, COUNT(*) AS cnt FROM ev GROUP BY fips, SQLDATE, adm1
