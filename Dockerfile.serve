@@ -1,0 +1,26 @@
+# onset 서빙 컨테이너 — 피처 빌더 + 스코어러 (추론 CPU)
+# 빌드:  docker build -f Dockerfile.serve -t conflict-ew-serve .
+# 실행(스코어): docker run --rm -e GCP_PROJECT=... -e GOOGLE_APPLICATION_CREDENTIALS=/sa.json \
+#               -v $PWD/sa.json:/sa.json conflict-ew-serve score --run-ts 2026-06-27T00:00:00Z
+# 실행(피처):  docker run ... conflict-ew-serve features
+FROM python:3.10-slim
+
+WORKDIR /app
+ENV PYTHONUNBUFFERED=1 PYTHONPATH=/app
+
+# torch CPU(슬림) + 서빙 의존성
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu \
+ && pip install --no-cache-dir \
+      pandas pyarrow scikit-learn scipy numpy \
+      google-cloud-bigquery google-cloud-bigquery-storage db-dtypes \
+      openai python-dotenv
+
+# 코드 + 학습 산출 아티팩트 (모델 가중치/메타 + 임베딩 fit 아티팩트)
+COPY src/ /app/src/
+COPY scripts/ /app/scripts/
+COPY output/models/ /app/output/models/
+COPY input/processed/features/anchor_embeddings.npz /app/input/processed/features/anchor_embeddings.npz
+COPY entrypoint_serve.sh /app/entrypoint_serve.sh
+RUN chmod +x /app/entrypoint_serve.sh
+
+ENTRYPOINT ["/app/entrypoint_serve.sh"]
