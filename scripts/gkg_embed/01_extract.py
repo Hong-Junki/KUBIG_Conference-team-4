@@ -29,8 +29,8 @@ except Exception:
 # GCP 자격증명은 GOOGLE_APPLICATION_CREDENTIALS 환경변수(.env)에서 주입
 
 TOP_K = 200
-START_DATE = date(2019, 9, 23)
-END_DATE = date(2026, 5, 29)
+START_DATE = date.fromisoformat(os.environ['SERVE_START']) if os.environ.get('SERVE_START') else date(2019, 9, 23)
+END_DATE = date.fromisoformat(os.environ['SERVE_END']) if os.environ.get('SERVE_END') else date(2026, 5, 29)
 
 OUT_PARQUET = Path("input/processed/gkg_titles/extracted.parquet")
 STATS_PATH = Path("output/gkg_embeddings/extract_stats.json")

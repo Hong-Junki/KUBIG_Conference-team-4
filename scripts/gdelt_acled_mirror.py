@@ -20,6 +20,8 @@ from __future__ import annotations
 
 import argparse
 import os
+_SI = int((os.environ.get('SERVE_START') or '2014-01-01').replace('-',''))
+_EI = int((os.environ.get('SERVE_END') or '2026-12-31').replace('-',''))
 import sys
 import warnings
 from pathlib import Path
@@ -49,7 +51,7 @@ def build_sql(fips):
         GoldsteinScale AS gold, NumMentions AS mentions,
         Actor1Type1Code AS a1, Actor2Type1Code AS a2
       FROM `{PUBLIC}`
-      WHERE ActionGeo_CountryCode IN ({fin}) AND SQLDATE BETWEEN 20140101 AND 20261231
+      WHERE ActionGeo_CountryCode IN ({fin}) AND SQLDATE BETWEEN {_SI} AND {_EI}
     )
     SELECT fips, SQLDATE,
       COUNTIF(root='19') AS battles,

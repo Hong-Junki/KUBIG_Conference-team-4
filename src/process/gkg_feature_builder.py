@@ -25,6 +25,8 @@ CLI
 
 from __future__ import annotations
 
+import os
+
 import argparse
 from datetime import date
 from pathlib import Path
@@ -38,8 +40,8 @@ PROCESSED_FEATURES_DIR = Path("input/processed/features")
 TARGET_TABLE = GDELT_TITLES_FQN
 
 # 기본 집계 범위 (gdelt_titles 가용 구간 전체)
-DEFAULT_START = date(2015, 2, 17)
-DEFAULT_END = date(2026, 5, 29)
+DEFAULT_START = date.fromisoformat(os.environ['SERVE_START']) if os.environ.get('SERVE_START') else date(2015, 2, 17)
+DEFAULT_END = date.fromisoformat(os.environ['SERVE_END']) if os.environ.get('SERVE_END') else date(2026, 5, 29)
 
 # Group B V2Themes prefix 6개 (기본)
 DEFAULT_THEME_PREFIXES = ["KILL", "PROTEST", "TERROR", "MILITARY", "REFUGEE", "ARMEDCONFLICT"]
