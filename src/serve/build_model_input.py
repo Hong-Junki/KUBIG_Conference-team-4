@@ -34,6 +34,8 @@ MODEL_INPUT_TBL = f"{GCP_PROJECT}.{BQ_DATASET}.model_input"
 GROUP_BUILDERS = [
     [sys.executable, "scripts/gkg_embed/01_extract.py"],
     [sys.executable, "scripts/gkg_embed/05_sync_embed.py"],
+    # sync 는 partial agg 만 저장 → finalize 로 country-day 평균 parquet(gkg_embeddings.parquet) 생성
+    [sys.executable, "scripts/gkg_embed/05_sync_embed.py", "--finalize-agg"],
     [sys.executable, "-m", "src.process.gkg_feature_builder"],
     [sys.executable, "scripts/gkg_embed/10_title_pooling.py"],
     [sys.executable, "scripts/gdelt_enriched_events.py"],

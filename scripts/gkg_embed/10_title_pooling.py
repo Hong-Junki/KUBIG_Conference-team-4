@@ -34,6 +34,7 @@ import argparse
 import os
 _PSS, _PSE = os.environ.get('SERVE_START'), os.environ.get('SERVE_END')
 _POOL_WHERE = f"WHERE e.date BETWEEN DATE('{_PSS}') AND DATE('{_PSE}')" if _PSS and _PSE else ''
+_SERVE_MODE = bool(_PSS and _PSE)  # 윈도잉=serve: train 임계값 재계산 대신 영구 THRESH 재사용
 import warnings
 from pathlib import Path
 
@@ -92,9 +93,35 @@ def main() -> None:
     ap.add_argument("--dry-run", action="store_true", help="Step A 비용 추정만")
     ap.add_argument("--keep-temp", action="store_true", help="임시테이블 보존")
     ap.add_argument("--skip-compute", action="store_true", help="계산 건너뛰고 기존 임시테이블에서 다운로드만")
+    ap.add_argument("--build-thresh", action="store_true",
+                    help="train 기간(<=TRAIN_END)으로 _anchor_thresh 영구 생성 후 종료 (1회·serve 선행)")
     args = ap.parse_args()
 
     client = bigquery.Client(project=GCP_PROJECT)
+
+    if args.build_thresh:
+        # serve(윈도잉) run 은 train 기간 데이터를 안 긁으므로 임계값을 1회 영구 생성해 재사용한다.
+        # 배치 [2/5] 와 동일 결과(p90 over title×anchor, date<=TRAIN_END) — 계산 시점만 분리.
+        print("[build-thresh] anchor 벡터 테이블")
+        ensure_anchor_table(client)
+        print(f"[build-thresh] _title_cos (train <= {TRAIN_END})")
+        run(client, f"""
+        CREATE OR REPLACE TABLE `{TITLE_COS}` AS
+        SELECT e.date, e.iso3, a.anchor_id,
+               (1 - ML.DISTANCE(e.embedding, a.vec, 'COSINE')) AS cos
+        FROM `{EMB_TBL}` e CROSS JOIN `{ANCHOR_TBL}` a
+        WHERE e.date <= DATE '{TRAIN_END}'
+        """, "title_cos_train")
+        print(f"[build-thresh] _anchor_thresh (train p90) → 영구 저장: {THRESH}")
+        run(client, f"""
+        CREATE OR REPLACE TABLE `{THRESH}` AS
+        SELECT iso3, anchor_id, APPROX_QUANTILES(cos, 100)[OFFSET(90)] AS thr_p90
+        FROM `{TITLE_COS}`
+        GROUP BY iso3, anchor_id
+        """, "thresh")
+        client.delete_table(TITLE_COS, not_found_ok=True)  # train title_cos 정리 (THRESH 만 영구 보존)
+        print("  완료. serve run(윈도잉)은 이 영구 THRESH 를 재사용합니다.")
+        return
 
     # Step A SQL (가장 비싼 단계)
     sql_title_cos = f"""
@@ -129,14 +156,23 @@ def main() -> None:
         print("[1/5] _title_cos (제목 × anchor cosine, 비싼 단계)")
         run(client, sql_title_cos, "title_cos")
 
-    print("[2/5] _anchor_thresh (train p90)")
-    run(client, f"""
-    CREATE OR REPLACE TABLE `{THRESH}` AS
-    SELECT iso3, anchor_id, APPROX_QUANTILES(cos, 100)[OFFSET(90)] AS thr_p90
-    FROM `{TITLE_COS}`
-    WHERE date <= DATE '{TRAIN_END}'
-    GROUP BY iso3, anchor_id
-    """, "thresh")
+    if _SERVE_MODE:
+        print("[2/5] _anchor_thresh — serve 모드: 영구 테이블 재사용(재계산 생략)")
+        try:
+            client.get_table(THRESH)
+        except Exception:
+            raise SystemExit(
+                f"[오류] {THRESH} 없음. serve 전에 1회 실행 필요:\n"
+                f"  python scripts/gkg_embed/10_title_pooling.py --build-thresh")
+    else:
+        print("[2/5] _anchor_thresh (train p90)")
+        run(client, f"""
+        CREATE OR REPLACE TABLE `{THRESH}` AS
+        SELECT iso3, anchor_id, APPROX_QUANTILES(cos, 100)[OFFSET(90)] AS thr_p90
+        FROM `{TITLE_COS}`
+        WHERE date <= DATE '{TRAIN_END}'
+        GROUP BY iso3, anchor_id
+        """, "thresh")
 
     print("[3/5] _pool_anchor (일별 극값/카운트 + 7d)")
     run(client, f"""
@@ -228,9 +264,10 @@ def main() -> None:
     print(f"저장: {OUT_PATH}  shape={out.shape}, 피처 {len(feat_cols)}개")
 
     if not args.keep_temp:
-        for t in [TITLE_COS, THRESH, POOL_ANCHOR, POOL_ORTHO]:
+        # THRESH 는 영구 보존(serve run 재사용). 나머지 임시테이블만 정리.
+        for t in [TITLE_COS, POOL_ANCHOR, POOL_ORTHO]:
             client.delete_table(t, not_found_ok=True)
-        print("  임시테이블 정리 완료")
+        print("  임시테이블 정리 완료 (THRESH 영구 보존)")
 
 
 if __name__ == "__main__":
