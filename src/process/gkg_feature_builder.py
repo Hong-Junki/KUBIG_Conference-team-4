@@ -218,7 +218,7 @@ def run_and_save(
         use_query_cache=True,
     )
     job = client.query(query, job_config=job_config)
-    df = job.to_dataframe(progress_bar_type="tqdm")
+    df = job.to_dataframe(progress_bar_type="tqdm", create_bqstorage_client=False)
     # date 컬럼: db_dtypes.DateDtype → 표준 datetime64[ns] (parquet 읽기 호환성)
     if "date" in df.columns:
         df["date"] = pd.to_datetime(df["date"])

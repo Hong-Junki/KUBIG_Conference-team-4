@@ -92,7 +92,7 @@ def main() -> None:
     # 실행
     print("쿼리 실행 중 (수 분 소요)...")
     job = client.query(sql)
-    df = job.to_dataframe(create_bqstorage_client=True)
+    df = job.to_dataframe(create_bqstorage_client=False)
     print(f"행 수: {len(df):,}")
 
     # 타입 정규화

@@ -44,6 +44,8 @@ GROUP_BUILDERS = [
 
 def run_group_builders(env_extra: dict | None = None):
     env = {**os.environ, **(env_extra or {})}
+    # 서브프로세스 빌더가 `import src...` 하려면 루트가 PYTHONPATH에 있어야 함
+    env["PYTHONPATH"] = str(ROOT) + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
     for cmd in GROUP_BUILDERS:
         print(f"  $ {' '.join(cmd)}", flush=True)
         subprocess.run(cmd, cwd=str(ROOT), env=env, check=True)
