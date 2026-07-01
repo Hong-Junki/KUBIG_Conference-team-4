@@ -61,6 +61,10 @@ BQ_TABLE = f"{GCP_PROJECT}.{BQ_DATASET}.gkg_embeddings"
 MAX_INPUTS_PER_BATCH = 49_000
 MAX_TOKENS_PER_BATCH = 2_500_000
 
+# 증분 임베딩: 신규 윈도우 청크에 유니크 suffix 부여(기존 done 연-청크와 키 충돌 방지).
+# 미설정(배치)이면 "" → 기존 동작과 완전 동일.
+EMBED_KEY_SUFFIX = os.environ.get("EMBED_KEY_SUFFIX", "")
+
 
 # -----------------------------
 # chunk 분할 (02/03 과 동일 union 로직)
@@ -72,7 +76,7 @@ def chunk_titles(df: pd.DataFrame) -> dict[str, pd.DataFrame]:
     for (iso3, year), group in df.groupby(["iso3", "year"], sort=True):
         group = group.reset_index(drop=True)
         n = len(group)
-        base_key = f"{iso3}_{year}"
+        base_key = f"{iso3}_{year}" + (f"_{EMBED_KEY_SUFFIX}" if EMBED_KEY_SUFFIX else "")
         if n <= MAX_INPUTS_PER_BATCH:
             base[base_key] = group
             continue
@@ -106,6 +110,28 @@ _state_lock = threading.Lock()
 def load_state() -> dict:
     with open(STATE_PATH) as f:
         return json.load(f)
+
+
+def _register_incremental_chunks(chunks: dict, state: dict) -> None:
+    """증분 모드: 추출 윈도우가 BQ 기존 커버리지와 안 겹치는지 확인(중복 append 차단) 후,
+    state 에 없는 신규(유니크 suffix) 청크를 pending 으로 등록한다."""
+    client = bigquery.Client(project=GCP_PROJECT)
+    rows = list(client.query(f"SELECT MAX(date) AS mx FROM `{BQ_TABLE}`").result())
+    bq_max = rows[0]["mx"] if rows else None
+    ext_min = min(pd.to_datetime(cdf["date"]).min() for cdf in chunks.values()).date()
+    if bq_max is not None and ext_min <= bq_max:
+        raise SystemExit(
+            f"[증분중단] 추출 min date {ext_min} <= BQ gkg_embeddings max {bq_max} → "
+            f"WRITE_APPEND 중복 위험. gap(> {bq_max})만 추출하세요 (SERVE_START).")
+    n_new = 0
+    for key, cdf in chunks.items():
+        if key not in state["chunks"]:
+            toks = int(min(cdf["title"].str.len().sum() / 3.5, len(cdf) * MAX_TOKENS_PER_TITLE))
+            state["chunks"][key] = {"status": "pending", "tokens_est": toks}
+            n_new += 1
+    save_state(state)
+    print(f"[증분] BQ max={bq_max} / 추출 {ext_min}~ / 신규 청크 {n_new}개 pending 등록 "
+          f"(suffix={EMBED_KEY_SUFFIX})", flush=True)
 
 
 def save_state(state: dict) -> None:
@@ -204,25 +230,22 @@ def finalize_agg() -> None:
 
     parts = [pd.read_parquet(f) for f in files]
     combined = pd.concat(parts, ignore_index=True)
+    del parts
     print(f"[finalize_agg] concat rows={len(combined):,}", flush=True)
 
     # 같은 (country,date) 가 여러 partial 에 있을 수 있음 → n_titles 가중평균
     emb_cols = [c for c in combined.columns if c.startswith("gkg_emb_") and c != "gkg_emb_n_titles_1d"]
     n_col = "gkg_emb_n_titles_1d"
 
-    def _wmean(g: pd.DataFrame) -> pd.Series:
-        w = g[n_col].values
-        wsum = w.sum()
-        out = {n_col: int(wsum)}
-        # 1536 emb cols 가중평균
-        vals = g[emb_cols].values  # (k, 1536)
-        wm = (vals * w[:, None]).sum(axis=0) / wsum
-        for c, v in zip(emb_cols, wm.astype(np.float32)):
-            out[c] = v
-        return pd.Series(out)
-
-    agg = combined.groupby(["country", "date"], as_index=False).apply(_wmean).reset_index(drop=True)
-    # column order
+    # 가중평균 = Σ(emb·n)/Σn — 벡터화 필수. groupby.apply(Python func)는 291k×1536 에서
+    # RAM 폭증→macOS swap→디스크 full(Errno 28) 유발. 아래는 수학적으로 동일하며 저메모리.
+    w = combined[n_col].to_numpy(dtype=np.float32)
+    combined[emb_cols] = combined[emb_cols].to_numpy(dtype=np.float32) * w[:, None]  # emb·n
+    agg = combined.groupby(["country", "date"], as_index=False).sum()               # Σ(emb·n), Σn
+    del combined
+    denom = agg[n_col].to_numpy(dtype=np.float32)
+    agg[emb_cols] = (agg[emb_cols].to_numpy(dtype=np.float32) / denom[:, None]).astype(np.float32)
+    agg[n_col] = agg[n_col].round().astype(int)
     agg = agg[["date", "country", n_col] + emb_cols]
 
     AGG_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -444,6 +467,8 @@ def main():
     del df_all
 
     state = load_state()
+    if EMBED_KEY_SUFFIX:  # 증분 임베딩: 신규 윈도우를 유니크 키로 등록(기존 done 충돌 방지)
+        _register_incremental_chunks(chunks, state)
     pending = [(k, v) for k, v in state["chunks"].items() if v["status"] == "pending"]
     submitted = [k for k, v in state["chunks"].items() if v["status"] == "submitted"]
     done = [k for k, v in state["chunks"].items() if v["status"] == "done"]
