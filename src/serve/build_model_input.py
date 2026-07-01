@@ -34,6 +34,8 @@ MODEL_INPUT_TBL = f"{GCP_PROJECT}.{BQ_DATASET}.model_input"
 GROUP_BUILDERS = [
     [sys.executable, "scripts/gkg_embed/01_extract.py"],
     [sys.executable, "scripts/gkg_embed/05_sync_embed.py"],
+    # sync 는 partial agg 만 저장 → finalize 로 country-day 평균 parquet(gkg_embeddings.parquet) 생성
+    [sys.executable, "scripts/gkg_embed/05_sync_embed.py", "--finalize-agg"],
     [sys.executable, "-m", "src.process.gkg_feature_builder"],
     [sys.executable, "scripts/gkg_embed/10_title_pooling.py"],
     [sys.executable, "scripts/gdelt_enriched_events.py"],
@@ -44,6 +46,8 @@ GROUP_BUILDERS = [
 
 def run_group_builders(env_extra: dict | None = None):
     env = {**os.environ, **(env_extra or {})}
+    # 서브프로세스 빌더가 `import src...` 하려면 루트가 PYTHONPATH에 있어야 함
+    env["PYTHONPATH"] = str(ROOT) + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
     for cmd in GROUP_BUILDERS:
         print(f"  $ {' '.join(cmd)}", flush=True)
         subprocess.run(cmd, cwd=str(ROOT), env=env, check=True)

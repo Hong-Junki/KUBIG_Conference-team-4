@@ -52,7 +52,7 @@ def detect_missing(client: bigquery.Client) -> list[tuple[str, int]]:
     FROM `{BQ_TABLE}`
     GROUP BY iso3, yr
     """
-    bq = client.query(q).result().to_dataframe()
+    bq = client.query(q).result().to_dataframe(create_bqstorage_client=False)
     bq_set = {(r["iso3"], int(r["yr"])) for _, r in bq.iterrows()}
 
     emb = pd.read_parquet(AGG_PATH, columns=["date", "country"])
@@ -71,7 +71,7 @@ def refill_chunk(client: bigquery.Client, iso3: str, year: int) -> int:
     FROM `{BQ_TABLE}`
     WHERE iso3 = '{iso3}' AND EXTRACT(YEAR FROM date) = {year}
     """
-    df = client.query(q).result().to_dataframe(create_bqstorage_client=True)
+    df = client.query(q).result().to_dataframe(create_bqstorage_client=False)
     if df.empty:
         return 0
     df["date"] = pd.to_datetime(df["date"]).dt.normalize()

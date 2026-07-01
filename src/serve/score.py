@@ -2,7 +2,9 @@
 
 프로덕션 메타 선택셋 = ['LSTM_W45_ALL'] 단독이므로, 서빙 점수는
 seq_lstm_w45_all.pt(escalation-head, 3시드 sigmoid 평균) → meta(1입력 로지스틱) → onset_prob.
-calm(past14d_event_count==0) 국가에만 onset 경보 의미 부여(게이팅).
+calm 국가에만 onset 경보 의미 부여(게이팅). 실시간엔 ACLED가 stale → calm 판정은
+GDELT 기반(calm_gdelt.pkl: 드리프트-무관 비율/tone 로지스틱, val AUC 0.727)을 우선 사용,
+아티팩트/피처 없으면 ACLED past14d_event_count==0 fallback (known-pitfalls: ACLED stale).
 
 추론 CPU 충분. torch + sklearn 만 사용(트리=lightgbm 불필요 → macOS libomp 충돌 회피).
 출력: country, date, base_pred, onset_prob, calm_flag.
@@ -58,6 +60,23 @@ def _predict_lstm(df: pd.DataFrame, ckpt: dict, target_mask: np.ndarray) -> tupl
     return rows, np.mean(preds, axis=0)
 
 
+def _calm_flag(rows_df: pd.DataFrame, cols, model_dir: str | Path) -> tuple[np.ndarray, str]:
+    """calm_flag 산출. 우선순위: ① GDELT 로지스틱(calm_gdelt.pkl, 실시간 가용·드리프트 무관)
+    ② ACLED past14d_event_count==0 (학습/과거 채점용, 실시간엔 stale) ③ 둘 다 없으면 1.
+    return (flag[int], source)."""
+    p = Path(model_dir) / "calm_gdelt.pkl"
+    if p.exists():
+        art = pickle.load(open(p, "rb"))
+        if set(art["feats"]).issubset(set(cols)):
+            X = rows_df[art["feats"]].fillna(0.0).values.astype(float)
+            z = (X - np.asarray(art["mu"], float)) / np.asarray(art["sd"], float)
+            pcalm = 1.0 / (1.0 + np.exp(-(z @ np.asarray(art["coef"], float) + art["intercept"])))
+            return (pcalm >= art["threshold"]).astype(int), "gdelt"
+    if "past14d_event_count" in cols:
+        return (rows_df["past14d_event_count"].fillna(0).values == 0).astype(int), "acled"
+    return np.ones(len(rows_df), dtype=int), "default"
+
+
 def score(df: pd.DataFrame, model_dir: str | Path = MODEL_DIR,
           target_dates=None) -> pd.DataFrame:
     """model_input df → onset 점수. target_dates(set/list) 지정 시 그 날짜만(서빙=최신일)."""
@@ -78,12 +97,12 @@ def score(df: pd.DataFrame, model_dir: str | Path = MODEL_DIR,
     x = np.log(np.clip(p_lstm, 1e-6, 1 - 1e-6) / (1 - np.clip(p_lstm, 1e-6, 1 - 1e-6)))
     xs = (x.reshape(-1, 1) - np.ravel(meta["mu"])) / np.ravel(meta["sd"])
     out["onset_prob"] = meta["meta"].predict_proba(xs)[:, 1]
-    # calm 게이팅
-    if "past14d_event_count" in df.columns:
-        out["calm_flag"] = (df.loc[rows, "past14d_event_count"].fillna(0).values == 0).astype(int)
-    else:
-        out["calm_flag"] = 1
-    return out.reset_index(drop=True)
+    # calm 게이팅 — GDELT 우선(실시간), ACLED fallback
+    flags, calm_src = _calm_flag(df.loc[rows], df.columns, model_dir)
+    out["calm_flag"] = flags
+    out = out.reset_index(drop=True)
+    out.attrs["calm_source"] = calm_src
+    return out
 
 
 if __name__ == "__main__":
@@ -95,5 +114,7 @@ if __name__ == "__main__":
     df = df[(df["date"] >= "2024-06-01") & (df["date"] <= "2024-12-31")]
     res = score(df)
     print(f"스코어 {len(res)}행 | onset_prob 범위 [{res.onset_prob.min():.3f}, {res.onset_prob.max():.3f}]"
-          f" 평균 {res.onset_prob.mean():.3f} | calm {res.calm_flag.sum()}행")
+          f" 평균 {res.onset_prob.mean():.3f}")
+    print(f"calm_flag: source={res.attrs.get('calm_source')} | calm {res.calm_flag.sum()}행 "
+          f"({res.calm_flag.mean():.3f})")
     print(res.sort_values("onset_prob", ascending=False).head(8).to_string(index=False))
