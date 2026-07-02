@@ -48,7 +48,6 @@ from .state import (
     compute_collection_window,
     dateadded_int,
     log_state_summary,
-    log_timestamp_window,
     require_max_date_from_bq,
 )
 
@@ -424,7 +423,6 @@ def _run_timestamp_mode(
     MERGE key (date, iso3, url)로 중복 없이 idempotent 적재.
     """
     staging_fqn = f"{project_id}.{TARGET_DATASET}._staging_{TARGET_TABLE}_{run_id}"
-    log_timestamp_window("gdelt_titles", None, start_ts, end_ts, overlap_minutes)
 
     fips_codes, fips_to_iso3 = _get_fips_mapping()
 

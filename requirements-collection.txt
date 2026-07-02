@@ -1,0 +1,24 @@
+# 수집 파이프라인 전용 의존성
+# src/collect/incremental/ 및 tests/test_incremental.py 기준 최소 구성
+# 모델·대시보드·임베딩 패키지(torch, lightgbm 등)는 전체 requirements.txt를 사용할 것
+
+# BigQuery 클라이언트
+google-cloud-bigquery
+google-cloud-bigquery-storage  # BQ Storage API: 대용량 결과 고속 다운로드 + "Storage module not found" 경고 제거
+
+# 데이터 처리
+pandas
+numpy
+pyarrow    # BQ <-> pandas 직렬화
+db-dtypes  # BQ DATE/DATETIME/TIMESTAMP → pandas 타입 변환
+
+# 경제지표 수집 (economic_collector.py)
+yfinance
+fredapi
+certifi    # yfinance/fredapi SSL 인증서
+
+# 환경 설정 (src/collect/config.py → load_dotenv)
+python-dotenv
+
+# 테스트
+pytest
