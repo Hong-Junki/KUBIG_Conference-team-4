@@ -3,9 +3,22 @@ name: Incremental Data Collection
 # ──────────────────────────────────────────────
 # 실행 조건
 # ──────────────────────────────────────────────
-# 수동 실행 및 자동 일일 실행
-#   schedule: 매일 01:20 UTC / 매일 10:20 KST
-#   workflow_dispatch: 수동 날짜 지정 및 dry-run 가능
+#
+# [15분 schedule]  cron: "*/15 * * * *"
+#   → gdelt (DATEADDED watermark) + gdelt_titles (GKG DATE watermark)
+#   → timestamp 모드, overlap 30분
+#
+# [일일 schedule]  cron: "20 1 * * *"   (UTC 01:20 / KST 10:20)
+#   → economic (날짜 단위)
+#   → gdelt 7일 reconciliation (DATEADDED lag 보정)
+#
+# [주간 schedule]  cron: "40 2 * * 0"   (UTC 일요일 02:40)
+#   → gdelt 30일 reconciliation (월 단위 지연 이벤트 보정)
+#
+# [수동]  workflow_dispatch
+#   → 사용자 지정 sources, dry-run, 날짜 backfill
+#   → start/end 입력 시 date 모드 backfill
+#
 on:
   workflow_dispatch:
     inputs:
@@ -14,6 +27,14 @@ on:
         required: false
         default: "gdelt economic gdelt_titles"
         type: string
+      mode:
+        description: "수집 모드. timestamp=15분 watermark 증분(gdelt+gdelt_titles 전용), date=날짜 단위(기본)"
+        required: false
+        default: "date"
+        type: choice
+        options:
+          - "date"
+          - "timestamp"
       dry_run:
         description: "dry-run 모드 (실제 BQ 쓰기 없음)"
         required: false
@@ -23,45 +44,33 @@ on:
           - "false"
           - "true"
       overlap_days:
-        description: "overlap 일수 (미지정 시 소스별 기본값 사용)"
+        description: "overlap 일수 (date 모드, 미지정 시 소스별 기본값)"
         required: false
         default: ""
         type: string
       start:
-        description: "수동 날짜 범위 시작일 YYYY-MM-DD (선택). end와 함께 입력하거나 둘 다 비워야 함."
+        description: "수동 날짜 범위 시작일 YYYY-MM-DD (선택, date 모드). end와 함께 입력하거나 둘 다 비워야 함."
         required: false
         default: ""
         type: string
       end:
-        description: "수동 날짜 범위 종료일 YYYY-MM-DD (선택). start와 함께 입력하거나 둘 다 비워야 함."
+        description: "수동 날짜 범위 종료일 YYYY-MM-DD (선택, date 모드). start와 함께 입력하거나 둘 다 비워야 함."
         required: false
         default: ""
         type: string
-  # 매일 01:20 UTC / 매일 10:20 KST
   schedule:
-    - cron: "20 1 * * *"
-
-# ──────────────────────────────────────────────
-# 담당 범위: raw BQ 테이블 적재까지
-#   대상: conflict_ew.gdelt_processed_events
-#         conflict_ew.economic_daily
-#         conflict_ew.gdelt_titles
-#
-#   담당하지 않음:
-#     modeling_full_dataset, modeling_acled_free_view,
-#     feature 생성, embedding, ACLED 레이블, 모델 추론
-# ──────────────────────────────────────────────
+    - cron: "*/15 * * * *"   # 15분 증분: gdelt + gdelt_titles
+    - cron: "20 1 * * *"     # 일일: economic + gdelt 7일 reconciliation
+    - cron: "40 2 * * 0"     # 주간(일): gdelt 30일 reconciliation
 
 # ──────────────────────────────────────────────
 # 중복 실행 방지
+# 진행 중인 수집을 취소하지 않음 — 수집 도중 강제 종료하면 데이터 불일치 위험
 # ──────────────────────────────────────────────
 concurrency:
   group: incremental-data-collection
-  cancel-in-progress: false  # 진행 중인 수집을 취소하지 않음
+  cancel-in-progress: false
 
-# ──────────────────────────────────────────────
-# 최소 권한
-# ──────────────────────────────────────────────
 permissions:
   contents: read
 
@@ -90,31 +99,67 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # ─── 4. Import 및 unit test ──────────
+      # ─── 4. Unit test ────────────────────
       - name: Run unit tests
         run: |
           python -m pytest tests/test_incremental.py -v --tb=short
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
 
-      # ─── 5. GCP 인증 ─────────────────────
-      # 권장: Workload Identity Federation (키 없음)
-      # - name: Authenticate to Google Cloud (OIDC)
-      #   uses: google-github-actions/auth@v2
-      #   with:
-      #     workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-      #     service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-      #
-      # fallback: 서비스 계정 JSON (GitHub Secret GCP_SA_KEY에 저장)
-      # JSON 내용은 절대 로그에 출력하지 않음.
-      - name: Authenticate to Google Cloud (SA key fallback)
+      # ─── 5. 실행 구성 결정 ──────────────────
+      # github.event.schedule로 어떤 cron이 실행됐는지 확인.
+      # COLLECT_MODE, COLLECT_SOURCES 환경변수를 설정.
+      - name: Determine run configuration
+        id: run_config
+        run: |
+          EVENT="${{ github.event_name }}"
+          CRON="${{ github.event.schedule }}"
+
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            DISPATCH_MODE="${{ github.event.inputs.mode || 'date' }}"
+            echo "COLLECT_MODE=$DISPATCH_MODE"    >> "$GITHUB_ENV"
+            echo "COLLECT_SOURCES=${{ github.event.inputs.sources || 'gdelt economic gdelt_titles' }}" >> "$GITHUB_ENV"
+            echo "COLLECT_RECONCILE_DAYS="        >> "$GITHUB_ENV"
+            echo "COLLECT_SCHEDULE=manual"        >> "$GITHUB_ENV"
+            echo "  [dispatch] mode=$DISPATCH_MODE, sources=${{ github.event.inputs.sources }}, dry_run=${{ github.event.inputs.dry_run }}"
+
+          elif [ "$CRON" = "*/15 * * * *" ]; then
+            echo "COLLECT_MODE=timestamp"         >> "$GITHUB_ENV"
+            echo "COLLECT_SOURCES=gdelt gdelt_titles" >> "$GITHUB_ENV"
+            echo "COLLECT_RECONCILE_DAYS="        >> "$GITHUB_ENV"
+            echo "COLLECT_SCHEDULE=*/15 * * * *"  >> "$GITHUB_ENV"
+            echo "  [15분] timestamp mode: gdelt + gdelt_titles"
+
+          elif [ "$CRON" = "20 1 * * *" ]; then
+            echo "COLLECT_MODE=date"              >> "$GITHUB_ENV"
+            echo "COLLECT_SOURCES=economic"       >> "$GITHUB_ENV"
+            echo "COLLECT_RECONCILE_DAYS=7"       >> "$GITHUB_ENV"
+            echo "COLLECT_SCHEDULE=20 1 * * *"    >> "$GITHUB_ENV"
+            echo "  [일일] economic date + gdelt 7일 reconciliation"
+
+          elif [ "$CRON" = "40 2 * * 0" ]; then
+            echo "COLLECT_MODE=date"              >> "$GITHUB_ENV"
+            echo "COLLECT_SOURCES=gdelt"          >> "$GITHUB_ENV"
+            echo "COLLECT_RECONCILE_DAYS=30"      >> "$GITHUB_ENV"
+            echo "COLLECT_SCHEDULE=40 2 * * 0"    >> "$GITHUB_ENV"
+            echo "  [주간] gdelt 30일 reconciliation"
+
+          else
+            echo "COLLECT_MODE=date"              >> "$GITHUB_ENV"
+            echo "COLLECT_SOURCES=gdelt economic gdelt_titles" >> "$GITHUB_ENV"
+            echo "COLLECT_RECONCILE_DAYS="        >> "$GITHUB_ENV"
+            echo "COLLECT_SCHEDULE=unknown"       >> "$GITHUB_ENV"
+            echo "  [unknown cron: $CRON] 기본값으로 실행"
+          fi
+
+      # ─── 6. GCP 인증 ─────────────────────
+      - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      # ─── 6. 날짜 입력 검증 ───────────────────
-      # start/end는 둘 다 입력하거나 둘 다 비워야 함.
-      # 하나만 입력, 잘못된 형식, start > end이면 실패.
+      # ─── 7. 날짜 입력 검증 (수동 실행만) ────
       - name: Validate date inputs
         run: |
           START="${{ github.event.inputs.start }}"
@@ -151,82 +196,111 @@ jobs:
             echo "날짜 범위: BQ MAX(date) 기반 증분 수집 (start/end 미입력)"
           fi
 
-      # ─── 7. 권한 검증 (임시 테이블, raw table 변경 없음) ──
+      # ─── 8. 권한 검증 ─────────────────────
       - name: Validate BQ permissions
         run: |
           python -m src.collect.incremental.run_incremental --validate-permissions
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
 
-      # ─── 8. BigQuery 현황 확인 (읽기 전용) ──
+      # ─── 9. BQ 현황 확인 (읽기 전용) ────────
       - name: Validate BQ state (read-only)
         run: |
           python -m src.collect.incremental.run_incremental --validate-only
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
 
-      # ─── 9. BQ dry-run (스캔량 확인) ─────
+      # ─── 10. BQ dry-run (스캔량 확인) ────────
       - name: BigQuery dry-run (scan estimate)
         run: |
-          SOURCES="${{ github.event.inputs.sources || 'gdelt economic gdelt_titles' }}"
+          MODE="$COLLECT_MODE"
+          SOURCES="$COLLECT_SOURCES"
+          RECONCILE="$COLLECT_RECONCILE_DAYS"
           START="${{ github.event.inputs.start }}"
           END="${{ github.event.inputs.end }}"
+
+          EXTRA_ARGS=""
+          [ "$MODE" = "timestamp" ] && EXTRA_ARGS="$EXTRA_ARGS --mode timestamp --overlap-minutes 30"
+          [ -n "$RECONCILE" ] && EXTRA_ARGS="$EXTRA_ARGS --reconcile-days $RECONCILE"
           DATE_ARGS=""
-          if [ -n "$START" ] && [ -n "$END" ]; then
-            DATE_ARGS="--start $START --end $END"
-          fi
+          [ -n "$START" ] && [ -n "$END" ] && DATE_ARGS="--start $START --end $END"
+
           python -m src.collect.incremental.run_incremental \
             --sources $SOURCES \
+            $EXTRA_ARGS \
             $DATE_ARGS \
+            --schedule-cron "$COLLECT_SCHEDULE" \
             --dry-run
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
 
-      # ─── 10. 실제 증분 수집 ───────────────
+      # ─── 11. 실제 증분 수집 ───────────────
       - name: Run incremental collection
-        if: ${{ github.event.inputs.dry_run != 'true' }}
+        if: github.event.inputs.dry_run != 'true'
         run: |
-          SOURCES="${{ github.event.inputs.sources || 'gdelt economic gdelt_titles' }}"
+          MODE="$COLLECT_MODE"
+          SOURCES="$COLLECT_SOURCES"
+          RECONCILE="$COLLECT_RECONCILE_DAYS"
           OVERLAP="${{ github.event.inputs.overlap_days }}"
           START="${{ github.event.inputs.start }}"
           END="${{ github.event.inputs.end }}"
-          OVERLAP_ARG=""
+
+          EXTRA_ARGS=""
+          [ "$MODE" = "timestamp" ] && EXTRA_ARGS="$EXTRA_ARGS --mode timestamp --overlap-minutes 30"
+          [ -n "$RECONCILE" ] && EXTRA_ARGS="$EXTRA_ARGS --reconcile-days $RECONCILE"
+          [ -n "$OVERLAP" ] && EXTRA_ARGS="$EXTRA_ARGS --overlap-days $OVERLAP"
           DATE_ARGS=""
-          if [ -n "$OVERLAP" ]; then
-            OVERLAP_ARG="--overlap-days $OVERLAP"
-          fi
-          if [ -n "$START" ] && [ -n "$END" ]; then
-            DATE_ARGS="--start $START --end $END"
-          fi
+          [ -n "$START" ] && [ -n "$END" ] && DATE_ARGS="--start $START --end $END"
+
           python -m src.collect.incremental.run_incremental \
             --sources $SOURCES \
-            $OVERLAP_ARG \
+            $EXTRA_ARGS \
             $DATE_ARGS \
+            --schedule-cron "$COLLECT_SCHEDULE" \
             --run-id "$GITHUB_RUN_ID"
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
 
-      # ─── 11. dry-run 전용 실행 ───────────
+      # ─── 12. 일일 GDELT 7일 reconciliation ─
+      # economic 이후 추가로 GDELT 7일 보정 실행 (DATEADDED 지연 이벤트 보정)
+      - name: Run GDELT 7-day reconciliation (daily)
+        if: github.event.schedule == '20 1 * * *' && github.event.inputs.dry_run != 'true'
+        run: |
+          python -m src.collect.incremental.run_incremental \
+            --sources gdelt \
+            --reconcile-days 7 \
+            --schedule-cron "20 1 * * *" \
+            --run-id "$GITHUB_RUN_ID"
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+
+      # ─── 13. dry-run 전용 실행 ───────────
       - name: Run dry-run only
-        if: ${{ github.event.inputs.dry_run == 'true' }}
+        if: github.event.inputs.dry_run == 'true'
         run: |
           SOURCES="${{ github.event.inputs.sources || 'gdelt economic gdelt_titles' }}"
           START="${{ github.event.inputs.start }}"
           END="${{ github.event.inputs.end }}"
           DATE_ARGS=""
-          if [ -n "$START" ] && [ -n "$END" ]; then
-            DATE_ARGS="--start $START --end $END"
-          fi
+          [ -n "$START" ] && [ -n "$END" ] && DATE_ARGS="--start $START --end $END"
           python -m src.collect.incremental.run_incremental \
             --sources $SOURCES \
             $DATE_ARGS \
+            --schedule-cron "manual" \
             --dry-run \
             --run-id "$GITHUB_RUN_ID"
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
 
-      # ─── 12. 로그 artifact 업로드 ─────────
+      # ─── 14. 로그 artifact 업로드 ─────────
       - name: Upload collection logs
         if: always()
         uses: actions/upload-artifact@v4
