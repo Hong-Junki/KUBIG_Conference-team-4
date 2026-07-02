@@ -970,3 +970,762 @@ class TestFredApiKeyValidation:
 
         assert "validate" in call_order
         assert "build_df" not in call_order, "키 검증 실패 후 수집 함수가 호출됨"
+
+
+# ──────────────────────────────────────────────
+# state.py: dateadded_int 변환 테스트
+# ──────────────────────────────────────────────
+
+class TestDateaddedInt:
+    def test_converts_datetime_to_14digit_int(self):
+        """datetime → YYYYMMDDHHMMSS 14자리 정수 변환."""
+        from src.collect.incremental.state import dateadded_int
+        from datetime import datetime, timezone
+
+        dt = datetime(2026, 7, 2, 12, 45, 0, tzinfo=timezone.utc)
+        result = dateadded_int(dt)
+        assert result == 20260702124500
+
+    def test_zero_seconds(self):
+        """초 00 케이스."""
+        from src.collect.incremental.state import dateadded_int
+        from datetime import datetime, timezone
+
+        dt = datetime(2026, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
+        assert dateadded_int(dt) == 20260101000000
+
+    def test_midnight_batch(self):
+        """:00 배치 (GDELT 첫 배치)."""
+        from src.collect.incremental.state import dateadded_int
+        from datetime import datetime, timezone
+
+        dt = datetime(2026, 7, 1, 0, 15, 0, tzinfo=timezone.utc)
+        assert dateadded_int(dt) == 20260701001500
+
+    def test_result_is_int(self):
+        from src.collect.incremental.state import dateadded_int
+        from datetime import datetime, timezone
+
+        dt = datetime(2026, 6, 30, 23, 45, 0, tzinfo=timezone.utc)
+        assert isinstance(dateadded_int(dt), int)
+
+    def test_length_is_14_digits(self):
+        from src.collect.incremental.state import dateadded_int
+        from datetime import datetime, timezone
+
+        dt = datetime(2026, 7, 2, 12, 30, 0, tzinfo=timezone.utc)
+        assert len(str(dateadded_int(dt))) == 14
+
+
+# ──────────────────────────────────────────────
+# state.py: compute_timestamp_window 테스트
+# ──────────────────────────────────────────────
+
+class TestComputeTimestampWindow:
+    def test_with_watermark_applies_overlap(self):
+        """watermark 있을 때 start = watermark - overlap."""
+        from src.collect.incremental.state import compute_timestamp_window
+        from datetime import datetime, timezone, timedelta
+
+        watermark = datetime(2026, 7, 2, 12, 30, 0, tzinfo=timezone.utc)
+        start_ts, end_ts = compute_timestamp_window(watermark, overlap_minutes=30)
+
+        expected_start = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        assert start_ts == expected_start
+        assert end_ts > watermark  # end_ts는 현재 UTC
+
+    def test_overlap_30_minutes(self):
+        """30분 overlap이 정확히 적용됨."""
+        from src.collect.incremental.state import compute_timestamp_window
+        from datetime import datetime, timezone, timedelta
+
+        watermark = datetime(2026, 7, 2, 6, 0, 0, tzinfo=timezone.utc)
+        start_ts, _ = compute_timestamp_window(watermark, overlap_minutes=30)
+        assert start_ts == watermark - timedelta(minutes=30)
+
+    def test_without_watermark_uses_fallback(self):
+        """watermark None → 현재 UTC - FALLBACK_HOURS."""
+        from src.collect.incremental.state import compute_timestamp_window, _FIRST_RUN_FALLBACK_HOURS
+        from datetime import datetime, timezone, timedelta
+
+        before = datetime.now(timezone.utc)
+        start_ts, end_ts = compute_timestamp_window(None, overlap_minutes=30)
+        after = datetime.now(timezone.utc)
+
+        # end_ts는 함수 실행 시점의 UTC
+        assert before <= end_ts <= after
+        # start_ts는 end_ts - FALLBACK_HOURS 근방
+        expected_delta = timedelta(hours=_FIRST_RUN_FALLBACK_HOURS)
+        assert abs((end_ts - start_ts) - expected_delta).total_seconds() < 2
+
+    def test_window_is_timezone_aware(self):
+        """반환값이 timezone-aware datetime."""
+        from src.collect.incremental.state import compute_timestamp_window
+        from datetime import datetime, timezone
+
+        watermark = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        start_ts, end_ts = compute_timestamp_window(watermark)
+        assert start_ts.tzinfo is not None
+        assert end_ts.tzinfo is not None
+
+    def test_custom_overlap_minutes(self):
+        """커스텀 overlap_minutes 값 적용."""
+        from src.collect.incremental.state import compute_timestamp_window
+        from datetime import datetime, timezone, timedelta
+
+        watermark = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        start_ts, _ = compute_timestamp_window(watermark, overlap_minutes=60)
+        assert start_ts == watermark - timedelta(minutes=60)
+
+    def test_start_before_end(self):
+        """start_ts < end_ts 항상 성립."""
+        from src.collect.incremental.state import compute_timestamp_window
+        from datetime import datetime, timezone
+
+        watermark = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        start_ts, end_ts = compute_timestamp_window(watermark, overlap_minutes=30)
+        assert start_ts < end_ts
+
+
+# ──────────────────────────────────────────────
+# state.py: watermark CRUD 테스트
+# ──────────────────────────────────────────────
+
+class TestWatermarkCRUD:
+    def _make_mock_client_with_rows(self, rows):
+        from unittest.mock import MagicMock
+        client = MagicMock()
+        mock_result = MagicMock()
+        mock_result.__iter__ = MagicMock(return_value=iter(rows))
+        client.query.return_value = mock_result
+        return client
+
+    def test_get_watermark_returns_datetime(self):
+        """BQ 조회 결과가 있을 때 UTC datetime 반환."""
+        from unittest.mock import MagicMock
+        from datetime import datetime, timezone
+        from src.collect.incremental.state import get_watermark
+
+        client = MagicMock()
+        ts = datetime(2026, 7, 2, 12, 30, 0, tzinfo=timezone.utc)
+        row = MagicMock()
+        row.__getitem__ = lambda self, k: ts
+        client.query.return_value.__iter__ = lambda self: iter([row])
+
+        result = get_watermark(client, "proj", "gdelt")
+        assert result == ts
+
+    def test_get_watermark_returns_none_on_empty(self):
+        """행이 없을 때 None 반환."""
+        from unittest.mock import MagicMock
+        from src.collect.incremental.state import get_watermark
+
+        client = MagicMock()
+        client.query.return_value.__iter__ = lambda self: iter([])
+
+        result = get_watermark(client, "proj", "gdelt")
+        assert result is None
+
+    def test_get_watermark_raises_on_missing_table(self):
+        """테이블 미존재 → RuntimeError (migration 안내 포함)."""
+        from unittest.mock import MagicMock
+        from src.collect.incremental.state import get_watermark
+
+        client = MagicMock()
+        client.query.side_effect = Exception("Not found: Table proj:conflict_ew.pipeline_watermarks")
+
+        with pytest.raises(RuntimeError, match="pipeline_watermarks"):
+            get_watermark(client, "proj", "gdelt")
+
+    def test_set_watermark_calls_bq_merge(self):
+        """set_watermark이 MERGE 쿼리를 BQ에 전송."""
+        from unittest.mock import MagicMock
+        from datetime import datetime, timezone
+        from src.collect.incremental.state import set_watermark
+
+        client = MagicMock()
+        mock_job = MagicMock()
+        mock_job.result.return_value = None
+        client.query.return_value = mock_job
+
+        ts = datetime(2026, 7, 2, 12, 45, 0, tzinfo=timezone.utc)
+        set_watermark(client, "proj", "gdelt", ts, "run123")
+
+        assert client.query.called
+        sql = client.query.call_args[0][0]
+        assert "MERGE" in sql
+        assert "gdelt" in sql
+        assert "pipeline_watermarks" in sql
+        assert "last_success_at" in sql
+
+    def test_set_watermark_sanitizes_run_id(self):
+        """run_id의 따옴표가 제거되어 SQL 인젝션 방지."""
+        from unittest.mock import MagicMock
+        from datetime import datetime, timezone
+        from src.collect.incremental.state import set_watermark
+
+        client = MagicMock()
+        mock_job = MagicMock()
+        mock_job.result.return_value = None
+        client.query.return_value = mock_job
+
+        ts = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        set_watermark(client, "proj", "gdelt", ts, "run'id;DROP TABLE t")
+
+        sql = client.query.call_args[0][0]
+        assert "DROP TABLE" not in sql
+
+
+# ──────────────────────────────────────────────
+# run_incremental.py: watermark 갱신 조건 테스트
+# ──────────────────────────────────────────────
+
+class TestWatermarkUpdateBehavior:
+    def test_watermark_updated_on_success(self):
+        """수집 성공(passed=True) 시 set_watermark 호출됨."""
+        from unittest.mock import MagicMock, patch
+        from datetime import datetime, timezone
+        import src.collect.incremental.run_incremental as mod
+
+        mock_result = {
+            "source": "gdelt", "passed": True, "run_id": "r1",
+            "rows_merged": 100, "mode": "timestamp",
+        }
+        watermark_ts = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        end_ts = datetime(2026, 7, 2, 12, 15, 0, tzinfo=timezone.utc)
+
+        with (
+            patch.object(mod, "run_gdelt", return_value=mock_result),
+            patch.object(mod, "get_watermark_with_fallback", return_value=watermark_ts),
+            patch.object(mod, "compute_timestamp_window", return_value=(watermark_ts, end_ts)),
+            patch.object(mod, "set_watermark") as mock_set,
+            patch.object(mod, "log_timestamp_window"),
+            patch("google.cloud.bigquery.Client"),
+        ):
+            from argparse import Namespace
+            args = Namespace(
+                overlap_minutes=30, dry_run=False, overlap_days=None,
+                start=None, end=None, max_gb_per_query=100.0,
+            )
+            mod._run_timestamp_sources("proj", args, "r1", ["gdelt"])
+
+        mock_set.assert_called_once()
+
+    def test_watermark_not_updated_on_failure(self):
+        """수집 실패(passed=False) 시 set_watermark 호출 안 됨."""
+        from unittest.mock import MagicMock, patch
+        from datetime import datetime, timezone
+        import src.collect.incremental.run_incremental as mod
+
+        mock_result = {
+            "source": "gdelt", "passed": False, "run_id": "r1",
+            "error": "수집 오류", "mode": "timestamp",
+        }
+        watermark_ts = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        end_ts = datetime(2026, 7, 2, 12, 15, 0, tzinfo=timezone.utc)
+
+        with (
+            patch.object(mod, "run_gdelt", return_value=mock_result),
+            patch.object(mod, "get_watermark_with_fallback", return_value=watermark_ts),
+            patch.object(mod, "compute_timestamp_window", return_value=(watermark_ts, end_ts)),
+            patch.object(mod, "set_watermark") as mock_set,
+            patch.object(mod, "log_timestamp_window"),
+            patch("google.cloud.bigquery.Client"),
+        ):
+            from argparse import Namespace
+            args = Namespace(
+                overlap_minutes=30, dry_run=False, overlap_days=None,
+                start=None, end=None, max_gb_per_query=100.0,
+            )
+            mod._run_timestamp_sources("proj", args, "r1", ["gdelt"])
+
+        mock_set.assert_not_called()
+
+    def test_dry_run_does_not_update_watermark(self):
+        """dry_run=True 시 수집이 passed여도 watermark 갱신 안 됨."""
+        from unittest.mock import patch
+        from datetime import datetime, timezone
+        import src.collect.incremental.run_incremental as mod
+
+        mock_result = {
+            "source": "gdelt", "passed": True, "dry_run": True, "run_id": "r1",
+        }
+        watermark_ts = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        end_ts = datetime(2026, 7, 2, 12, 15, 0, tzinfo=timezone.utc)
+
+        with (
+            patch.object(mod, "run_gdelt", return_value=mock_result),
+            patch.object(mod, "get_watermark_with_fallback", return_value=watermark_ts),
+            patch.object(mod, "compute_timestamp_window", return_value=(watermark_ts, end_ts)),
+            patch.object(mod, "set_watermark") as mock_set,
+            patch.object(mod, "log_timestamp_window"),
+            patch("google.cloud.bigquery.Client"),
+        ):
+            from argparse import Namespace
+            args = Namespace(
+                overlap_minutes=30, dry_run=True, overlap_days=None,
+                start=None, end=None, max_gb_per_query=100.0,
+            )
+            results = mod._run_timestamp_sources("proj", args, "r1", ["gdelt"])
+
+        mock_set.assert_not_called()
+
+
+# ──────────────────────────────────────────────
+# GDELT Events: timestamp 모드 쿼리 구조 테스트
+# ──────────────────────────────────────────────
+
+class TestGdeltTimestampQuery:
+    def test_dateadded_query_contains_dateadded_filter(self):
+        """DATEADDED 범위 필터가 쿼리에 포함됨."""
+        from datetime import datetime, timezone
+        from src.collect.incremental.collect_gdelt_incremental import _build_dateadded_query
+
+        start_ts = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        end_ts = datetime(2026, 7, 2, 12, 15, 0, tzinfo=timezone.utc)
+        query = _build_dateadded_query(["UP", "RS"], start_ts, end_ts)
+
+        assert "DATEADDED BETWEEN" in query
+        assert "20260702120000" in query
+        assert "20260702121500" in query
+
+    def test_dateadded_query_has_partition_filter(self):
+        """_PARTITIONTIME 파티션 필터가 포함됨."""
+        from datetime import datetime, timezone
+        from src.collect.incremental.collect_gdelt_incremental import _build_dateadded_query
+
+        start_ts = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        end_ts = datetime(2026, 7, 2, 12, 15, 0, tzinfo=timezone.utc)
+        query = _build_dateadded_query(["UP"], start_ts, end_ts)
+
+        assert "_PARTITIONTIME BETWEEN" in query
+
+    def test_dateadded_query_partition_includes_previous_day(self):
+        """파티션 범위가 start_ts 하루 전을 포함 (cross-day lag 대응)."""
+        from datetime import datetime, timezone
+        from src.collect.incremental.collect_gdelt_incremental import _build_dateadded_query
+
+        start_ts = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        end_ts = datetime(2026, 7, 2, 12, 15, 0, tzinfo=timezone.utc)
+        query = _build_dateadded_query(["UP"], start_ts, end_ts)
+
+        # start_ts 하루 전인 2026-07-01이 파티션 시작으로 포함돼야 함
+        assert "2026-07-01" in query
+
+    def test_dateadded_query_contains_fips_filter(self):
+        """국가 FIPS 코드 필터 포함."""
+        from datetime import datetime, timezone
+        from src.collect.incremental.collect_gdelt_incremental import _build_dateadded_query
+
+        start_ts = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        end_ts = datetime(2026, 7, 2, 12, 15, 0, tzinfo=timezone.utc)
+        query = _build_dateadded_query(["UP", "RS", "SY"], start_ts, end_ts)
+
+        assert "'UP'" in query
+        assert "'RS'" in query
+        assert "'SY'" in query
+
+    def test_timestamp_mode_uses_dateadded_query(self):
+        """run_gdelt_incremental timestamp 모드가 DATEADDED 쿼리를 사용함."""
+        from unittest.mock import MagicMock, patch
+        from datetime import datetime, timezone
+        import src.collect.incremental.collect_gdelt_incremental as mod
+
+        start_ts = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        end_ts = datetime(2026, 7, 2, 12, 15, 0, tzinfo=timezone.utc)
+
+        with (
+            patch("google.cloud.bigquery.Client"),
+            patch.object(mod, "_build_dateadded_query", return_value="SELECT 1") as mock_q,
+            patch.object(mod, "dry_run_bytes", return_value=1000),
+        ):
+            mod.run_gdelt_incremental(
+                project_id="test-proj",
+                dry_run=True,
+                start_timestamp=start_ts,
+                end_timestamp=end_ts,
+            )
+
+        mock_q.assert_called_once()
+
+
+# ──────────────────────────────────────────────
+# GDELT Titles: timestamp 모드 쿼리 구조 테스트
+# ──────────────────────────────────────────────
+
+class TestGdeltTitlesTimestampQuery:
+    def test_ts_query_uses_gkg_date_filter(self):
+        """timestamp 모드 쿼리가 GKG DATE 컬럼 필터를 사용함."""
+        from datetime import datetime, timezone
+        from src.collect.incremental.collect_gdelt_titles_incremental import (
+            _build_staging_select_query_ts,
+        )
+
+        start_ts = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        end_ts = datetime(2026, 7, 2, 12, 15, 0, tzinfo=timezone.utc)
+        query = _build_staging_select_query_ts(
+            ["UP"], {"UP": "UKR"}, start_ts, end_ts, "proj.ds.staging"
+        )
+
+        # GKG DATE 컬럼 필터 (14자리 정수 BETWEEN)
+        assert "DATE BETWEEN" in query
+        assert "20260702120000" in query
+        assert "20260702121500" in query
+
+    def test_ts_query_has_partition_filter(self):
+        """_PARTITIONTIME 파티션 필터 포함."""
+        from datetime import datetime, timezone
+        from src.collect.incremental.collect_gdelt_titles_incremental import (
+            _build_staging_select_query_ts,
+        )
+
+        start_ts = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        end_ts = datetime(2026, 7, 2, 12, 15, 0, tzinfo=timezone.utc)
+        query = _build_staging_select_query_ts(
+            ["UP"], {"UP": "UKR"}, start_ts, end_ts, "proj.ds.staging"
+        )
+
+        assert "_PARTITIONTIME BETWEEN" in query
+
+    def test_ts_query_partition_includes_previous_day(self):
+        """파티션 범위가 start_ts 하루 전을 포함."""
+        from datetime import datetime, timezone
+        from src.collect.incremental.collect_gdelt_titles_incremental import (
+            _build_staging_select_query_ts,
+        )
+
+        start_ts = datetime(2026, 7, 2, 6, 0, 0, tzinfo=timezone.utc)
+        end_ts = datetime(2026, 7, 2, 6, 15, 0, tzinfo=timezone.utc)
+        query = _build_staging_select_query_ts(
+            ["UP"], {"UP": "UKR"}, start_ts, end_ts, "proj.ds.staging"
+        )
+
+        assert "2026-07-01" in query  # 하루 전 파티션
+
+    def test_ts_query_dedup_key_unchanged(self):
+        """dedup PARTITION BY가 date, iso3, url 기준 (기존 유지)."""
+        from datetime import datetime, timezone
+        from src.collect.incremental.collect_gdelt_titles_incremental import (
+            _build_staging_select_query_ts,
+        )
+
+        start_ts = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        end_ts = datetime(2026, 7, 2, 12, 15, 0, tzinfo=timezone.utc)
+        query = _build_staging_select_query_ts(
+            ["UP"], {"UP": "UKR"}, start_ts, end_ts, "proj.ds.staging"
+        )
+
+        assert "PARTITION BY date, iso3, url" in query
+
+    def test_date_mode_query_still_uses_sqldate_filter(self):
+        """date 모드 쿼리가 여전히 날짜 범위 필터(CAST DATE)를 사용함 (기존 유지)."""
+        from datetime import date
+        from src.collect.incremental.collect_gdelt_titles_incremental import (
+            _build_staging_select_query,
+        )
+
+        query = _build_staging_select_query(
+            fips_codes=["UP"],
+            fips_to_iso3={"UP": "UKR"},
+            m_start=date(2026, 7, 1),
+            m_end=date(2026, 7, 31),
+            staging_fqn="proj.ds.staging",
+        )
+
+        # 기존 date 모드는 8자리 INT64 필터 사용
+        assert "CAST(SUBSTR(CAST(DATE AS STRING), 1, 8) AS INT64)" in query
+
+
+# ──────────────────────────────────────────────
+# schedule 기반 source routing 테스트
+# ──────────────────────────────────────────────
+
+class TestScheduleRouting:
+    def _read_workflow(self) -> str:
+        return (
+            Path(__file__).parent.parent
+            / ".github/workflows/incremental-data-collection.yml"
+        ).read_text()
+
+    def test_15min_cron_exists(self):
+        """*/15 * * * * cron이 workflow에 존재함."""
+        wf = self._read_workflow()
+        active_crons = [
+            l for l in wf.splitlines()
+            if "cron:" in l and not l.strip().startswith("#")
+        ]
+        assert any("*/15 * * * *" in l for l in active_crons), \
+            f"15분 cron 없음. 발견된 cron: {active_crons}"
+
+    def test_daily_cron_still_exists(self):
+        """20 1 * * * 일일 cron이 여전히 존재함."""
+        wf = self._read_workflow()
+        active_crons = [
+            l for l in wf.splitlines()
+            if "cron:" in l and not l.strip().startswith("#")
+        ]
+        assert any("20 1 * * *" in l for l in active_crons), \
+            "일일 01:20 UTC cron 없음"
+
+    def test_weekly_reconciliation_cron_exists(self):
+        """주간 30일 reconciliation cron이 존재함."""
+        wf = self._read_workflow()
+        active_crons = [
+            l for l in wf.splitlines()
+            if "cron:" in l and not l.strip().startswith("#")
+        ]
+        assert any("40 2 * * 0" in l for l in active_crons), \
+            "주간 reconciliation cron 없음"
+
+    def test_15min_schedule_routes_to_timestamp_mode(self):
+        """*/15 cron 분기에서 COLLECT_MODE=timestamp가 설정됨."""
+        wf = self._read_workflow()
+        assert "COLLECT_MODE=timestamp" in wf
+
+    def test_15min_schedule_excludes_economic(self):
+        """*/15 cron 분기에서 economic이 소스에 포함되지 않음."""
+        wf = self._read_workflow()
+        # 15분 분기 확인: COLLECT_SOURCES에 gdelt gdelt_titles만
+        assert "COLLECT_SOURCES=gdelt gdelt_titles" in wf
+
+    def test_daily_schedule_includes_economic(self):
+        """20 1 * * * 분기에서 economic이 소스에 포함됨."""
+        wf = self._read_workflow()
+        assert "COLLECT_SOURCES=economic" in wf
+
+    def test_gdelt_7day_reconciliation_step_exists(self):
+        """일일 GDELT 7일 reconciliation 스텝이 workflow에 존재함."""
+        wf = self._read_workflow()
+        assert "--reconcile-days 7" in wf
+
+    def test_gdelt_30day_reconciliation_in_weekly_step(self):
+        """주간 30일 reconciliation 스텝이 workflow에 존재함."""
+        wf = self._read_workflow()
+        # 주간 cron 분기에서 COLLECT_RECONCILE_DAYS=30으로 설정하고
+        # 실행 스텝에서 $COLLECT_RECONCILE_DAYS로 --reconcile-days 인자를 동적 구성
+        assert "COLLECT_RECONCILE_DAYS=30" in wf
+
+    def test_concurrency_cancel_in_progress_false(self):
+        """concurrency cancel-in-progress: false 설정."""
+        wf = self._read_workflow()
+        assert "cancel-in-progress: false" in wf
+
+    def test_workflow_dispatch_sources_input_preserved(self):
+        """workflow_dispatch sources 입력이 유지됨."""
+        wf = self._read_workflow()
+        assert "sources:" in wf
+        assert "workflow_dispatch" in wf
+
+    def test_workflow_dispatch_mode_input_exists(self):
+        """workflow_dispatch에 mode 입력이 추가됨 (timestamp 모드 수동 검증용)."""
+        wf = self._read_workflow()
+        assert "mode:" in wf
+        assert '"timestamp"' in wf
+
+    def test_dispatch_mode_reflected_in_routing_step(self):
+        """dispatch 분기에서 mode input을 COLLECT_MODE 환경변수에 반영."""
+        wf = self._read_workflow()
+        assert "DISPATCH_MODE" in wf or "inputs.mode" in wf
+
+
+# ──────────────────────────────────────────────
+# run_incremental.py: reconcile-days 테스트
+# ──────────────────────────────────────────────
+
+class TestReconcileDays:
+    def test_reconcile_days_sets_forced_start_end(self):
+        """--reconcile-days N이 args.start, args.end를 올바르게 설정함."""
+        from unittest.mock import patch, MagicMock
+        from datetime import date, timedelta
+        import src.collect.incremental.run_incremental as mod
+
+        today = date.today()
+        expected_end = today - timedelta(days=1)
+        expected_start = today - timedelta(days=7)
+
+        captured = {}
+
+        def fake_run_gdelt(project_id, args, run_id):
+            captured["start"] = args.start
+            captured["end"] = args.end
+            return {"source": "gdelt", "passed": True, "run_id": run_id,
+                    "rows_merged": 0, "mode": "date"}
+
+        with (
+            patch("sys.argv", [
+                "run_incremental",
+                "--sources", "gdelt",
+                "--reconcile-days", "7",
+                "--dry-run",
+            ]),
+            patch.object(mod, "_check_credentials", return_value=True),
+            patch.object(mod, "validate_permissions", return_value=True),
+            patch.object(mod, "run_gdelt", side_effect=fake_run_gdelt),
+        ):
+            try:
+                mod.main()
+            except SystemExit:
+                pass
+
+        assert captured.get("start") == expected_start
+        assert captured.get("end") == expected_end
+
+    def test_reconcile_days_forces_date_mode(self):
+        """--reconcile-days는 mode를 date로 강제."""
+        from unittest.mock import patch
+        import src.collect.incremental.run_incremental as mod
+
+        mode_used = {}
+
+        def fake_run_gdelt(project_id, args, run_id):
+            mode_used["mode"] = args.mode
+            return {"source": "gdelt", "passed": True, "run_id": run_id,
+                    "rows_merged": 0, "mode": "date"}
+
+        with (
+            patch("sys.argv", [
+                "run_incremental",
+                "--sources", "gdelt",
+                "--reconcile-days", "7",
+                "--dry-run",
+            ]),
+            patch.object(mod, "_check_credentials", return_value=True),
+            patch.object(mod, "validate_permissions", return_value=True),
+            patch.object(mod, "run_gdelt", side_effect=fake_run_gdelt),
+        ):
+            try:
+                mod.main()
+            except SystemExit:
+                pass
+
+        assert mode_used.get("mode") == "date"
+
+
+# ──────────────────────────────────────────────
+# timestamp 모드에서 economic 제외 확인
+# ──────────────────────────────────────────────
+
+class TestEconomicExcludedFromTimestampMode:
+    def test_economic_skipped_in_timestamp_mode(self):
+        """economic이 timestamp 모드에서 skipped 처리됨."""
+        from unittest.mock import patch
+        from datetime import datetime, timezone
+        import src.collect.incremental.run_incremental as mod
+
+        watermark = datetime(2026, 7, 2, 12, 0, 0, tzinfo=timezone.utc)
+        end_ts = datetime(2026, 7, 2, 12, 15, 0, tzinfo=timezone.utc)
+
+        with (
+            patch.object(mod, "get_watermark_with_fallback", return_value=watermark),
+            patch.object(mod, "compute_timestamp_window", return_value=(watermark, end_ts)),
+            patch.object(mod, "log_timestamp_window"),
+            patch("google.cloud.bigquery.Client"),
+        ):
+            from argparse import Namespace
+            args = Namespace(
+                overlap_minutes=30, dry_run=False, overlap_days=None,
+                start=None, end=None, max_gb_per_query=100.0,
+            )
+            results = mod._run_timestamp_sources("proj", args, "r1", ["economic"])
+
+        assert results["economic"]["skipped"] is True
+
+    def test_timestamp_mode_sources_constant(self):
+        """_TIMESTAMP_MODE_SOURCES에 economic이 없음."""
+        from src.collect.incremental.run_incremental import _TIMESTAMP_MODE_SOURCES
+        assert "economic" not in _TIMESTAMP_MODE_SOURCES
+        assert "gdelt" in _TIMESTAMP_MODE_SOURCES
+        assert "gdelt_titles" in _TIMESTAMP_MODE_SOURCES
+
+
+# ──────────────────────────────────────────────
+# 기존 날짜 단위 backfill 호환성
+# ──────────────────────────────────────────────
+
+class TestDateModeBackfillCompatibility:
+    def test_run_gdelt_incremental_date_mode_still_works(self):
+        """start_timestamp 없이 호출하면 date 모드로 동작."""
+        from unittest.mock import patch, MagicMock
+        import src.collect.incremental.collect_gdelt_incremental as mod
+        from datetime import date
+
+        with (
+            patch("google.cloud.bigquery.Client"),
+            patch.object(mod, "require_max_date_from_bq", return_value=date(2026, 6, 30)),
+            patch.object(mod, "compute_collection_window",
+                         return_value=(date(2026, 6, 27), date(2026, 6, 30))),
+            patch.object(mod, "date_range_months", return_value=[]),
+        ):
+            result = mod.run_gdelt_incremental(
+                project_id="test-proj",
+                dry_run=True,
+                run_id="test123",
+                # start_timestamp, end_timestamp 미지정 → date 모드
+            )
+
+        assert result.get("mode") == "date"
+        assert result.get("dry_run") is True
+
+    def test_run_gdelt_titles_date_mode_still_works(self):
+        """gdelt_titles도 timestamp 미지정 시 date 모드로 동작."""
+        from unittest.mock import patch
+        import src.collect.incremental.collect_gdelt_titles_incremental as mod
+        from datetime import date
+
+        with (
+            patch("google.cloud.bigquery.Client"),
+            patch.object(mod, "require_max_date_from_bq", return_value=date(2026, 6, 30)),
+            patch.object(mod, "compute_collection_window",
+                         return_value=(date(2026, 6, 27), date(2026, 6, 30))),
+            patch.object(mod, "date_range_months", return_value=[]),
+        ):
+            result = mod.run_gdelt_titles_incremental(
+                project_id="test-proj",
+                dry_run=True,
+                run_id="test456",
+            )
+
+        assert result.get("mode") == "date"
+        assert result.get("dry_run") is True
+
+    def test_forced_start_end_still_accepted(self):
+        """--start, --end 강제 지정이 date 모드에서 여전히 동작."""
+        from unittest.mock import patch
+        import src.collect.incremental.collect_gdelt_incremental as mod
+        from datetime import date
+
+        forced_start = date(2026, 4, 1)
+        forced_end = date(2026, 4, 30)
+
+        with (
+            patch("google.cloud.bigquery.Client"),
+            patch.object(mod, "require_max_date_from_bq", return_value=date(2026, 3, 31)),
+            patch.object(mod, "compute_collection_window",
+                         return_value=(forced_start, forced_end)) as mock_window,
+            patch.object(mod, "date_range_months", return_value=[]),
+        ):
+            result = mod.run_gdelt_incremental(
+                project_id="test-proj",
+                forced_start=forced_start,
+                forced_end=forced_end,
+                dry_run=True,
+            )
+
+        call_args = mock_window.call_args
+        # compute_collection_window(last_date, source, overlap_days, forced_start, forced_end)
+        # positional index: 0=last_date, 1=source, 2=overlap_days, 3=forced_start, 4=forced_end
+        assert call_args[0][3] == forced_start  # forced_start 전달됨
+        assert call_args[0][4] == forced_end    # forced_end 전달됨
+
+    def test_new_cli_args_have_defaults(self):
+        """신규 CLI 인자(--mode, --overlap-minutes 등)가 기본값을 가짐."""
+        from unittest.mock import patch
+        import src.collect.incremental.run_incremental as mod
+
+        with patch("sys.argv", ["run_incremental", "--sources", "economic", "--dry-run"]):
+            args = mod.parse_args()
+
+        assert args.mode == "date"
+        assert args.overlap_minutes == 30
+        assert args.reconcile_days is None
+        assert args.schedule_cron == "manual"

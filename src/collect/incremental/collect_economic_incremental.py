@@ -174,6 +174,8 @@ def run_economic_incremental(
             "source": "economic",
             "run_id": run_id,
             "dry_run": True,
+            "passed": True,
+            "mode": "date",
             "start": str(start),
             "end": str(end),
             "estimated_gb": 0.0,
