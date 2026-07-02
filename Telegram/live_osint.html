@@ -34,9 +34,9 @@
     .zoom-control button { width: 36px; height: 36px; border: 0; border-radius: 999px; background: var(--blue); color: #fff; font-size: 20px; line-height: 1; cursor: pointer; }
     .zoom-control button:active { transform: scale(.95); }
     .zoom-control output { min-width: 42px; color: var(--ink); font-size: 13px; text-align: center; }
-    .dashboard { display: grid; grid-template-columns: minmax(0, 1.62fr) minmax(340px, .72fr); gap: 16px; align-items: stretch; margin: 14px 0 18px; }
+    .dashboard { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(320px, .65fr); gap: 16px; align-items: stretch; margin: 14px 0 18px; }
     .map-wrap { position: relative; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: #ffffff; min-height: 100%; padding: 0; }
-    #map { width: 100%; height: 640px; margin: 0; background: transparent; }
+    #map { width: 100%; height: 620px; margin: 0; background: transparent; }
     .js-plotly-plot .plotly .modebar { display: none; }
     #fallbackMap { display: none; position: relative; width: 100%; height: 430px; overflow: hidden; background:
       linear-gradient(90deg, rgba(50,60,54,.10) 1px, transparent 1px),
@@ -4787,6 +4787,19 @@
       }
     }
 
+    function resizeMapForMode() {
+      if (!plotlyMap) return;
+      const flatMode = controls.mapView && controls.mapView.value === "flat";
+      const width = Math.max(320, plotlyMap.parentElement ? plotlyMap.parentElement.clientWidth : plotlyMap.clientWidth);
+      const height = flatMode
+        ? Math.max(330, Math.min(500, Math.round(width * 0.42)))
+        : Math.max(540, Math.min(760, Math.round(width * 0.66)));
+      plotlyMap.style.height = `${height}px`;
+      if (mapAvailable && map && map._fullLayout && window.Plotly && Plotly.Plots) {
+        Plotly.Plots.resize(map);
+      }
+    }
+
     function renderTopRiskTicker() {
       const target = document.getElementById("topRiskTicker");
       if (!target || !topRiskData.length) return;
@@ -5206,6 +5219,7 @@
         return;
       }
       map = plotlyMap;
+      resizeMapForMode();
       Plotly.newPlot(map, [], globeLayout(), {
         responsive: true,
         displayModeBar: false,
@@ -5232,7 +5246,7 @@
     function globeLayout() {
       const flatMode = controls.mapView && controls.mapView.value === "flat";
       const zoom = Number(mapZoom || 1);
-      const projectionScale = flatMode ? Math.max(0.92, zoom) : 1 + ((zoom - 1) * 2.2);
+      const projectionScale = flatMode ? Math.max(0.92, zoom) : 0.96 + ((zoom - 1) * 2.0);
       return {
         margin: { l: 0, r: 0, t: 0, b: 0 },
         paper_bgcolor: "rgba(0,0,0,0)",
@@ -5293,6 +5307,7 @@
 
     function renderMarkers(visibleIds, visibleGdeltCountries) {
       if (!mapAvailable || !map) return;
+      resizeMapForMode();
       currentVisibleIds = new Set(visibleIds);
       countrySignalCounts = buildCountrySignalCounts(visibleIds, visibleGdeltCountries);
       const eventCountries = new Set();
@@ -5478,6 +5493,10 @@
       .forEach((control) => control.addEventListener("input", applyFilters));
     controls.zoomOut.addEventListener("click", () => updateZoom(-0.15));
     controls.zoomIn.addEventListener("click", () => updateZoom(0.15));
+    window.addEventListener("resize", () => {
+      resizeMapForMode();
+      if (currentVisibleIds.size) applyFilters();
+    });
     renderTopRiskTicker();
     window.setInterval(renderTopRiskTicker, 2200);
     applyFilters();
