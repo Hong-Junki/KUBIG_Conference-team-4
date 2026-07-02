@@ -4,7 +4,11 @@
 
 # BigQuery 클라이언트
 google-cloud-bigquery
-google-cloud-bigquery-storage  # BQ Storage API: 대용량 결과 고속 다운로드 + "Storage module not found" 경고 제거
+# google-cloud-bigquery-storage 미설치 (의도적 제외):
+#   설치 시 to_dataframe()가 BigQuery Storage API를 자동 사용하고,
+#   서비스 계정에 roles/bigquery.readSessionUser 없이는 403 오류 발생.
+#   수집 결과가 작고 REST 방식으로 충분하므로 제외.
+#   gdelt_collector.py의 _run_bq_query()에서 create_bqstorage_client=False 명시.
 
 # 데이터 처리
 pandas

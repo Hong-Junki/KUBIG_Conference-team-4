@@ -1729,3 +1729,57 @@ class TestDateModeBackfillCompatibility:
         assert args.overlap_minutes == 30
         assert args.reconcile_days is None
         assert args.schedule_cron == "manual"
+
+
+# ──────────────────────────────────────────────
+# BQ Storage API 회귀 방지
+# ──────────────────────────────────────────────
+
+class TestNoBqStorageApi:
+    """google-cloud-bigquery-storage 미사용 강제 검증.
+
+    Storage API 자동 사용 시 서비스 계정에 roles/bigquery.readSessionUser 권한이
+    없으면 403 오류가 발생한다. 수집량이 작고 REST 방식으로 충분하므로 명시적으로 제외.
+    """
+
+    def test_run_bq_query_passes_create_bqstorage_client_false(self):
+        """_run_bq_query()가 to_dataframe(create_bqstorage_client=False)를 호출하는지 검증."""
+        import pandas as pd
+        from unittest.mock import MagicMock, patch
+
+        mock_job = MagicMock()
+        mock_job.to_dataframe.return_value = pd.DataFrame()
+        mock_client = MagicMock()
+        mock_client.query.return_value = mock_job
+
+        with patch("src.collect.gdelt_collector._get_bq_client", return_value=mock_client):
+            from src.collect.gdelt_collector import _run_bq_query
+            _run_bq_query("SELECT 1")
+
+        mock_job.to_dataframe.assert_called_once()
+        call_kwargs = mock_job.to_dataframe.call_args[1]
+        assert call_kwargs.get("create_bqstorage_client") is False, (
+            "to_dataframe() must be called with create_bqstorage_client=False "
+            "to avoid 403 errors from missing roles/bigquery.readSessionUser"
+        )
+
+    def test_requirements_collection_excludes_bq_storage(self):
+        """requirements-collection.txt에 google-cloud-bigquery-storage가 없는지 검증."""
+        from pathlib import Path
+
+        req_file = Path(__file__).parent.parent / "requirements-collection.txt"
+        assert req_file.exists(), "requirements-collection.txt 파일이 없습니다"
+
+        content = req_file.read_text()
+        # 주석이 아닌 실제 패키지 라인만 추출
+        active_lines = [
+            line.strip()
+            for line in content.splitlines()
+            if line.strip() and not line.strip().startswith("#")
+        ]
+        for line in active_lines:
+            pkg_name = line.split("#")[0].strip().lower()
+            assert "bigquery-storage" not in pkg_name and "bigquery_storage" not in pkg_name, (
+                f"requirements-collection.txt에 google-cloud-bigquery-storage가 포함되어 있습니다: {line!r}\n"
+                "Storage API 자동 사용으로 인한 403 오류 방지를 위해 제거해야 합니다."
+            )
