@@ -50,7 +50,6 @@ from .state import (
     compute_collection_window,
     dateadded_int,
     log_state_summary,
-    log_timestamp_window,
     require_max_date_from_bq,
 )
 
@@ -284,8 +283,6 @@ def _run_timestamp_mode(
     _PARTITIONTIME으로 partition pruning을 추가 적용한다.
     MERGE key (GLOBALEVENTID)로 중복 없이 idempotent 적재.
     """
-    log_timestamp_window("gdelt", None, start_ts, end_ts, overlap_minutes)
-
     fips_codes = _get_fips_codes()
     query = _build_dateadded_query(fips_codes, start_ts, end_ts)
 

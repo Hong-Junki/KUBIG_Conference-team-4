@@ -341,18 +341,10 @@ def compute_timestamp_window(
 
     if last_success_at is None:
         start_ts = end_ts - timedelta(hours=_FIRST_RUN_FALLBACK_HOURS)
-        logger.info(
-            f"  watermark 없음 → fallback window "
-            f"({_FIRST_RUN_FALLBACK_HOURS}시간): {start_ts.isoformat()} ~ {end_ts.isoformat()}"
-        )
     else:
         if last_success_at.tzinfo is None:
             last_success_at = last_success_at.replace(tzinfo=timezone.utc)
         start_ts = last_success_at - timedelta(minutes=overlap_minutes)
-        logger.info(f"  watermark       : {last_success_at.isoformat()}")
-        logger.info(f"  overlap         : {overlap_minutes}분")
-        logger.info(f"  start_timestamp : {start_ts.isoformat()}")
-        logger.info(f"  end_timestamp   : {end_ts.isoformat()}")
 
     return start_ts, end_ts
 

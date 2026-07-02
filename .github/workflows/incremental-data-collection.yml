@@ -97,7 +97,7 @@ jobs:
 
       # ─── 3. 의존성 설치 ────────────────────
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements-collection.txt
 
       # ─── 4. Unit test ────────────────────
       - name: Run unit tests
@@ -212,31 +212,6 @@ jobs:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
 
-      # ─── 10. BQ dry-run (스캔량 확인) ────────
-      - name: BigQuery dry-run (scan estimate)
-        run: |
-          MODE="$COLLECT_MODE"
-          SOURCES="$COLLECT_SOURCES"
-          RECONCILE="$COLLECT_RECONCILE_DAYS"
-          START="${{ github.event.inputs.start }}"
-          END="${{ github.event.inputs.end }}"
-
-          EXTRA_ARGS=""
-          [ "$MODE" = "timestamp" ] && EXTRA_ARGS="$EXTRA_ARGS --mode timestamp --overlap-minutes 30"
-          [ -n "$RECONCILE" ] && EXTRA_ARGS="$EXTRA_ARGS --reconcile-days $RECONCILE"
-          DATE_ARGS=""
-          [ -n "$START" ] && [ -n "$END" ] && DATE_ARGS="--start $START --end $END"
-
-          python -m src.collect.incremental.run_incremental \
-            --sources $SOURCES \
-            $EXTRA_ARGS \
-            $DATE_ARGS \
-            --schedule-cron "$COLLECT_SCHEDULE" \
-            --dry-run
-        env:
-          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-          GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
-
       # ─── 11. 실제 증분 수집 ───────────────
       - name: Run incremental collection
         if: github.event.inputs.dry_run != 'true'
@@ -281,19 +256,28 @@ jobs:
           GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
 
-      # ─── 13. dry-run 전용 실행 ───────────
+      # ─── 13. dry-run 전용 실행 (workflow_dispatch + dry_run=true 전용) ───
+      # scheduled run은 이 스텝에 진입하지 않음 (github.event.inputs.dry_run은 항상 비어있음)
       - name: Run dry-run only
         if: github.event.inputs.dry_run == 'true'
         run: |
-          SOURCES="${{ github.event.inputs.sources || 'gdelt economic gdelt_titles' }}"
+          MODE="$COLLECT_MODE"
+          SOURCES="$COLLECT_SOURCES"
+          OVERLAP="${{ github.event.inputs.overlap_days }}"
           START="${{ github.event.inputs.start }}"
           END="${{ github.event.inputs.end }}"
+
+          EXTRA_ARGS=""
+          [ "$MODE" = "timestamp" ] && EXTRA_ARGS="$EXTRA_ARGS --mode timestamp --overlap-minutes 30"
+          [ -n "$OVERLAP" ] && EXTRA_ARGS="$EXTRA_ARGS --overlap-days $OVERLAP"
           DATE_ARGS=""
           [ -n "$START" ] && [ -n "$END" ] && DATE_ARGS="--start $START --end $END"
+
           python -m src.collect.incremental.run_incremental \
             --sources $SOURCES \
+            $EXTRA_ARGS \
             $DATE_ARGS \
-            --schedule-cron "manual" \
+            --schedule-cron "$COLLECT_SCHEDULE" \
             --dry-run \
             --run-id "$GITHUB_RUN_ID"
         env:
