@@ -80,7 +80,11 @@ def _run_bq_query(query: str) -> pd.DataFrame:
     """BigQuery 쿼리 실행 후 DataFrame 반환."""
     client = _get_bq_client()
     job_config = bigquery.QueryJobConfig(use_query_cache=True)
-    df = client.query(query, job_config=job_config).to_dataframe()
+    # create_bqstorage_client=False: BigQuery Storage API를 사용하지 않고 REST로 결과 수신.
+    # Storage API는 roles/bigquery.readSessionUser 권한이 필요하며, 수집 서비스 계정에 없음.
+    df = client.query(query, job_config=job_config).to_dataframe(
+        create_bqstorage_client=False
+    )
     return df
 
 
