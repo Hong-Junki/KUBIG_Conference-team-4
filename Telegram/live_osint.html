@@ -94,6 +94,8 @@
     .tier-watch { background: #f08a4b; }
     .tier-low { background: #64706a; }
     .brief-list { margin: 8px 0 0; padding-left: 18px; color: #243029; line-height: 1.45; }
+    .brief-list a { color: var(--ink); text-decoration: none; }
+    .brief-list a:hover { color: var(--blue); text-decoration: underline; }
     details.raw-toggle { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: #fafafc; }
     details.raw-toggle summary { cursor: pointer; color: var(--blue); font-size: 14px; font-weight: 600; }
     .raw-message { white-space: pre-wrap; line-height: 1.5; font-size: 13px; color: #1d1d1f; margin-top: 10px; }
@@ -5047,7 +5049,10 @@
       const eventItems = recentEvents.map((event) => {
         const label = `${event.message_time || ""} · ${event.channel || "unknown"} · ${event.event_type || "signal"}`;
         const summary = event.ko_raw_brief || event.ko_summary || event.summary || "";
-        return `<li><strong>${escapeHtml(label)}</strong><br>${escapeHtml(summary)}</li>`;
+        const body = `<strong>${escapeHtml(label)}</strong><br>${escapeHtml(localizeCountryCodes(summary))}`;
+        return event.url
+          ? `<li><a href="${escapeHtml(event.url)}" target="_blank" rel="noreferrer">${body}</a></li>`
+          : `<li>${body}</li>`;
       }).join("");
       const gdeltTitles = ((context || {}).top_titles || []).slice(0, 3).map((item) => {
         const label = `${item.date || ""} ${item.domain || ""}`.trim();
@@ -5227,7 +5232,7 @@
     function globeLayout() {
       const flatMode = controls.mapView && controls.mapView.value === "flat";
       const zoom = Number(mapZoom || 1);
-      const projectionScale = flatMode ? zoom : 1 + ((zoom - 1) * 2.2);
+      const projectionScale = flatMode ? Math.max(0.92, zoom) : 1 + ((zoom - 1) * 2.2);
       return {
         margin: { l: 0, r: 0, t: 0, b: 0 },
         paper_bgcolor: "rgba(0,0,0,0)",
@@ -5237,7 +5242,7 @@
         geo: {
           domain: { x: [0, 1], y: [0, 1] },
           projection: flatMode
-            ? { type: "mercator", scale: projectionScale }
+            ? { type: "equirectangular", scale: projectionScale }
             : { type: "orthographic", scale: projectionScale, rotation: { lon: 35, lat: 18, roll: 0 } },
           bgcolor: "rgba(0,0,0,0)",
           showframe: false,
@@ -5255,8 +5260,8 @@
           lakecolor: "#dce8ee",
           showrivers: false,
           resolution: 50,
-          lataxis: flatMode ? { range: [-60, 82] } : undefined,
-          lonaxis: flatMode ? { range: [-25, 105] } : undefined,
+          lataxis: flatMode ? { range: [-58, 82] } : undefined,
+          lonaxis: flatMode ? { range: [-180, 180] } : undefined,
         },
       };
     }
