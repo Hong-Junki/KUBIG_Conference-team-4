@@ -102,6 +102,7 @@
     .event:target, .event.selected { outline: 2px solid var(--blue); }
     .event:focus { outline: 2px solid var(--blue); outline-offset: 2px; }
     .event.hidden { display: none; }
+    #events { display: none; }
     .topline { display: flex; align-items: center; gap: 10px; }
     .topline strong { font-size: 18px; }
     .topline span { color: var(--muted); }
@@ -5152,15 +5153,18 @@
     function globeLayout() {
       const flatMode = controls.mapView && controls.mapView.value === "flat";
       const zoom = Number(mapZoom || 1);
+      const projectionScale = flatMode ? zoom : 1 + ((zoom - 1) * 2.2);
       return {
         margin: { l: 0, r: 0, t: 0, b: 0 },
         paper_bgcolor: "rgba(0,0,0,0)",
         plot_bgcolor: "rgba(0,0,0,0)",
         hovermode: "closest",
+        showlegend: false,
         geo: {
+          domain: { x: [0, 1], y: [0, 1] },
           projection: flatMode
-            ? { type: "natural earth", scale: zoom }
-            : { type: "orthographic", scale: zoom, rotation: { lon: 35, lat: 18, roll: 0 } },
+            ? { type: "mercator", scale: projectionScale }
+            : { type: "orthographic", scale: projectionScale, rotation: { lon: 35, lat: 18, roll: 0 } },
           bgcolor: "rgba(0,0,0,0)",
           showframe: false,
           showcoastlines: true,
@@ -5177,7 +5181,8 @@
           lakecolor: "#dce8ee",
           showrivers: false,
           resolution: 50,
-          lataxis: flatMode ? { range: [-58, 84] } : undefined,
+          lataxis: flatMode ? { range: [-60, 82] } : undefined,
+          lonaxis: flatMode ? { range: [-25, 105] } : undefined,
         },
       };
     }
@@ -5237,6 +5242,7 @@
           : "<b>%{text}</b><br>observed signals: %{z}<extra></extra>",
         zmin: 0,
         zmax: modelColorMode ? 100 : Math.max(10, ...countryValues),
+        showlegend: false,
         colorscale: modelColorMode
           ? [
               [0.00, "#f3f4f0"],
@@ -5272,6 +5278,7 @@
         customdata: visibleEvents.map((event) => event.event_id),
         text: visibleEvents.map((event) => `${event.location_name || event.country || "unknown"} - ${event.event_type || "signal"}`),
         hovertemplate: "<b>%{text}</b><br>Telegram signal<extra></extra>",
+        showlegend: false,
         marker: {
           size: visibleEvents.map((event) => event.location_precision === "city" ? 9 : 12),
           color: visibleEvents.map((event) => markerColor(event.location_precision)),
@@ -5292,6 +5299,7 @@
         customdata: gdeltOnlyCountries,
         text: gdeltOnlyCountries.map((country) => `${countryKoNames[country] || country} (${country})`),
         hovertemplate: "<b>%{text}</b><br>GDELT news context<extra></extra>",
+        showlegend: false,
         marker: {
           size: 11,
           color: "#477b5a",
@@ -5308,6 +5316,7 @@
       Plotly.react(map, [countryTrace, telegramTrace, gdeltTrace], globeLayout(), {
         responsive: true,
         displayModeBar: false,
+        showlegend: false,
         scrollZoom: false,
       });
     }
