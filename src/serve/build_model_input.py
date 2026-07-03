@@ -76,7 +76,14 @@ def build_features(start: str, end: str, write_bq: bool = True,
 
     print("[3] 임베딩 파생 214 (저장 아티팩트 transform)")
     art = load_artifacts(ROOT)
-    emb = _norm_date(pd.read_parquet(FEAT / "gkg_embeddings.parquet"))
+    emb_path = FEAT / "gkg_embeddings.parquet"
+    # 컨테이너/클라우드는 SERVE_MEANS_SOURCE=bq 로 강제(로컬 finalize 산출=이번 윈도우만이라 부적합).
+    use_bq = os.getenv("SERVE_MEANS_SOURCE") == "bq" or not emb_path.exists()
+    if use_bq:
+        print("    임베딩 means: BQ gkg_embeddings_means (컨테이너 자립)")
+        emb = _norm_date(bq_sources.read_embeddings_means(start, end))
+    else:
+        emb = _norm_date(pd.read_parquet(emb_path))               # 로컬(개발/백필)
     emb_derived = embedding_derived(emb, art)
 
     print("[4] build_dataset 조립 (left-join + acled drop)")
