@@ -31,24 +31,31 @@ BQ_DATASET = os.getenv("BQ_DATASET", "conflict_ew")
 MODEL_INPUT_TBL = f"{GCP_PROJECT}.{BQ_DATASET}.model_input"
 
 # base(gdelt_/econ_) 외 그룹을 만드는 BQ-SQL/Python 빌더 (매 run 최신 산출, 임시 parquet).
-GROUP_BUILDERS = [
+# 임베딩 단계(로컬 partials/state 필요, 새 임베딩 적재): 로컬 백필·일배치에서만.
+EMBED_BUILDERS = [
     [sys.executable, "scripts/gkg_embed/01_extract.py"],
     [sys.executable, "scripts/gkg_embed/05_sync_embed.py"],
     # sync 는 partial agg 만 저장 → finalize 로 country-day 평균 parquet(gkg_embeddings.parquet) 생성
     [sys.executable, "scripts/gkg_embed/05_sync_embed.py", "--finalize-agg"],
+]
+# 비임베딩 피처(전부 BQ 조회, 로컬 state 불필요) — 컨테이너/클라우드도 그대로 실행 가능.
+FEATURE_BUILDERS = [
     [sys.executable, "-m", "src.process.gkg_feature_builder"],
     [sys.executable, "scripts/gkg_embed/10_title_pooling.py"],
     [sys.executable, "scripts/gdelt_enriched_events.py"],
     [sys.executable, "scripts/gdelt_subnational.py"],
     [sys.executable, "scripts/gdelt_acled_mirror.py"],
 ]
+GROUP_BUILDERS = EMBED_BUILDERS + FEATURE_BUILDERS  # 로컬 전체(백필)
 
 
 def run_group_builders(env_extra: dict | None = None):
     env = {**os.environ, **(env_extra or {})}
     # 서브프로세스 빌더가 `import src...` 하려면 루트가 PYTHONPATH에 있어야 함
     env["PYTHONPATH"] = str(ROOT) + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
-    for cmd in GROUP_BUILDERS:
+    # 클라우드(means=BQ 테이블)면 임베딩 단계 스킵 — means 는 gkg_embeddings_means, 임베딩 적재는 별도 일배치.
+    builders = FEATURE_BUILDERS if env.get("SERVE_MEANS_SOURCE") == "bq" else GROUP_BUILDERS
+    for cmd in builders:
         print(f"  $ {' '.join(cmd)}", flush=True)
         subprocess.run(cmd, cwd=str(ROOT), env=env, check=True)
 
