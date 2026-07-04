@@ -34,7 +34,6 @@ certifi
 pyarrow
 db-dtypes
 tabulate
-psycopg[binary]
 
 # 테스트
 pytest
