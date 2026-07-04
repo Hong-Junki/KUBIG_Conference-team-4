@@ -1,0 +1,84 @@
+{
+  "notes": [
+    "Fill channels with public Telegram channel usernames or invite links you are allowed to monitor.",
+    "Keep this as an allowlist. Do not add private chats or personal conversations.",
+    "Telegram API content should be used for monitoring/display, not for training or fine-tuning ML models."
+  ],
+  "channels": [
+    {
+      "name": "Example OSINT Channel",
+      "handle": "example_public_channel",
+      "enabled": false,
+      "region_hint": "global",
+      "reliability": 0.5
+    },
+    {
+      "name": "Liveuamap",
+      "handle": "liveuamap",
+      "enabled": true,
+      "region_hint": "global",
+      "reliability": 0.75
+    },
+    {
+      "name": "The Kyiv Independent",
+      "handle": "KyivIndependent_official",
+      "enabled": true,
+      "region_hint": "ukraine",
+      "reliability": 0.85
+    },
+    {
+      "name": "Al Jazeera English",
+      "handle": "aljazeeraenglish",
+      "enabled": true,
+      "region_hint": "middle_east_global",
+      "reliability": 0.85
+    },
+    {
+      "name": "Middle East Eye",
+      "handle": "MiddleEastEye_TG",
+      "enabled": true,
+      "region_hint": "middle_east_north_africa",
+      "reliability": 0.78,
+      "notes": "MENA-focused public news channel. Added to reduce Ukraine/Russia concentration."
+    },
+    {
+      "name": "Bellingcat EN",
+      "handle": "bellingcat_en",
+      "enabled": true,
+      "region_hint": "global_verification",
+      "reliability": 0.9
+    },
+    {
+      "name": "OSINTdefender",
+      "handle": "OSINTdefender",
+      "enabled": true,
+      "region_hint": "global_osint",
+      "reliability": 0.6,
+      "notes": "Broad OSINT/breaking-news channel. Keep reliability conservative until reviewed."
+    },
+    {
+      "name": "Our Wars, Today",
+      "handle": "ourwarstoday",
+      "enabled": false,
+      "region_hint": "global_conflict",
+      "reliability": 0.55,
+      "notes": "Candidate for Sudan/Africa/Middle East coverage. Keep disabled until manual source-quality review."
+    },
+    {
+      "name": "Africa Intel",
+      "handle": "africaintel",
+      "enabled": false,
+      "region_hint": "africa",
+      "reliability": 0.55,
+      "notes": "Candidate for Africa conflict coverage. Keep disabled until manual source-quality review."
+    },
+    {
+      "name": "Combat Intel",
+      "handle": "combatintel",
+      "enabled": false,
+      "region_hint": "global",
+      "reliability": 0.45,
+      "notes": "High-speed aggregator. Keep disabled until manual source-quality review."
+    }
+  ]
+}

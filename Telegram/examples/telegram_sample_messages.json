@@ -1,0 +1,23 @@
+[
+  {
+    "channel": "demo_osint",
+    "message_id": 1001,
+    "date": "2026-05-27T09:15:00+09:00",
+    "text": "Reports of shelling near Kharkiv, Ukraine. Local sources mention explosions and damage to infrastructure.",
+    "url": "https://t.me/demo_osint/1001"
+  },
+  {
+    "channel": "demo_osint",
+    "message_id": 1002,
+    "date": "2026-05-27T09:22:00+09:00",
+    "text": "Airstrike reported near Gaza City. Casualties unconfirmed. Multiple channels are reposting similar footage.",
+    "url": "https://t.me/demo_osint/1002"
+  },
+  {
+    "channel": "demo_security",
+    "message_id": 2044,
+    "date": "2026-05-27T09:40:00+09:00",
+    "text": "Protest activity in Nairobi remains peaceful. No armed clashes reported.",
+    "url": "https://t.me/demo_security/2044"
+  }
+]

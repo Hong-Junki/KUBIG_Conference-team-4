@@ -1,0 +1,89 @@
+{
+  "generated_at": "2026-06-04T00:00:00+00:00",
+  "source": "sample_gdelt_titles_context",
+  "notes": "Sample data for UI development before BigQuery service account access is available.",
+  "countries": {
+    "UKR": {
+      "gdelt_24h": 128,
+      "gdelt_7d": 842,
+      "top_keywords": ["missile", "drone", "kyiv", "strike"],
+      "top_titles": [
+        {
+          "date": "2026-06-03",
+          "title": "Ukraine reports overnight drone and missile attacks across major cities",
+          "domain": "example-news.org",
+          "url": "https://example.com/ukraine-drone-missile-attacks"
+        },
+        {
+          "date": "2026-06-03",
+          "title": "Kyiv officials assess damage after renewed Russian strikes",
+          "domain": "example-wire.com",
+          "url": "https://example.com/kyiv-damage-russian-strikes"
+        },
+        {
+          "date": "2026-06-02",
+          "title": "Air defense activity rises as Ukraine warns of further attacks",
+          "domain": "example-daily.net",
+          "url": "https://example.com/ukraine-air-defense-warning"
+        }
+      ]
+    },
+    "RUS": {
+      "gdelt_24h": 74,
+      "gdelt_7d": 391,
+      "top_keywords": ["oil", "drone", "border", "fleet"],
+      "top_titles": [
+        {
+          "date": "2026-06-03",
+          "title": "Reports describe damage near Russian energy and military facilities",
+          "domain": "example-news.org",
+          "url": "https://example.com/russia-energy-facilities"
+        },
+        {
+          "date": "2026-06-02",
+          "title": "Regional authorities respond to drone activity in western Russia",
+          "domain": "example-wire.com",
+          "url": "https://example.com/western-russia-drone-activity"
+        }
+      ]
+    },
+    "PSE": {
+      "gdelt_24h": 96,
+      "gdelt_7d": 604,
+      "top_keywords": ["gaza", "strike", "hospital", "aid"],
+      "top_titles": [
+        {
+          "date": "2026-06-02",
+          "title": "Gaza health officials report casualties after renewed strikes",
+          "domain": "example-global.com",
+          "url": "https://example.com/gaza-renewed-strikes"
+        },
+        {
+          "date": "2026-06-01",
+          "title": "Aid agencies warn of worsening humanitarian access in Gaza",
+          "domain": "example-relief.org",
+          "url": "https://example.com/gaza-humanitarian-access"
+        }
+      ]
+    },
+    "LBN": {
+      "gdelt_24h": 38,
+      "gdelt_7d": 219,
+      "top_keywords": ["lebanon", "border", "hezbollah", "strike"],
+      "top_titles": [
+        {
+          "date": "2026-06-02",
+          "title": "Southern Lebanon sees renewed strikes near border towns",
+          "domain": "example-regional.com",
+          "url": "https://example.com/southern-lebanon-border-strikes"
+        },
+        {
+          "date": "2026-06-01",
+          "title": "Officials report injuries after shelling in southern Lebanon",
+          "domain": "example-wire.com",
+          "url": "https://example.com/lebanon-shelling-injuries"
+        }
+      ]
+    }
+  }
+}
