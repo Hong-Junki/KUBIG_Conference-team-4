@@ -2,8 +2,8 @@ name: Sync BigQuery Scores To Supabase
 
 on:
   schedule:
-    # GitHub Actions cron is UTC. This runs once a day at 09:00 KST.
-    - cron: "0 0 * * *"
+    # GitHub Actions cron is UTC. This runs every 15 minutes.
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 jobs:
