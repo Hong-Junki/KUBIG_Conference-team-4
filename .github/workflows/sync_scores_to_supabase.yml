@@ -10,6 +10,8 @@ jobs:
   sync-scores:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: write
 
     env:
       GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID || secrets.GOOGLE_CLOUD_PROJECT || vars.GCP_PROJECT_ID || vars.GOOGLE_CLOUD_PROJECT || 'conflict-ew-mvp-20260604' }}
@@ -84,3 +86,19 @@ jobs:
 
       - name: Sync latest dashboard scores
         run: python sync_bq_model_scores_to_supabase.py
+
+      - name: Export dashboard scores for GitHub Pages
+        run: python export_supabase_risk_scores_for_pages.py
+
+      - name: Commit dashboard score snapshot
+        shell: bash
+        run: |
+          if [ -z "$(git status --porcelain -- Telegram/risk_scores_live.json)" ]; then
+            echo "No dashboard score snapshot changes."
+            exit 0
+          fi
+          git config user.name "jwy0227"
+          git config user.email "jwy0227@gmail.com"
+          git add Telegram/risk_scores_live.json
+          git commit -m "Update dashboard risk score snapshot"
+          git push

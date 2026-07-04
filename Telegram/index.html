@@ -4619,8 +4619,8 @@
   <script>
     const events = JSON.parse(document.getElementById("eventData").textContent);
     const gdeltContext = JSON.parse(document.getElementById("gdeltContextData").textContent);
-    const modelScores = JSON.parse(document.getElementById("modelScoreData").textContent);
-    const topRiskData = JSON.parse(document.getElementById("topRiskData").textContent);
+    let modelScores = JSON.parse(document.getElementById("modelScoreData").textContent);
+    let topRiskData = JSON.parse(document.getElementById("topRiskData").textContent);
     const countryCentroids = JSON.parse(document.getElementById("countryCentroidData").textContent);
     const controls = {
       mapView: document.getElementById("mapViewFilter"),
@@ -4818,6 +4818,35 @@
     function modelHistory(country) {
       if (!country || country === "UNK") return [];
       return (modelScores.history || {})[country] || [];
+    }
+
+    function rebuildTopRiskData() {
+      topRiskData = Object.values(modelScores.countries || {})
+        .filter((item) => item && item.country)
+        .sort((a, b) => Number(b.risk_score || 0) - Number(a.risk_score || 0))
+        .slice(0, 10)
+        .map((item) => ({ country: item.country, risk_score: Number(item.risk_score || 0) }));
+      tickerIndex = 0;
+    }
+
+    async function loadLiveRiskScores() {
+      try {
+        const response = await fetch(`risk_scores_live.json?v=${Date.now()}`, { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const liveScores = await response.json();
+        if (!liveScores || !liveScores.countries || !Object.keys(liveScores.countries).length) {
+          throw new Error("empty live score payload");
+        }
+        modelScores = {
+          ...modelScores,
+          ...liveScores,
+          countries: liveScores.countries || modelScores.countries || {},
+          history: liveScores.history || modelScores.history || {},
+        };
+        rebuildTopRiskData();
+      } catch (error) {
+        console.warn("Using embedded dashboard scores because live Supabase snapshot could not be loaded.", error);
+      }
     }
 
     function latestModelDateMs() {
@@ -5482,27 +5511,32 @@
       }
     }
 
-    initMap();
-    cards.forEach((card) => {
-      card.addEventListener("click", () => selectEvent(card.dataset.eventId));
-      card.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          selectEvent(card.dataset.eventId);
-        }
+    async function startDashboard() {
+      await loadLiveRiskScores();
+      initMap();
+      cards.forEach((card) => {
+        card.addEventListener("click", () => selectEvent(card.dataset.eventId));
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            selectEvent(card.dataset.eventId);
+          }
+        });
       });
-    });
-    [controls.mapView, controls.mapColor, controls.time, controls.country, controls.channel, controls.type, controls.precision, controls.search]
-      .forEach((control) => control.addEventListener("input", applyFilters));
-    controls.zoomOut.addEventListener("click", () => updateZoom(-0.15));
-    controls.zoomIn.addEventListener("click", () => updateZoom(0.15));
-    window.addEventListener("resize", () => {
-      resizeMapForMode();
-      if (currentVisibleIds.size) applyFilters();
-    });
-    renderTopRiskTicker();
-    window.setInterval(renderTopRiskTicker, 2200);
-    applyFilters();
+      [controls.mapView, controls.mapColor, controls.time, controls.country, controls.channel, controls.type, controls.precision, controls.search]
+        .forEach((control) => control.addEventListener("input", applyFilters));
+      controls.zoomOut.addEventListener("click", () => updateZoom(-0.15));
+      controls.zoomIn.addEventListener("click", () => updateZoom(0.15));
+      window.addEventListener("resize", () => {
+        resizeMapForMode();
+        if (currentVisibleIds.size) applyFilters();
+      });
+      renderTopRiskTicker();
+      window.setInterval(renderTopRiskTicker, 2200);
+      applyFilters();
+    }
+
+    startDashboard();
   </script>
 </body>
 </html>
