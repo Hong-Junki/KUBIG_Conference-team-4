@@ -237,7 +237,7 @@ def query_optional_table(client: bigquery.Client, project_id: str, dataset_id: s
     return client.query(
         f"select * from `{full_table}`",
         job_config=bigquery.QueryJobConfig(use_query_cache=False),
-    ).to_dataframe()
+    ).to_dataframe(create_bqstorage_client=False)
 
 
 def load_latest_model_input_features(
@@ -270,7 +270,9 @@ def load_latest_model_input_features(
     from `{full_table}`
     where date = (select feature_date from latest)
     """
-    frame = client.query(query, job_config=bigquery.QueryJobConfig(use_query_cache=False)).to_dataframe()
+    frame = client.query(query, job_config=bigquery.QueryJobConfig(use_query_cache=False)).to_dataframe(
+        create_bqstorage_client=False
+    )
     frame["feature_date"] = pd.to_datetime(frame["feature_date"]).dt.tz_localize(None)
     return frame
 
@@ -428,7 +430,9 @@ def load_latest_scores(client: bigquery.Client, table_id: str, mapping: dict[str
     ) = 1
     order by raw_score desc
     """
-    return client.query(query, job_config=bigquery.QueryJobConfig(use_query_cache=False)).to_dataframe()
+    return client.query(query, job_config=bigquery.QueryJobConfig(use_query_cache=False)).to_dataframe(
+        create_bqstorage_client=False
+    )
 
 
 def write_scores_to_supabase(conn: psycopg.Connection, scores: pd.DataFrame, feature_source: str) -> uuid.UUID:
