@@ -415,7 +415,16 @@ TEMPLATE = """<!doctype html>
     .dot.city { background: rgba(207, 62, 54, .78); }
     .dot.country { background: rgba(226, 141, 45, .62); }
     .dot.gdelt { background: rgba(79, 128, 94, .72); }
+    .dot.onset { background: transparent; border: 2px solid #1f6f8b; }
     .dot.missing { background: #64706a; }
+    .watchlist-panel { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 14px; align-items: center; margin: 0 0 18px; padding: 14px 18px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.86); box-shadow: 0 12px 34px rgba(0,0,0,.05); }
+    .watchlist-panel h2 { margin: 0; font-size: 15px; letter-spacing: 0; }
+    .watchlist-panel p { margin: 4px 0 0; color: var(--muted); font-size: 12px; line-height: 1.35; }
+    .watchlist-items { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+    .watchlist-item { display: block; min-width: 0; padding: 10px 12px; border: 1px solid rgba(31,111,139,.18); border-radius: 14px; background: #f5fbfd; color: var(--ink); text-align: left; text-decoration: none; font: inherit; cursor: pointer; }
+    .watchlist-item:hover { border-color: rgba(31,111,139,.42); background: #eef8fb; }
+    .watchlist-item strong { display: block; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .watchlist-item span { display: block; margin-top: 4px; color: #1f6f8b; font-size: 12px; font-weight: 700; }
     .count { color: var(--muted); margin: 8px 2px 12px; font-size: 13px; }
     .stats { display: grid; grid-template-columns: repeat(3, minmax(160px, 1fr)); gap: 12px; margin: 16px 0 18px; }
     .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; }
@@ -451,18 +460,13 @@ TEMPLATE = """<!doctype html>
     .risk-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0 12px; }
     .risk-metric { border: 1px solid var(--line); border-radius: 12px; padding: 10px; background: #fff; }
     .risk-metric.primary { border-color: rgba(217,79,69,.28); background: #fff7f5; }
-    .risk-metric.alerting { border-color: rgba(240,138,75,.42); background: #fff8ef; }
+    .risk-metric.alerting { border-color: rgba(31,111,139,.24); background: #f5fbfd; }
     .risk-metric span { display: block; color: var(--muted); font-size: 12px; }
     .risk-metric strong { display: block; font-size: 22px; margin-top: 2px; }
     .risk-metric small { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
     .score-note { color: var(--muted); font-size: 12px; line-height: 1.45; margin-top: 8px; }
-    .alert-pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 999px; background: #fff2e5; color: #9a4a0f; font-size: 12px; font-weight: 700; }
-    .alert-pill::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: #f08a4b; box-shadow: 0 0 0 0 rgba(240,138,75,.45); animation: pulseAlert 1.5s infinite; }
-    @keyframes pulseAlert {
-      0% { box-shadow: 0 0 0 0 rgba(240,138,75,.48); }
-      70% { box-shadow: 0 0 0 8px rgba(240,138,75,0); }
-      100% { box-shadow: 0 0 0 0 rgba(240,138,75,0); }
-    }
+    .alert-pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 999px; background: #edf8fb; color: #15556f; font-size: 12px; font-weight: 700; }
+    .alert-pill::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: #1f6f8b; }
     .tier-critical { background: #7f1d1d; }
     .tier-high { background: #d94f45; }
     .tier-watch { background: #f08a4b; }
@@ -496,6 +500,8 @@ TEMPLATE = """<!doctype html>
       .stats { grid-template-columns: 1fr; }
       .toolbar { grid-template-columns: 1fr; }
       .dashboard { grid-template-columns: 1fr; }
+      .watchlist-panel { grid-template-columns: 1fr; }
+      .watchlist-items { grid-template-columns: 1fr; }
       .ranking-strip { width: 100%; justify-content: center; }
       .ranking-strip strong { min-width: 0; }
       .zoom-control { top: 12px; right: 12px; }
@@ -556,12 +562,20 @@ TEMPLATE = """<!doctype html>
           <span><i class="dot city"></i>Telegram 도시 신호</span>
           <span><i class="dot country"></i>Telegram 국가 신호</span>
           <span><i class="dot gdelt"></i>GDELT 뉴스 신호</span>
+          <span><i class="dot onset"></i>신규 발생 위험</span>
           <span><i class="dot missing"></i>지도 표시 불가</span>
         </div>
       </div>
       <aside class="detail" id="eventDetail" aria-live="polite">
         <div class="detail-empty">지도에서 국가 또는 이벤트를 선택하세요.</div>
       </aside>
+    </section>
+    <section class="watchlist-panel" aria-label="onset watchlist">
+      <div>
+        <h2>신규 분쟁 발생 위험 Watchlist</h2>
+        <p>Candidate 3 기반 onset alert score가 높은 국가입니다.</p>
+      </div>
+      <div class="watchlist-items" id="onsetWatchlist"></div>
     </section>
     <section class="stats">__STATS__</section>
     <div class="count" id="visibleCount"></div>
@@ -597,6 +611,7 @@ TEMPLATE = """<!doctype html>
     const fallbackMap = document.getElementById("fallbackMap");
     const plotlyMap = document.getElementById("map");
     const detail = document.getElementById("eventDetail");
+    const onsetWatchlist = document.getElementById("onsetWatchlist");
     const eventById = new Map(events.map((event) => [event.event_id, event]));
     const mappableEvents = events.filter((event) => event.latitude !== null && event.longitude !== null);
     const mapAvailable = typeof Plotly !== "undefined";
@@ -607,7 +622,6 @@ TEMPLATE = """<!doctype html>
     let selectedGdeltCountry = null;
     let mapZoom = 1;
     let tickerIndex = 0;
-    let onsetPulseOn = true;
     const countryKoNames = {
       AFG: "아프가니스탄",
       ARM: "아르메니아",
@@ -766,6 +780,27 @@ TEMPLATE = """<!doctype html>
       const name = countryName(item.country);
       target.textContent = `${rank}위 ${name} · 현재 ${currentRiskScore(item).toFixed(1)} · 신규 ${onsetAlertScore(item).toFixed(1)}`;
       tickerIndex += 1;
+    }
+
+    function renderOnsetWatchlist() {
+      if (!onsetWatchlist) return;
+      const items = Object.values(modelScores.countries || {})
+        .filter((item) => item && item.country && item.country !== "UNK" && isOnsetWatch(item))
+        .sort((a, b) => onsetAlertScore(b) - onsetAlertScore(a))
+        .slice(0, 5);
+      if (!items.length) {
+        onsetWatchlist.innerHTML = '<div class="detail-empty">현재 기준 watchlist 국가는 없습니다.</div>';
+        return;
+      }
+      onsetWatchlist.innerHTML = items.map((item, index) => `
+        <button class="watchlist-item" type="button" data-country="${escapeHtml(item.country)}">
+          <strong>${index + 1}. ${escapeHtml(countryName(item.country))}</strong>
+          <span>신규 ${onsetAlertScore(item).toFixed(1)} · 현재 ${currentRiskScore(item).toFixed(1)}</span>
+        </button>
+      `).join("");
+      onsetWatchlist.querySelectorAll(".watchlist-item").forEach((button) => {
+        button.addEventListener("click", () => selectCountry(button.dataset.country));
+      });
     }
 
     function modelItem(country) {
@@ -1220,7 +1255,7 @@ TEMPLATE = """<!doctype html>
           selectCountry(point.customdata);
           return;
         }
-        if (point.data && point.data.meta === "onset-alert") {
+        if (point.data && point.data.meta === "onset-border") {
           selectCountry(point.customdata);
           return;
         }
@@ -1396,12 +1431,12 @@ TEMPLATE = """<!doctype html>
       const onsetAlertCountries = countryLocations.filter((country) =>
         countryCentroids[country] && isOnsetWatch(modelItem(country))
       );
-      const onsetAlertTrace = {
-        type: "scattergeo",
-        meta: "onset-alert",
-        mode: "markers",
-        lat: onsetAlertCountries.map((country) => Number(countryCentroids[country][0])),
-        lon: onsetAlertCountries.map((country) => Number(countryCentroids[country][1])),
+      const onsetBorderTrace = {
+        type: "choropleth",
+        meta: "onset-border",
+        locationmode: "ISO-3",
+        locations: onsetAlertCountries,
+        z: onsetAlertCountries.map(() => 1),
         customdata: onsetAlertCountries,
         text: onsetAlertCountries.map((country) => {
           const item = modelItem(country);
@@ -1409,12 +1444,9 @@ TEMPLATE = """<!doctype html>
         }),
         hovertemplate: "<b>%{text}</b><br>Onset watchlist<extra></extra>",
         showlegend: false,
-        marker: {
-          size: 22,
-          color: "rgba(240,138,75,0.18)",
-          opacity: 0.95,
-          line: { color: "#f08a4b", width: 3 },
-        },
+        showscale: false,
+        colorscale: [[0, "rgba(255,255,255,0)"], [1, "rgba(255,255,255,0)"]],
+        marker: { line: { color: "#1f6f8b", width: 2.4 } },
       };
 
       for (const country of visibleGdeltCountries || []) {
@@ -1422,7 +1454,7 @@ TEMPLATE = """<!doctype html>
         const coords = countryCentroids[country];
         if (!coords) continue;
       }
-      Plotly.react(map, [countryTrace, onsetAlertTrace, telegramTrace, gdeltTrace], globeLayout(), {
+      Plotly.react(map, [countryTrace, onsetBorderTrace, telegramTrace, gdeltTrace], globeLayout(), {
         responsive: true,
         displayModeBar: false,
         showlegend: false,
@@ -1513,15 +1545,8 @@ TEMPLATE = """<!doctype html>
       if (currentVisibleIds.size) applyFilters();
     });
     renderTopRiskTicker();
+    renderOnsetWatchlist();
     window.setInterval(renderTopRiskTicker, 2200);
-    window.setInterval(() => {
-      if (!map || !map._fullData || !map._fullData[1] || map._fullData[1].meta !== "onset-alert") return;
-      onsetPulseOn = !onsetPulseOn;
-      Plotly.restyle(map, {
-        "marker.opacity": onsetPulseOn ? 0.95 : 0.30,
-        "marker.size": onsetPulseOn ? 22 : 16,
-      }, [1]);
-    }, 900);
     applyFilters();
   </script>
 </body>
