@@ -1,20 +1,20 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-04T18:48:42.082637+00:00`
+- Generated at: `2026-07-04T21:20:13.083703+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1072`
-- Extracted rows: `1072`
+- Raw messages: `1074`
+- Extracted rows: `1074`
 - Conflict events: `290`
-- Fresh conflict events: `155`
-- Non-conflict extracted rows: `782`
+- Fresh conflict events: `154`
+- Non-conflict extracted rows: `784`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 352 | 117 | 33.2% |
+| KyivIndependent_official | 353 | 117 | 33.1% |
 | OSINTdefender | 269 | 57 | 21.2% |
-| MiddleEastEye_TG | 220 | 56 | 25.5% |
+| MiddleEastEye_TG | 221 | 56 | 25.3% |
 | liveuamap | 130 | 48 | 36.9% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
@@ -31,7 +31,7 @@
 | low_confidence_lt_0.75 | 10 | 3.4% |
 | high_severity_low_confidence | 8 | 2.8% |
 | negation_or_uncertainty_suspects | 3 | 1.0% |
-| older_than_30_days | 135 | 46.6% |
+| older_than_30_days | 136 | 46.9% |
 | possible_duplicate_groups | 5 | - |
 
 ## Top Matched Keywords
@@ -97,6 +97,7 @@
 
 ### Older Than 30 Days
 
+- `liveuamap` `2026-06-04T19:43:01+00:00` LBN / strike conf=0.95, sev=0.95: Ministry of Health: 5 dead and one wounded as a result of an airstrike on the town of Sahmar in the Western Bekaa https://lebanon.liveuamap.com/en/2026/4-june-19-ministry-of-hea... https://t.me/liveuamap/12133
 - `KyivIndependent_official` `2026-06-04T10:08:43+00:00` UKR / strike conf=0.97, sev=0.90: Why Ukraine is talking about ending ‘hot phase’ of Russia’s war before winter Kyiv hopes U.S.-mediated peace talks with Moscow could yield results before winter as Ukrainian off... https://t.me/KyivIndependent_official/53493
 - `MiddleEastEye_TG` `2026-06-04T09:30:27+00:00` PSE / conflict_signal conf=0.96, sev=0.78: 📹 Activists erected a statue of Marwan Barghouti in London’s Parliament Square, before it was removed by police. Marwan Barghouti is a Palestinian political leader who has been... https://t.me/MiddleEastEye_TG/21888
 - `KyivIndependent_official` `2026-06-04T08:27:32+00:00` UKR / strike conf=0.97, sev=0.83: ⚡️ 16 killed, 86 injured in Russian attacks across Ukraine over past day, massive drone assault hits Kherson. The Air Force said Russia launched 293 drones, 264 of which were in... https://t.me/KyivIndependent_official/53492
@@ -104,7 +105,6 @@
 - `OSINTdefender` `2026-06-04T05:53:26+00:00` USA / strike conf=0.92, sev=0.90: #USA #Iran U.S. fighters fired a missile at a Botswana-flagged tanker heading for Iran's Kharg terminal, destroying its engine room and immobilizing it due to defiance of the ma... https://t.me/OSINTdefender/19110
 - `MiddleEastEye_TG` `2026-06-04T05:02:45+00:00` PSE / conflict_signal conf=0.96, sev=0.60: Progressive candidate Adam Hamawy has won the Democratic primary for New Jersey’s 12th Congressional District. Hamawy, a US Army veteran and surgeon who volunteered in Gaza duri... https://t.me/MiddleEastEye_TG/21884
 - `KyivIndependent_official` `2026-06-04T04:53:14+00:00` UKR / strike conf=0.97, sev=0.75: ⚡️Russian drone attack targets infrastructure in Kyiv suburb, injuring 1. A Russian drone struck infrastructure in the Boryspil region of Kyiv Oblast overnight on June 4, sparki... https://t.me/KyivIndependent_official/53488
-- `MiddleEastEye_TG` `2026-06-03T22:03:32+00:00` KWT / strike conf=0.96, sev=0.90: Iran on Wednesday said that the strikes on Kuwait's airport that caused extensive damage were the result of a US Patriot missile interceptor hit, a claim that US Central Command... https://t.me/MiddleEastEye_TG/21882
 
 ### Possible Duplicate Groups
 
