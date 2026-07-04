@@ -1,0 +1,62 @@
+name: Load LLM Briefings
+
+# ──────────────────────────────────────────────
+# 실행 조건
+# ──────────────────────────────────────────────
+#
+# [push to main]  Telegram/index.html, scripts/load_static_briefings.py,
+#                 requirements.txt 중 하나라도 변경된 경우에만 실행
+#   → Telegram/index.html에 baked된 gpt-4.1-mini 요약(eventData, gdeltContextData)을
+#     Supabase public.llm_briefings에 누적 적재. 새 LLM 호출 없음.
+#   → 동일 input_hash는 스크립트 내부 로직에서 자동 skip.
+#
+# [수동]  workflow_dispatch
+#
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "Telegram/index.html"
+      - "scripts/load_static_briefings.py"
+      - "requirements.txt"
+  workflow_dispatch:
+
+concurrency:
+  group: load-llm-briefings-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  load-briefings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Verify Telegram/index.html exists
+        run: |
+          if [ ! -f "Telegram/index.html" ]; then
+            echo "::error::Telegram/index.html이 저장소에 없습니다. 워크플로를 중단합니다."
+            exit 1
+          fi
+
+      - name: Load static briefings into Supabase
+        run: |
+          python scripts/load_static_briefings.py \
+            --html Telegram/index.html \
+            --limit 58 \
+            --alert-level ALL \
+            --horizon-days 7 \
+            --prompt-version static-export-v1
