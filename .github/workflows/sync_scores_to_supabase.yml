@@ -12,8 +12,8 @@ jobs:
     timeout-minutes: 10
 
     env:
-      GOOGLE_CLOUD_PROJECT: ${{ secrets.GOOGLE_CLOUD_PROJECT }}
-      GCP_PROJECT_ID: ${{ secrets.GOOGLE_CLOUD_PROJECT }}
+      GOOGLE_CLOUD_PROJECT: ${{ secrets.GOOGLE_CLOUD_PROJECT || vars.GOOGLE_CLOUD_PROJECT || 'conflict-ew-mvp-20260604' }}
+      GCP_PROJECT_ID: ${{ secrets.GOOGLE_CLOUD_PROJECT || vars.GOOGLE_CLOUD_PROJECT || 'conflict-ew-mvp-20260604' }}
       BIGQUERY_DATASET: ${{ vars.BIGQUERY_DATASET || 'conflict_ew' }}
       BIGQUERY_MODEL_SCORES_TABLE: ${{ vars.BIGQUERY_MODEL_SCORES_TABLE || 'model_scores' }}
       BIGQUERY_MODEL_INPUT_TABLE: ${{ vars.BIGQUERY_MODEL_INPUT_TABLE || 'model_input' }}
