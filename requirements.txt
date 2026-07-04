@@ -25,6 +25,7 @@ matplotlib
 # 서빙
 fastapi
 uvicorn
+supabase  # scripts/load_static_briefings.py: llm_briefings 적재
 
 # 유틸
 python-dotenv
