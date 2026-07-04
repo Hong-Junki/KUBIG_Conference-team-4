@@ -1,4 +1,4 @@
-import argparse
+﻿import argparse
 import html
 import json
 import re
@@ -16,6 +16,7 @@ from src.live_osint.extraction import COUNTRY_CENTROIDS
 DEFAULT_EVENTS = ROOT / "artifacts" / "live_osint" / "live_events.json"
 DEFAULT_GDELT_CONTEXT = ROOT / "artifacts" / "live_osint" / "gdelt_context.json"
 DEFAULT_MODEL_SCORES = ROOT / "artifacts" / "live_osint" / "model_scores.json"
+DEFAULT_LIVE_RISK_SCORES = ROOT / "risk_scores_live.json"
 DEFAULT_OUT = ROOT / "site" / "live_osint.html"
 
 COUNTRY_KO_NAMES = {
@@ -89,6 +90,7 @@ def parse_args():
     parser.add_argument("--events", type=Path, default=DEFAULT_EVENTS)
     parser.add_argument("--gdelt-context", type=Path, default=DEFAULT_GDELT_CONTEXT)
     parser.add_argument("--model-scores", type=Path, default=DEFAULT_MODEL_SCORES)
+    parser.add_argument("--live-risk-scores", type=Path, default=DEFAULT_LIVE_RISK_SCORES)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     return parser.parse_args()
 
@@ -117,6 +119,24 @@ def load_json_if_exists(path: Path) -> dict:
     if not path.exists():
         return {"generated_at": None, "source": "missing", "countries": {}}
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def overlay_live_risk_scores(model_scores: dict, live_scores: dict) -> dict:
+    if not (live_scores.get("countries") or {}):
+        return model_scores
+    merged = dict(model_scores or {})
+    merged["generated_at"] = live_scores.get("generated_at") or merged.get("generated_at")
+    merged["source"] = live_scores.get("source") or merged.get("source")
+    merged["score_system"] = live_scores.get("score_system") or {
+        "primary": "current_risk_score",
+        "current_risk_score": "Candidate 4 current comprehensive risk score; used for map color.",
+        "onset_alert_score": "Candidate 3 hybrid onset early-warning score; used for alert markers.",
+        "watchlist_score": "Candidate 3 hybrid watchlist score.",
+    }
+    merged["countries"] = live_scores.get("countries") or {}
+    if live_scores.get("history"):
+        merged["history"] = live_scores.get("history")
+    return merged
 
 
 def parse_dt(value: str | None) -> datetime | None:
@@ -225,6 +245,8 @@ def main():
     payload = json.loads(args.events.read_text(encoding="utf-8"))
     gdelt_context = load_json_if_exists(args.gdelt_context)
     model_scores = load_json_if_exists(args.model_scores)
+    live_risk_scores = load_json_if_exists(args.live_risk_scores)
+    model_scores = overlay_live_risk_scores(model_scores, live_risk_scores)
     events = payload.get("events", [])
     model_countries = set((model_scores.get("countries") or {}).keys())
 
@@ -255,12 +277,12 @@ def main():
     if model_scores.get("countries"):
         top_risk_items = sorted(
             (model_scores.get("countries") or {}).values(),
-            key=lambda item: float(item.get("risk_score") or 0),
+            key=lambda item: float(item.get("current_risk_score") or item.get("risk_score") or 0),
             reverse=True,
         )[:10]
         top_model = top_risk_items[0]
         top_model_country = COUNTRY_KO_NAMES.get(top_model.get("country") or "", top_model.get("country") or "-")
-        top_model_score = f"{float(top_model.get('risk_score') or 0):.1f}"
+        top_model_score = f"{float(top_model.get('current_risk_score') or top_model.get('risk_score') or 0):.1f}"
 
     stats = "\n".join(
         [
@@ -428,8 +450,19 @@ TEMPLATE = """<!doctype html>
     .gdelt-title span { color: var(--muted); display: block; font-size: 12px; margin-top: 2px; }
     .risk-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0 12px; }
     .risk-metric { border: 1px solid var(--line); border-radius: 12px; padding: 10px; background: #fff; }
+    .risk-metric.primary { border-color: rgba(217,79,69,.28); background: #fff7f5; }
+    .risk-metric.alerting { border-color: rgba(240,138,75,.42); background: #fff8ef; }
     .risk-metric span { display: block; color: var(--muted); font-size: 12px; }
     .risk-metric strong { display: block; font-size: 22px; margin-top: 2px; }
+    .risk-metric small { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
+    .score-note { color: var(--muted); font-size: 12px; line-height: 1.45; margin-top: 8px; }
+    .alert-pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 999px; background: #fff2e5; color: #9a4a0f; font-size: 12px; font-weight: 700; }
+    .alert-pill::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: #f08a4b; box-shadow: 0 0 0 0 rgba(240,138,75,.45); animation: pulseAlert 1.5s infinite; }
+    @keyframes pulseAlert {
+      0% { box-shadow: 0 0 0 0 rgba(240,138,75,.48); }
+      70% { box-shadow: 0 0 0 8px rgba(240,138,75,0); }
+      100% { box-shadow: 0 0 0 0 rgba(240,138,75,0); }
+    }
     .tier-critical { background: #7f1d1d; }
     .tier-high { background: #d94f45; }
     .tier-watch { background: #f08a4b; }
@@ -574,6 +607,7 @@ TEMPLATE = """<!doctype html>
     let selectedGdeltCountry = null;
     let mapZoom = 1;
     let tickerIndex = 0;
+    let onsetPulseOn = true;
     const countryKoNames = {
       AFG: "아프가니스탄",
       ARM: "아르메니아",
@@ -730,7 +764,7 @@ TEMPLATE = """<!doctype html>
       const item = topRiskData[tickerIndex % topRiskData.length];
       const rank = (tickerIndex % topRiskData.length) + 1;
       const name = countryName(item.country);
-      target.textContent = `${rank}위 ${name} · 위험도 ${Number(item.risk_score || 0).toFixed(1)}`;
+      target.textContent = `${rank}위 ${name} · 현재 ${currentRiskScore(item).toFixed(1)} · 신규 ${onsetAlertScore(item).toFixed(1)}`;
       tickerIndex += 1;
     }
 
@@ -761,17 +795,19 @@ TEMPLATE = """<!doctype html>
         return !Number.isNaN(dateMs) && dateMs >= cutoffMs && dateMs <= latestMs;
       });
       if (!rows.length) return null;
-      const scores = rows.map((row) => Number(row.risk_score || 0));
-      const onsets = rows.map((row) => Number(row.onset_prob || 0));
+      const scores = rows.map((row) => currentRiskScore(row));
+      const onsets = rows.map((row) => onsetAlertScore(row));
       const avg = scores.reduce((sum, value) => sum + value, 0) / scores.length;
       const max = Math.max(...scores);
       const avgOnset = onsets.reduce((sum, value) => sum + value, 0) / onsets.length;
-      const peak = rows.reduce((best, row) => Number(row.risk_score || 0) > Number(best.risk_score || 0) ? row : best, rows[0]);
+      const maxOnset = Math.max(...onsets);
+      const peak = rows.reduce((best, row) => currentRiskScore(row) > currentRiskScore(best) ? row : best, rows[0]);
       return {
         count: rows.length,
         avg,
         max,
         avgOnset,
+        maxOnset,
         peakDate: peak.date || "",
       };
     }
@@ -859,6 +895,27 @@ TEMPLATE = """<!doctype html>
       return Number(value || 0).toFixed(2);
     }
 
+    function currentRiskScore(item) {
+      return Number((item || {}).current_risk_score ?? (item || {}).risk_score ?? 0);
+    }
+
+    function onsetAlertScore(item) {
+      return Number((item || {}).onset_alert_score ?? (item || {}).watchlist_score ?? (item || {}).onset_prob ?? 0);
+    }
+
+    function riskLevelLabel(item) {
+      const level = String((item || {}).map_risk_level || (item || {}).tier || "low").toUpperCase();
+      if (level === "ALERT" || level === "HIGH") return "높음";
+      if (level === "WARNING" || level === "MEDIUM") return "주의";
+      if (level === "WATCH") return "관찰";
+      if (level === "STABLE" || level === "LOW") return "낮음";
+      return tierLabel((item || {}).tier);
+    }
+
+    function isOnsetWatch(item) {
+      return onsetAlertScore(item) >= 70;
+    }
+
     function eventMeta(event) {
       const location = `${event.location_precision || "missing"} / ${event.location_name || "unknown"}`;
       const coords = event.latitude !== null && event.longitude !== null
@@ -934,11 +991,12 @@ TEMPLATE = """<!doctype html>
           </div>
         `;
       }
-      const risk = Number(item.risk_score || 0);
-      const onset = Number(item.onset_prob || 0);
+      const risk = currentRiskScore(item);
+      const onset = onsetAlertScore(item);
+      const rawOnset = Number(item.onset_prob || 0);
       const base = Number(item.base_pred || 0);
       const calm = Number(item.calm_flag || 0);
-      const mode = calm === 1 ? "신규 충돌 발생 감시 대상" : "현재 충돌/긴장 모니터링 대상";
+      const onsetBadge = isOnsetWatch(item) ? '<span class="alert-pill">신규 발생 watchlist</span>' : "";
       const period = periodModelSummary(country);
       const periodLabel = controls.time.value === "720"
         ? "최근 1개월"
@@ -953,7 +1011,8 @@ TEMPLATE = """<!doctype html>
           <div class="risk-metrics">
             <div class="risk-metric"><span>${escapeHtml(periodLabel)} 평균 위험도</span><strong>${period.avg.toFixed(1)}</strong></div>
             <div class="risk-metric"><span>${escapeHtml(periodLabel)} 최고 위험도</span><strong>${period.max.toFixed(1)}</strong></div>
-            <div class="risk-metric"><span>평균 onset score</span><strong>${period.avgOnset.toFixed(3)}</strong></div>
+            <div class="risk-metric"><span>평균 신규 발생 위험도</span><strong>${period.avgOnset.toFixed(1)}</strong></div>
+            <div class="risk-metric"><span>최고 신규 발생 위험도</span><strong>${period.maxOnset.toFixed(1)}</strong></div>
           </div>
           <div class="detail-empty">기준: ${period.count}개 모델 일자, 최고점 날짜 ${escapeHtml(period.peakDate)}.</div>
         </div>
@@ -964,17 +1023,18 @@ TEMPLATE = """<!doctype html>
             <h2>모델 위험도 점수</h2>
             <span>${escapeHtml(item.date || "")} · ${escapeHtml(item.run_ts || "")}</span>
           </div>
+          ${onsetBadge ? `<div class="meta">${onsetBadge}</div>` : ""}
           <div class="risk-metrics">
-            <div class="risk-metric"><span>위험도 점수</span><strong>${risk.toFixed(1)}</strong></div>
-            <div class="risk-metric"><span>onset score</span><strong>${onset.toFixed(3)}</strong></div>
-            <div class="risk-metric"><span>위험 단계</span><strong>${escapeHtml(tierLabel(item.tier))}</strong></div>
+            <div class="risk-metric primary"><span>현재 위험도</span><strong>${risk.toFixed(1)}</strong><small>지도 색상 기준</small></div>
+            <div class="risk-metric alerting"><span>신규 분쟁 발생 위험도</span><strong>${onset.toFixed(1)}</strong><small>onset alert 기준</small></div>
+            <div class="risk-metric"><span>위험 단계</span><strong>${escapeHtml(riskLevelLabel(item))}</strong><small>${escapeHtml(item.map_risk_level || item.tier || "")}</small></div>
           </div>
           <div class="meta">
             <span>base_pred: ${base.toFixed(3)}</span>
+            <span>onset_prob: ${rawOnset.toFixed(3)}</span>
             <span>calm_flag: ${calm}</span>
-            <span>${escapeHtml(mode)}</span>
           </div>
-          <div class="detail-empty">위험도 점수는 최신 모델 기준일의 onset score를 국가 간 순위로 변환한 값입니다. onset score는 신규 무력충돌 발생 가능성을 비교하기 위한 모델 신호이며, 보정된 절대 확률은 아닙니다.</div>
+          <div class="score-note">현재 위험도는 Candidate 4 기반의 종합 위험 점수이며 지도 색상에 사용됩니다. 신규 분쟁 발생 위험도는 Candidate 3 기반의 조기경보 점수이며, 높은 국가는 지도 위 별도 알림 표식으로 표시됩니다.</div>
           ${periodBlock}
         </div>
       `;
@@ -1160,6 +1220,10 @@ TEMPLATE = """<!doctype html>
           selectCountry(point.customdata);
           return;
         }
+        if (point.data && point.data.meta === "onset-alert") {
+          selectCountry(point.customdata);
+          return;
+        }
         if (point.data && point.data.meta === "country") {
           const country = point.customdata || point.location;
           selectCountry(country);
@@ -1243,7 +1307,7 @@ TEMPLATE = """<!doctype html>
         ? Object.keys(modelScores.countries || {}).filter((country) => country && country !== "UNK")
         : Array.from(countrySignalCounts.keys()).filter((country) => country && country !== "UNK");
       const countryValues = countryLocations.map((country) =>
-        modelColorMode ? Number((modelItem(country) || {}).risk_score || 0) : Number(countrySignalCounts.get(country) || 0)
+        modelColorMode ? currentRiskScore(modelItem(country)) : Number(countrySignalCounts.get(country) || 0)
       );
       const countryTrace = {
         type: "choropleth",
@@ -1255,7 +1319,7 @@ TEMPLATE = """<!doctype html>
         text: countryLocations.map((country) => {
           const item = modelItem(country);
           return item
-            ? `${countryName(country)} · 위험도 ${Number(item.risk_score || 0).toFixed(1)} · onset ${Number(item.onset_prob || 0).toFixed(3)}`
+            ? `${countryName(country)} · 현재 ${currentRiskScore(item).toFixed(1)} · 신규 ${onsetAlertScore(item).toFixed(1)}`
             : `${countryName(country)}`;
         }),
         hovertemplate: modelColorMode
@@ -1329,12 +1393,36 @@ TEMPLATE = """<!doctype html>
         },
       };
 
+      const onsetAlertCountries = countryLocations.filter((country) =>
+        countryCentroids[country] && isOnsetWatch(modelItem(country))
+      );
+      const onsetAlertTrace = {
+        type: "scattergeo",
+        meta: "onset-alert",
+        mode: "markers",
+        lat: onsetAlertCountries.map((country) => Number(countryCentroids[country][0])),
+        lon: onsetAlertCountries.map((country) => Number(countryCentroids[country][1])),
+        customdata: onsetAlertCountries,
+        text: onsetAlertCountries.map((country) => {
+          const item = modelItem(country);
+          return `${countryName(country)} · 신규 발생 ${onsetAlertScore(item).toFixed(1)}`;
+        }),
+        hovertemplate: "<b>%{text}</b><br>Onset watchlist<extra></extra>",
+        showlegend: false,
+        marker: {
+          size: 22,
+          color: "rgba(240,138,75,0.18)",
+          opacity: 0.95,
+          line: { color: "#f08a4b", width: 3 },
+        },
+      };
+
       for (const country of visibleGdeltCountries || []) {
         if (eventCountries.has(country)) continue;
         const coords = countryCentroids[country];
         if (!coords) continue;
       }
-      Plotly.react(map, [countryTrace, telegramTrace, gdeltTrace], globeLayout(), {
+      Plotly.react(map, [countryTrace, onsetAlertTrace, telegramTrace, gdeltTrace], globeLayout(), {
         responsive: true,
         displayModeBar: false,
         showlegend: false,
@@ -1388,7 +1476,7 @@ TEMPLATE = """<!doctype html>
           selectCountry(selectedGdeltCountry);
         } else if (controls.mapColor && controls.mapColor.value === "model") {
           const topCountry = Object.values(modelScores.countries || {})
-            .sort((a, b) => Number(b.risk_score || 0) - Number(a.risk_score || 0))[0];
+            .sort((a, b) => currentRiskScore(b) - currentRiskScore(a))[0];
           if (topCountry) {
             selectCountry(topCountry.country);
           } else if (firstVisibleId) {
@@ -1426,6 +1514,14 @@ TEMPLATE = """<!doctype html>
     });
     renderTopRiskTicker();
     window.setInterval(renderTopRiskTicker, 2200);
+    window.setInterval(() => {
+      if (!map || !map._fullData || !map._fullData[1] || map._fullData[1].meta !== "onset-alert") return;
+      onsetPulseOn = !onsetPulseOn;
+      Plotly.restyle(map, {
+        "marker.opacity": onsetPulseOn ? 0.95 : 0.30,
+        "marker.size": onsetPulseOn ? 22 : 16,
+      }, [1]);
+    }, 900);
     applyFilters();
   </script>
 </body>
@@ -1435,3 +1531,4 @@ TEMPLATE = """<!doctype html>
 
 if __name__ == "__main__":
     main()
+
