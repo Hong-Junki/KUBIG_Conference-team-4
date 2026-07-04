@@ -49,12 +49,38 @@ jobs:
             pyarrow
 
       - name: Configure Google credentials
-        shell: bash
+        env:
+          GCP_SERVICE_ACCOUNT_JSON: ${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}
+        shell: python
         run: |
-          cat > "$RUNNER_TEMP/gcp-service-account.json" <<'EOF'
-          ${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}
-          EOF
-          echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/gcp-service-account.json" >> "$GITHUB_ENV"
+          import json
+          import os
+          from pathlib import Path
+
+          required = ["GOOGLE_CLOUD_PROJECT", "DATABASE_URL", "GCP_SERVICE_ACCOUNT_JSON"]
+          missing = [name for name in required if not os.environ.get(name)]
+          if missing:
+              raise SystemExit(f"Missing required GitHub secrets/env values: {', '.join(missing)}")
+
+          raw = os.environ["GCP_SERVICE_ACCOUNT_JSON"].strip()
+          if raw.startswith(("'", '"')) and raw.endswith(("'", '"')):
+              raw = raw[1:-1]
+          try:
+              payload = json.loads(raw)
+          except json.JSONDecodeError as exc:
+              raise SystemExit(
+                  "GCP_SERVICE_ACCOUNT_JSON must be the full service-account JSON text, "
+                  f"not a file path or .env block. JSON parse failed: {exc}"
+              )
+
+          for key in ["type", "project_id", "private_key", "client_email", "token_uri"]:
+              if not payload.get(key):
+                  raise SystemExit(f"GCP_SERVICE_ACCOUNT_JSON is missing required key: {key}")
+
+          path = Path(os.environ["RUNNER_TEMP"]) / "gcp-service-account.json"
+          path.write_text(json.dumps(payload), encoding="utf-8")
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as fh:
+              fh.write(f"GOOGLE_APPLICATION_CREDENTIALS={path}\n")
 
       - name: Sync latest dashboard scores
         run: python sync_bq_model_scores_to_supabase.py
