@@ -1,21 +1,21 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-04T16:11:51.954244+00:00`
+- Generated at: `2026-07-04T16:32:58.750343+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `806`
-- Extracted rows: `806`
-- Conflict events: `213`
-- Fresh conflict events: `78`
-- Non-conflict extracted rows: `593`
+- Raw messages: `1070`
+- Extracted rows: `1070`
+- Conflict events: `289`
+- Fresh conflict events: `154`
+- Non-conflict extracted rows: `781`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 253 | 82 | 32.4% |
-| OSINTdefender | 196 | 40 | 20.4% |
-| MiddleEastEye_TG | 147 | 39 | 26.5% |
-| liveuamap | 109 | 40 | 36.7% |
+| KyivIndependent_official | 350 | 116 | 33.1% |
+| OSINTdefender | 269 | 57 | 21.2% |
+| MiddleEastEye_TG | 220 | 56 | 25.5% |
+| liveuamap | 130 | 48 | 36.9% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
 | demo_security | 1 | 0 | 0.0% |
@@ -24,68 +24,70 @@
 
 | flag | count | rate_among_conflict_events |
 | --- | --- | --- |
-| missing_country | 17 | 8.0% |
-| missing_location | 17 | 8.0% |
-| missing_coordinates | 17 | 8.0% |
-| country_centroid_fallback | 111 | 52.1% |
-| low_confidence_lt_0.75 | 6 | 2.8% |
-| high_severity_low_confidence | 5 | 2.3% |
-| negation_or_uncertainty_suspects | 3 | 1.4% |
-| older_than_30_days | 135 | 63.4% |
-| possible_duplicate_groups | 3 | - |
+| missing_country | 25 | 8.7% |
+| missing_location | 25 | 8.7% |
+| missing_coordinates | 25 | 8.7% |
+| country_centroid_fallback | 144 | 49.8% |
+| low_confidence_lt_0.75 | 10 | 3.5% |
+| high_severity_low_confidence | 8 | 2.8% |
+| negation_or_uncertainty_suspects | 3 | 1.0% |
+| older_than_30_days | 135 | 46.7% |
+| possible_duplicate_groups | 5 | - |
 
 ## Top Matched Keywords
 
 | keyword | count |
 | --- | --- |
-| drone | 72 |
-| attack | 59 |
-| killed | 51 |
-| missile | 50 |
-| wounded | 19 |
-| protest | 7 |
-| airstrike | 6 |
-| casualties | 5 |
+| attack | 97 |
+| drone | 92 |
+| killed | 72 |
+| missile | 64 |
+| wounded | 24 |
+| airstrike | 10 |
+| casualties | 8 |
+| protest | 8 |
+| troop | 6 |
+| rocket | 6 |
+| explosion | 5 |
 | evacuation | 5 |
-| troop | 4 |
+| battle | 4 |
 | shelling | 4 |
-| rocket | 4 |
-| battle | 2 |
 | clash | 1 |
-| air strike | 1 |
 
 ## Samples To Review
 
 ### Missing Country
 
-- `liveuamap` `2026-06-24T08:56:26+00:00` NO_COUNTRY / strike conf=0.75, sev=0.75: Commander of Unmanned systems of Ukrainian Armed forces confirmed drone strikes at the Sevastopol power substation https://liveuamap.com/en/2026/24-june-07-commander-of-unmanned... https://t.me/liveuamap/12179
-- `KyivIndependent_official` `2026-06-23T14:15:55+00:00` NO_COUNTRY / strike conf=0.77, sev=0.98: ⚡️Update: Death toll rises to 3, with 25 injured in Kryvyi Rih strike. At least three people were killed and 25 injured after a Russian Iskander-M ballistic missile with cluster... https://t.me/KyivIndependent_official/53848
-- `OSINTdefender` `2026-06-21T19:47:33+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China has constructed full-scale replicas of the USS Gerald R. Ford aircraft carrier and an Arleigh Burke-class destroyer in the Taklamakan Desert for military training p... https://t.me/OSINTdefender/19296
-- `KyivIndependent_official` `2026-06-21T16:46:27+00:00` NO_COUNTRY / civil_unrest conf=0.77, sev=0.35: ⚡️Former Polish lawmaker returns state honor in protest over Zelensky's award revocation. Former Polish lawmaker Piotr Fogler said on June 20 that he had returned his state hono... https://t.me/KyivIndependent_official/53816
-- `OSINTdefender` `2026-06-17T04:18:54+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Navigational warnings indicate a missile test in the Pacific, south of Kwajalein, scheduled for June 27-29, 2026, with a range of approximately 3,800 km. This test is likel... https://t.me/OSINTdefender/19248
-- `MiddleEastEye_TG` `2026-06-12T11:31:32+00:00` NO_COUNTRY / strike conf=0.76, sev=0.75: 🎥 Drone footage from Wednesday showed a vehicle set on fire as police blocked a road to stop anti-immigrant violence for the second night in Belfast, Northern Ireland. A wave of... https://t.me/MiddleEastEye_TG/21930
-- `KyivIndependent_official` `2026-06-03T13:35:31+00:00` NO_COUNTRY / strike conf=0.77, sev=0.90: ⚡️ Zelensky threatens to fire officials for delays in Patriot missile supplies. “Unfortunately, as of today, even the legal groundwork for this contract has yet to be completed,... https://t.me/KyivIndependent_official/53475
-- `OSINTdefender` `2026-05-31T11:36:49+00:00` NO_COUNTRY / military_movement conf=0.72, sev=0.45: #USA #EU The Pentagon plans to reduce U.S. military capabilities in Europe, bringing troop levels back to 2021 levels as part of a strategy to encourage European allies to take... https://t.me/OSINTdefender/19076
+- `OSINTdefender` `2026-07-03T08:52:37+00:00` NO_COUNTRY / military_movement conf=0.72, sev=0.45: #EU #USA Marco Rubio reportedly helped block Defense Secretary Pete Hegseth's plan to announce significant troop cuts in Europe during a NATO meeting last month. Subscribe to @O... https://t.me/OSINTdefender/19373
+- `MiddleEastEye_TG` `2026-07-03T03:04:03+00:00` NO_COUNTRY / conflict_signal conf=0.76, sev=0.75: An Israeli bill to restrict the adhan, the Muslim call to prayer, passed a preliminary reading in parliament on Wednesday. Palestinians condemned the legislation as a "declarati... https://t.me/MiddleEastEye_TG/22113
+- `KyivIndependent_official` `2026-07-02T14:05:14+00:00` NO_COUNTRY / conflict_signal conf=0.77, sev=0.75: ⚡️ Around 800,000 of Ukrainian publisher’s books destroyed in overnight Russian attack. According to BookChef, the central warehouse of their logistics partner — where their boo... https://t.me/KyivIndependent_official/54035
+- `KyivIndependent_official` `2026-07-02T02:23:27+00:00` NO_COUNTRY / strike conf=0.77, sev=0.83: ⚡️Update: 2 people have been killed and at least 20 others injured in the attack, while drone threats in the city remain ongoing. As of 5 a.m. local time, officials had also rec... https://t.me/KyivIndependent_official/54024
+- `OSINTdefender` `2026-06-30T22:26:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.85: #China The People's Liberation Army Rocket Force (PLARF), formerly the Second Artillery Corps, was established on 1 July 1966, making it nearly 60 years old as of 2026. Subscrib... https://t.me/OSINTdefender/19362
+- `OSINTdefender` `2026-06-30T18:15:01+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Northrop Grumman has revealed photos of the LGM-35A Sentinel, a new-generation intercontinental ballistic missile designed to replace the aging Minuteman III. This missile... https://t.me/OSINTdefender/19360
+- `KyivIndependent_official` `2026-06-29T21:57:30+00:00` NO_COUNTRY / shelling_explosion conf=0.77, sev=0.75: ⚡️Massive explosion in Monaco injures Ukrainian family, media reports. Authorities in Monaco said the blast was "likely an attack." The explosion injured a 13-year-old girl and... https://t.me/KyivIndependent_official/53978
+- `OSINTdefender` `2026-06-26T08:12:47+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #NK North Korea tested upgraded artillery and missile systems under Kim Jong Un, including an upgraded 240mm multiple rocket launcher with a 90-kilometer range and a tactical ba... https://t.me/OSINTdefender/19330
 
 ### Missing Coordinates
 
-- `liveuamap` `2026-06-24T08:56:26+00:00` NO_COUNTRY / strike conf=0.75, sev=0.75: Commander of Unmanned systems of Ukrainian Armed forces confirmed drone strikes at the Sevastopol power substation https://liveuamap.com/en/2026/24-june-07-commander-of-unmanned... https://t.me/liveuamap/12179
-- `KyivIndependent_official` `2026-06-23T14:15:55+00:00` NO_COUNTRY / strike conf=0.77, sev=0.98: ⚡️Update: Death toll rises to 3, with 25 injured in Kryvyi Rih strike. At least three people were killed and 25 injured after a Russian Iskander-M ballistic missile with cluster... https://t.me/KyivIndependent_official/53848
-- `OSINTdefender` `2026-06-21T19:47:33+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China has constructed full-scale replicas of the USS Gerald R. Ford aircraft carrier and an Arleigh Burke-class destroyer in the Taklamakan Desert for military training p... https://t.me/OSINTdefender/19296
-- `KyivIndependent_official` `2026-06-21T16:46:27+00:00` NO_COUNTRY / civil_unrest conf=0.77, sev=0.35: ⚡️Former Polish lawmaker returns state honor in protest over Zelensky's award revocation. Former Polish lawmaker Piotr Fogler said on June 20 that he had returned his state hono... https://t.me/KyivIndependent_official/53816
-- `OSINTdefender` `2026-06-17T04:18:54+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Navigational warnings indicate a missile test in the Pacific, south of Kwajalein, scheduled for June 27-29, 2026, with a range of approximately 3,800 km. This test is likel... https://t.me/OSINTdefender/19248
-- `MiddleEastEye_TG` `2026-06-12T11:31:32+00:00` NO_COUNTRY / strike conf=0.76, sev=0.75: 🎥 Drone footage from Wednesday showed a vehicle set on fire as police blocked a road to stop anti-immigrant violence for the second night in Belfast, Northern Ireland. A wave of... https://t.me/MiddleEastEye_TG/21930
-- `KyivIndependent_official` `2026-06-03T13:35:31+00:00` NO_COUNTRY / strike conf=0.77, sev=0.90: ⚡️ Zelensky threatens to fire officials for delays in Patriot missile supplies. “Unfortunately, as of today, even the legal groundwork for this contract has yet to be completed,... https://t.me/KyivIndependent_official/53475
-- `OSINTdefender` `2026-05-31T11:36:49+00:00` NO_COUNTRY / military_movement conf=0.72, sev=0.45: #USA #EU The Pentagon plans to reduce U.S. military capabilities in Europe, bringing troop levels back to 2021 levels as part of a strategy to encourage European allies to take... https://t.me/OSINTdefender/19076
+- `OSINTdefender` `2026-07-03T08:52:37+00:00` NO_COUNTRY / military_movement conf=0.72, sev=0.45: #EU #USA Marco Rubio reportedly helped block Defense Secretary Pete Hegseth's plan to announce significant troop cuts in Europe during a NATO meeting last month. Subscribe to @O... https://t.me/OSINTdefender/19373
+- `MiddleEastEye_TG` `2026-07-03T03:04:03+00:00` NO_COUNTRY / conflict_signal conf=0.76, sev=0.75: An Israeli bill to restrict the adhan, the Muslim call to prayer, passed a preliminary reading in parliament on Wednesday. Palestinians condemned the legislation as a "declarati... https://t.me/MiddleEastEye_TG/22113
+- `KyivIndependent_official` `2026-07-02T14:05:14+00:00` NO_COUNTRY / conflict_signal conf=0.77, sev=0.75: ⚡️ Around 800,000 of Ukrainian publisher’s books destroyed in overnight Russian attack. According to BookChef, the central warehouse of their logistics partner — where their boo... https://t.me/KyivIndependent_official/54035
+- `KyivIndependent_official` `2026-07-02T02:23:27+00:00` NO_COUNTRY / strike conf=0.77, sev=0.83: ⚡️Update: 2 people have been killed and at least 20 others injured in the attack, while drone threats in the city remain ongoing. As of 5 a.m. local time, officials had also rec... https://t.me/KyivIndependent_official/54024
+- `OSINTdefender` `2026-06-30T22:26:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.85: #China The People's Liberation Army Rocket Force (PLARF), formerly the Second Artillery Corps, was established on 1 July 1966, making it nearly 60 years old as of 2026. Subscrib... https://t.me/OSINTdefender/19362
+- `OSINTdefender` `2026-06-30T18:15:01+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Northrop Grumman has revealed photos of the LGM-35A Sentinel, a new-generation intercontinental ballistic missile designed to replace the aging Minuteman III. This missile... https://t.me/OSINTdefender/19360
+- `KyivIndependent_official` `2026-06-29T21:57:30+00:00` NO_COUNTRY / shelling_explosion conf=0.77, sev=0.75: ⚡️Massive explosion in Monaco injures Ukrainian family, media reports. Authorities in Monaco said the blast was "likely an attack." The explosion injured a 13-year-old girl and... https://t.me/KyivIndependent_official/53978
+- `OSINTdefender` `2026-06-26T08:12:47+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #NK North Korea tested upgraded artillery and missile systems under Kim Jong Un, including an upgraded 240mm multiple rocket launcher with a 90-kilometer range and a tactical ba... https://t.me/OSINTdefender/19330
 
 ### Low Confidence
 
+- `OSINTdefender` `2026-07-03T08:52:37+00:00` NO_COUNTRY / military_movement conf=0.72, sev=0.45: #EU #USA Marco Rubio reportedly helped block Defense Secretary Pete Hegseth's plan to announce significant troop cuts in Europe during a NATO meeting last month. Subscribe to @O... https://t.me/OSINTdefender/19373
+- `OSINTdefender` `2026-06-30T22:26:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.85: #China The People's Liberation Army Rocket Force (PLARF), formerly the Second Artillery Corps, was established on 1 July 1966, making it nearly 60 years old as of 2026. Subscrib... https://t.me/OSINTdefender/19362
+- `OSINTdefender` `2026-06-30T18:15:01+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Northrop Grumman has revealed photos of the LGM-35A Sentinel, a new-generation intercontinental ballistic missile designed to replace the aging Minuteman III. This missile... https://t.me/OSINTdefender/19360
+- `OSINTdefender` `2026-06-26T08:12:47+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #NK North Korea tested upgraded artillery and missile systems under Kim Jong Un, including an upgraded 240mm multiple rocket launcher with a 90-kilometer range and a tactical ba... https://t.me/OSINTdefender/19330
 - `OSINTdefender` `2026-06-21T19:47:33+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China has constructed full-scale replicas of the USS Gerald R. Ford aircraft carrier and an Arleigh Burke-class destroyer in the Taklamakan Desert for military training p... https://t.me/OSINTdefender/19296
 - `OSINTdefender` `2026-06-17T04:18:54+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Navigational warnings indicate a missile test in the Pacific, south of Kwajalein, scheduled for June 27-29, 2026, with a range of approximately 3,800 km. This test is likel... https://t.me/OSINTdefender/19248
 - `OSINTdefender` `2026-05-31T11:36:49+00:00` NO_COUNTRY / military_movement conf=0.72, sev=0.45: #USA #EU The Pentagon plans to reduce U.S. military capabilities in Europe, bringing troop levels back to 2021 levels as part of a strategy to encourage European allies to take... https://t.me/OSINTdefender/19076
 - `OSINTdefender` `2026-05-30T05:38:03+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China is constructing a vast military complex with over 80 launch pads, bunkers, and communication nodes near its nuclear missile silos to enhance its second-strike capab... https://t.me/OSINTdefender/19060
-- `OSINTdefender` `2026-05-29T05:42:46+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China is deploying multiple warships, including Type 056A guided-missile frigates Wuzhou and Tianmen, along with a Type 054A guided-missile frigate Dali, to conduct close... https://t.me/OSINTdefender/19046
-- `OSINTdefender` `2026-05-27T06:13:26+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #NK North Korea has tested a multi-caliber rocket launcher capable of firing the Hwasong-11Ra ballistic missile and guided 240mm rockets, as well as a tactical cruise missile la... https://t.me/OSINTdefender/19030
 
 ### Negation Or Uncertainty Suspects
 
@@ -106,13 +108,20 @@
 
 ### Possible Duplicate Groups
 
-- Group 1: 2 events
+- Group 1: 3 events
+  - `OSINTdefender` `2026-07-03T17:45:11+00:00` UKR / conflict_signal conf=0.92, sev=0.75: #Ukraine #USA Zelensky emphasizes the need for Ukraine to establish its own production of Patriot missiles to enhance air defense capabilities following a significant Russian at... https://t.me/OSINTdefender/19379
+  - `KyivIndependent_official` `2026-07-03T13:10:56+00:00` UKR / conflict_signal conf=0.97, sev=0.75: ⚡️Kyiv air quality plunges after Russia's biggest attack on capital of entire war. The smell of smoke and haze lingered over the capital. Authorities urge residents to keep wind... https://t.me/KyivIndependent_official/54053
+  - `KyivIndependent_official` `2026-07-03T12:03:45+00:00` UKR / conflict_signal conf=0.97, sev=0.75: ⚡️Update: Monaco issues arrest warrant for Ukrainian woman suspected of bomb attack that injured Ukraine-born businessman. Monaco issued an Interpol "red notice" — an internatio... https://t.me/KyivIndependent_official/54052
+- Group 2: 2 events
+  - `OSINTdefender` `2026-06-28T05:22:35+00:00` USA / conflict_signal conf=0.92, sev=0.75: #Kuwait #Bahrain Iranian ballistic missiles and drones reportedly struck 8 US military targets, including Ali Al Salem Air Base in Kuwait and the US Navy's 5th Fleet base in Bah... https://t.me/OSINTdefender/19344
+  - `liveuamap` `2026-06-28T02:56:07+00:00` USA / conflict_signal conf=0.95, sev=0.75: In a statement, Iran's Islamic Revolutionary Guard Corps (IRGC) has confirmed that it attacked US forces in two military bases in the Middle East, the Ali Al Salem air base in K... https://t.me/liveuamap/12192
+- Group 3: 2 events
   - `OSINTdefender` `2026-06-22T18:09:00+00:00` UKR / conflict_signal conf=0.92, sev=0.75: #Russia #Ukraine On June 22, 2026, Ukrainian Storm Shadow cruise missiles struck the Voronezh Semiconductor Devices Plant, causing extensive damage, a major fire, and reportedly... https://t.me/OSINTdefender/19305
   - `KyivIndependent_official` `2026-06-22T12:33:09+00:00` UKR / conflict_signal conf=0.97, sev=0.75: ⚡️ Russian attack damages production facility of Ukraine’s FPV giant. “This is war. We were prepared for such events,” the company’s founder, Yaroslav Gryshyn, said. “The enemy... https://t.me/KyivIndependent_official/53828
-- Group 2: 2 events
+- Group 4: 2 events
   - `OSINTdefender` `2026-05-29T17:55:26+00:00` ROU / strike conf=0.92, sev=0.75: #Germany #Romania #Russia German Chancellor Friedrich Merz emphasized that Germany is prepared to defend the territory of NATO allies, particularly in light of recent security c... https://t.me/OSINTdefender/19056
   - `KyivIndependent_official` `2026-05-29T12:58:59+00:00` ROU / strike conf=0.97, sev=0.75: ⚡️NATO condemns ‘reckless’ Russian drone strike on Romanian residential building NATO Secretary General Mark Rutte has said "Russia's reckless behaviour is a danger to us all,"... https://t.me/KyivIndependent_official/53396
-- Group 3: 2 events
+- Group 5: 2 events
   - `OSINTdefender` `2026-05-29T05:08:37+00:00` ROU / strike conf=0.92, sev=0.75: #Romania A Russian drone crashed in Galați, Romania, causing minor damage to a residential building and injuring two people. The drone was reported to have an explosive payload,... https://t.me/OSINTdefender/19045
   - `KyivIndependent_official` `2026-05-29T01:27:35+00:00` ROU / strike conf=0.97, sev=0.75: ⚡️Drone reportedly strikes residential building in Romania. A drone reportedly struck a residential building in Galati, Romania, overnight on May 29, news outlet Viata Libera re... https://t.me/KyivIndependent_official/53391
 
