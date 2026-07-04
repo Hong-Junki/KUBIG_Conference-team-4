@@ -13,6 +13,7 @@ gdelt_titles 는 임베딩 추출(01_extract)/Track1(gkg_feature_builder)이 직
 from __future__ import annotations
 import os
 
+import numpy as np
 import pandas as pd
 
 GCP_PROJECT = os.getenv("GCP_PROJECT", "conflict-ew-mvp-20260604")
@@ -44,3 +45,19 @@ def read_economic(start: str, end: str) -> pd.DataFrame:
       ORDER BY date
     """
     return _client().query(sql).to_dataframe(create_bqstorage_client=False)
+
+
+def read_embeddings_means(start: str | None = None, end: str | None = None) -> pd.DataFrame:
+    """gkg_embeddings_means(country-day 평균 임베딩, 1536-dim) → embedding_derived 입력.
+    로컬 partials/parquet 없는 컨테이너/클라우드용 (로컬 gkg_embeddings.parquet 대체).
+    동일 스키마: date, country, gkg_emb_n_titles_1d, gkg_emb_0..gkg_emb_1535.
+    start/end 없으면 전체. 저장은 embedding 배열(REPEATED) 1컬럼 → 여기서 gkg_emb_0..1535 로 확장."""
+    where = f"WHERE date BETWEEN DATE('{start}') AND DATE('{end}')" if start and end else ""
+    sql = (f"SELECT date, country, gkg_emb_n_titles_1d, embedding "
+           f"FROM `{GCP_PROJECT}.{BQ_DATASET}.gkg_embeddings_means` {where}")
+    df = _client().query(sql).to_dataframe(create_bqstorage_client=False)
+    if len(df) == 0:
+        raise RuntimeError(f"gkg_embeddings_means 비어있음 (window {start}~{end}). 시딩/윈도우 확인.")
+    mat = np.vstack(df["embedding"].to_numpy()).astype(np.float32)  # (N, 1536)
+    emb = pd.DataFrame(mat, columns=[f"gkg_emb_{d}" for d in range(mat.shape[1])], index=df.index)
+    return pd.concat([df.drop(columns=["embedding"]), emb], axis=1)
