@@ -1,18 +1,18 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-05T05:50:56.933410+00:00`
+- Generated at: `2026-07-05T08:39:16.728654+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1079`
-- Extracted rows: `1079`
+- Raw messages: `1080`
+- Extracted rows: `1080`
 - Conflict events: `291`
-- Fresh conflict events: `155`
-- Non-conflict extracted rows: `788`
+- Fresh conflict events: `154`
+- Non-conflict extracted rows: `789`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 356 | 118 | 33.1% |
+| KyivIndependent_official | 357 | 118 | 33.1% |
 | OSINTdefender | 270 | 57 | 21.1% |
 | MiddleEastEye_TG | 222 | 56 | 25.2% |
 | liveuamap | 130 | 48 | 36.9% |
@@ -31,7 +31,7 @@
 | low_confidence_lt_0.75 | 10 | 3.4% |
 | high_severity_low_confidence | 8 | 2.7% |
 | negation_or_uncertainty_suspects | 3 | 1.0% |
-| older_than_30_days | 136 | 46.7% |
+| older_than_30_days | 137 | 47.1% |
 | possible_duplicate_groups | 5 | - |
 
 ## Top Matched Keywords
@@ -97,6 +97,7 @@
 
 ### Older Than 30 Days
 
+- `liveuamap` `2026-06-05T06:50:04+00:00` LBN / conflict_signal conf=0.95, sev=0.78: Civil Defense: Seven people killed in Israeli airstrikes on Tyre, southern Lebanon, Thursday night/Friday morning https://lebanon.liveuamap.com/en/2026/5-june-06-civil-defense-s... https://t.me/liveuamap/12134
 - `liveuamap` `2026-06-04T19:43:01+00:00` LBN / strike conf=0.95, sev=0.95: Ministry of Health: 5 dead and one wounded as a result of an airstrike on the town of Sahmar in the Western Bekaa https://lebanon.liveuamap.com/en/2026/4-june-19-ministry-of-hea... https://t.me/liveuamap/12133
 - `KyivIndependent_official` `2026-06-04T10:08:43+00:00` UKR / strike conf=0.97, sev=0.90: Why Ukraine is talking about ending ‘hot phase’ of Russia’s war before winter Kyiv hopes U.S.-mediated peace talks with Moscow could yield results before winter as Ukrainian off... https://t.me/KyivIndependent_official/53493
 - `MiddleEastEye_TG` `2026-06-04T09:30:27+00:00` PSE / conflict_signal conf=0.96, sev=0.78: 📹 Activists erected a statue of Marwan Barghouti in London’s Parliament Square, before it was removed by police. Marwan Barghouti is a Palestinian political leader who has been... https://t.me/MiddleEastEye_TG/21888
@@ -104,7 +105,6 @@
 - `MiddleEastEye_TG` `2026-06-04T07:31:16+00:00` LBN / military_movement conf=0.96, sev=0.40: 📹 Last week, Israeli forces ordered the evacuation of Tyre, a city in southern Lebanon with major historical and cultural significance, and declared all areas south of the Zahra... https://t.me/MiddleEastEye_TG/21886
 - `OSINTdefender` `2026-06-04T05:53:26+00:00` USA / strike conf=0.92, sev=0.90: #USA #Iran U.S. fighters fired a missile at a Botswana-flagged tanker heading for Iran's Kharg terminal, destroying its engine room and immobilizing it due to defiance of the ma... https://t.me/OSINTdefender/19110
 - `MiddleEastEye_TG` `2026-06-04T05:02:45+00:00` PSE / conflict_signal conf=0.96, sev=0.60: Progressive candidate Adam Hamawy has won the Democratic primary for New Jersey’s 12th Congressional District. Hamawy, a US Army veteran and surgeon who volunteered in Gaza duri... https://t.me/MiddleEastEye_TG/21884
-- `KyivIndependent_official` `2026-06-04T04:53:14+00:00` UKR / strike conf=0.97, sev=0.75: ⚡️Russian drone attack targets infrastructure in Kyiv suburb, injuring 1. A Russian drone struck infrastructure in the Boryspil region of Kyiv Oblast overnight on June 4, sparki... https://t.me/KyivIndependent_official/53488
 
 ### Possible Duplicate Groups
 
