@@ -1,13 +1,99 @@
 {
-  "generated_at": "2026-07-06T04:18:30.502201+00:00",
+  "generated_at": "2026-07-06T08:48:19.898971+00:00",
   "source": "telegram_allowlist",
   "filters": {
     "since_days": 30,
     "min_confidence": 0.0,
     "conflict_only": true
   },
-  "event_count": 163,
+  "event_count": 165,
   "events": [
+    {
+      "event_id": "e9599c025913844515b078ce",
+      "is_conflict_related": true,
+      "country": "TUR",
+      "location_name": "ankara",
+      "latitude": 38.9637,
+      "longitude": 35.2433,
+      "location_precision": "country",
+      "event_type": "conflict_signal",
+      "severity": 0.78,
+      "confidence": 0.95,
+      "summary": "Zelensky: Russia launched 68 missiles and 351 drones overnight. At least 11 people killed, 60 wounded. Urging NATO to take strong decisions at the summit in Ankara https://liveuamap.com/en/2026/6-july-07-zelensky-russia...",
+      "matched_keywords": [
+        "killed",
+        "wounded"
+      ],
+      "channel": "liveuamap",
+      "message_id": "12204",
+      "message_time": "2026-07-06T07:29:58+00:00",
+      "raw_text": "Zelensky: Russia launched 68 missiles and 351 drones overnight. At least 11 people killed, 60 wounded. Urging NATO to take strong decisions at the summit in Ankara https://liveuamap.com/en/2026/6-july-07-zelensky-russia-launched-68-missiles-and-351-drones",
+      "url": "https://t.me/liveuamap/12204",
+      "source_reliability": 0.75,
+      "region_hint": "global",
+      "ko_raw_summary": "젤렌스키 대통령은 러시아가 하룻밤 사이에 68발의 미사일과 351대의 드론을 발사했다고 밝혔으며, 최소 11명이 사망하고 60명이 부상했다고 전했습니다. 그는 안카라에서 열리는 NATO 정상회의에서 강력한 결정을 촉구하고 있습니다. 이 내용은 확인되지 않은 주장임을 유의해야 합니다.",
+      "ko_raw_brief": "젤렌스키, 러시아의 대규모 미사일·드론 공격과 NATO 결의 촉구 주장",
+      "ko_raw_source_limits": "해당 내용은 젤렌스키 대통령 측의 주장으로 독립적으로 확인되지 않았습니다.",
+      "ko_raw_summary_model": "gpt-4.1-mini"
+    },
+    {
+      "event_id": "c5b6a2364f8ce19988b8f136",
+      "is_conflict_related": true,
+      "country": "UKR",
+      "location_name": "kyiv",
+      "latitude": 50.4501,
+      "longitude": 30.5234,
+      "location_precision": "city",
+      "event_type": "strike",
+      "severity": 0.98,
+      "confidence": 0.97,
+      "summary": "⚡️Update: Death toll rises to 11 following Russia’s massive attack on Kyiv, region. The number of people killed in Russia’s overnight missile and drone attack has risen to 11, local authorities reported on July 6, after...",
+      "matched_keywords": [
+        "missile",
+        "drone",
+        "attack",
+        "killed"
+      ],
+      "channel": "KyivIndependent_official",
+      "message_id": "54092",
+      "message_time": "2026-07-06T06:18:49+00:00",
+      "raw_text": "⚡️Update: Death toll rises to 11 following Russia’s massive attack on Kyiv, region.\n\nThe number of people killed in Russia’s overnight missile and drone attack has risen to 11, local authorities reported on July 6, after emergency crews recovered more victims from the rubble of struck residential buildings.\n\nAt least 46 others have been reported injured across the capital and the surrounding region.",
+      "url": "https://t.me/KyivIndependent_official/54092",
+      "source_reliability": 0.85,
+      "region_hint": "ukraine",
+      "ko_raw_summary": "러시아의 대규모 미사일 및 드론 공격으로 인해 키이우 및 주변 지역의 사망자 수가 11명으로 증가했다고 현지 당국이 7월 6일 보고했습니다. 이번 공격으로 최소 46명이 부상을 입었으며, 구조대가 잔해에서 추가 희생자를 발견했습니다.",
+      "ko_raw_brief": "러시아의 키이우 미사일·드론 공격으로 사망 11명, 부상 46명 발생",
+      "ko_raw_source_limits": "이 정보는 현지 당국 발표에 기반하며 독립적 확인이 필요합니다.",
+      "ko_raw_summary_model": "gpt-4.1-mini"
+    },
+    {
+      "event_id": "9247440c6d65a22ed4d47808",
+      "is_conflict_related": true,
+      "country": "UKR",
+      "location_name": "kyiv",
+      "latitude": 50.4501,
+      "longitude": 30.5234,
+      "location_precision": "city",
+      "event_type": "conflict_signal",
+      "severity": 0.83,
+      "confidence": 0.97,
+      "summary": "⚡️Update: 10 killed, 56 injured in Kyiv, surrounding region following massive Russian attack on apartment buildings. The casualty count has risen to include 10 deceased and a further 56 injured victims in the overnight...",
+      "matched_keywords": [
+        "attack",
+        "killed"
+      ],
+      "channel": "KyivIndependent_official",
+      "message_id": "54091",
+      "message_time": "2026-07-06T04:47:14+00:00",
+      "raw_text": "⚡️Update: 10 killed, 56 injured in Kyiv, surrounding region following massive Russian attack on apartment buildings.\n\nThe casualty count has risen to include 10 deceased and a further 56 injured victims in the overnight Russian attack on Ukraine's capital region.",
+      "url": "https://t.me/KyivIndependent_official/54091",
+      "source_reliability": 0.85,
+      "region_hint": "ukraine",
+      "ko_raw_summary": "러시아의 대규모 공격으로 키예프와 주변 지역의 아파트 건물이 타격을 받아 사망자 10명과 부상자 56명이 발생했다는 소식입니다. 이 정보는 우크라이나 수도 지역에서 발생한 사건에 관한 내용입니다. 현재까지 공식 확인 여부는 명시되지 않았습니다.",
+      "ko_raw_brief": "키예프에 러시아 대규모 공격, 10명 사망·56명 부상",
+      "ko_raw_source_limits": "이는 채널의 주장으로, 공식 확인 여부는 명시되지 않았습니다.",
+      "ko_raw_summary_model": "gpt-4.1-mini"
+    },
     {
       "event_id": "0af0836af367a5a2ed842252",
       "is_conflict_related": true,
@@ -30,9 +116,9 @@
       "url": "https://t.me/KyivIndependent_official/54090",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 군이 7월 6일 야로슬라블의 러시아 석유 정제소를 공격했다고 러시아 텔레그램 채널들이 보도했습니다. 이는 우크라이나 측에서 보고된 공습으로 보입니다만, 독립적인 확인은 아직 없습니다.",
-      "ko_raw_brief": "우크라이나, 야로슬라블 러시아 석유 정제소 공격 보도",
-      "ko_raw_source_limits": "정보는 러시아 텔레그램 채널에 기반하며 독립적 검증은 이루어지지 않았습니다.",
+      "ko_raw_summary": "우크라이나 군이 7월 6일 새벽 러시아 야로슬라블의 석유 정제소를 공격했다는 보도가 러시아 텔레그램 매체 채널들에서 나왔다. 이는 우크라이나가 러시아 내 특정 시설을 공격했다는 주장이다.",
+      "ko_raw_brief": "우크라이나, 러시아 야로슬라블 석유 정제소 공격 주장",
+      "ko_raw_source_limits": "이는 우크라이나의 공격 주장에 대한 보도로, 독립적으로 확인된 정보는 아니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -58,9 +144,9 @@
       "url": "https://t.me/KyivIndependent_official/54089",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아의 대규모 공격으로 우크라이나 수도 키예프와 인근 지역에서 최소 8명이 사망하고 34명이 부상당했다고 공식 발표되었습니다. 이 정보는 아직 최종 확인 중입니다.",
-      "ko_raw_brief": "러시아의 대규모 공격으로 키예프에서 최소 8명 사망·34명 부상",
-      "ko_raw_source_limits": "제공된 정보는 현지 공식 발표에 기반하나 추가 확인이 필요합니다.",
+      "ko_raw_summary": "러시아의 대규모 야간 공격으로 우크라이나 수도 키예프와 주변 지역에서 최소 8명이 사망하고 34명이 부상당했다고 당국이 보고했습니다. 이 수치는 계속 증가하고 있으며, 상황이 심각함을 나타냅니다.",
+      "ko_raw_brief": "러시아의 대규모 야간 키예프 공격, 최소 8명 사망",
+      "ko_raw_source_limits": "이 정보는 로컬 당국 보고에 기반하며, 독립적인 검증이 필요할 수 있습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -86,9 +172,9 @@
       "url": "https://t.me/KyivIndependent_official/54088",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아의 대규모 야간 공격으로 키예프 및 주변 지역에서 최소 4명이 사망하고 18명이 부상했다고 현지 당국이 밝혔다. 이 메시지는 확인된 피해 상황에 대한 공식 발표를 포함하고 있다.",
-      "ko_raw_brief": "키예프 대규모 러시아 공격으로 최소 4명 사망·18명 부상",
-      "ko_raw_source_limits": "현지 당국 발표에 근거하나 현장 상황의 완전한 확인은 제한될 수 있음",
+      "ko_raw_summary": "우크라이나 키예프에서 러시아의 대규모 야간 공격으로 최소 4명이 사망하고 18명이 부상당했다고 현지 당국이 발표했습니다. 이는 키예프 및 인근 지역에서 발생한 사건입니다.",
+      "ko_raw_brief": "러시아의 키예프 대규모 공격으로 최소 4명 사망·18명 부상",
+      "ko_raw_source_limits": "해당 정보는 현지 당국 발표를 인용한 것으로, 추가 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -113,9 +199,9 @@
       "url": "https://t.me/KyivIndependent_official/54087",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아가 키이우와 인근 지역의 아파트 단지를 대상으로 대규모 공격을 감행해 최소 11명이 부상당했다고 당국이 보고했습니다. 부상자 수는 증가 중인 상황입니다.",
-      "ko_raw_brief": "키이우 아파트 단지에 러시아 대규모 공격, 11명 부상",
-      "ko_raw_source_limits": "해당 내용은 당국 보고를 기반으로 하나, 부상자 수 등 세부 사항은 추가 확인이 필요합니다.",
+      "ko_raw_summary": "러시아가 키이우와 인근 지역 아파트 단지를 대상으로 대규모 공격을 감행해 최소 11명이 부상했습니다. 해당 사건은 공식 보고를 통해 확인되었습니다.",
+      "ko_raw_brief": "러시아, 키이우 아파트 단지 대규모 공격으로 11명 부상",
+      "ko_raw_source_limits": "사건 정보는 공식 보고를 기반으로 하나, 추가 세부사항과 피해 상황은 아직 제한적임.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -140,9 +226,9 @@
       "url": "https://t.me/KyivIndependent_official/54086",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "키이우와 주변 지역에서 대규모 공격으로 최소 6명이 부상했다고 보고되었습니다. 키이우 시장 비탈리 클리츠코는 수도에서 3명이 부상했으며, 키이우 주 부차에서도 3명이 부상했다고 밝혔습니다.",
-      "ko_raw_brief": "키이우 및 인근 지역 대규모 공격으로 최소 6명 부상",
-      "ko_raw_source_limits": "이 내용은 현지 당국 발표를 인용한 초기 보고로, 상황은 변동 가능성이 있으며 추가 확인이 필요합니다.",
+      "ko_raw_summary": "키예프 및 인근 지역에 대한 대규모 공격으로 최소 6명이 부상당했다고 키예프 시장 비탈리 클리치코가 보고했습니다. 이 중 3명은 수도 키예프에서, 나머지 3명은 키예프 주의 부차에서 부상했습니다. 이는 러시아의 대규모 공격으로 추정됩니다.",
+      "ko_raw_brief": "키예프 및 주변 지역 대규모 공격으로 최소 6명 부상",
+      "ko_raw_source_limits": "이 정보는 키예프 시장의 보고를 기반으로 한 것으로, 공식 확인된 피해 규모나 세부 상황은 더 조사될 필요가 있습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -168,9 +254,9 @@
       "url": "https://t.me/KyivIndependent_official/54085",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아가 키예프에 대한 대규모 공격을 감행하면서 포딜스키 지역의 주거 건물 일부가 심각하게 파손되었다고 키예프시 군사행정 책임자가 보고했다. 현재 부상자에 대한 구체적인 정보는 없으나 시장은 주민들이 피해 건물에 갇혀 있다고 전했다. 이는 러시아의 최신 대규모 야간 공격의 일환이다.",
-      "ko_raw_brief": "키예프에 러시아 대규모 공격, 주거 건물 피해 발생",
-      "ko_raw_source_limits": "해당 정보는 현지 관계자의 보고를 바탕으로 하며 부상자 등 구체 피해 현황은 아직 확인되지 않았다.",
+      "ko_raw_summary": "키이우의 포딜스키 구역에서 러시아의 대규모 공격으로 주거 건물 일부가 파손되었다고 키이우 시 군사 행정 책임자가 보고했다. 건물 7층에서 9층 사이가 부분 파괴되었으며, 주민들이 건물에 갇혀 있다는 시장의 발언이 있었다. 아직 사상자에 관한 구체적인 정보는 확인되지 않았다.",
+      "ko_raw_brief": "러시아 대규모 공격으로 키이우 주거지 피해 및 주민 갇힘 발생",
+      "ko_raw_source_limits": "정보는 현지 당국자의 초기 보고에 기반하며, 사상자 등 세부 사항은 아직 확인되지 않았음.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -197,9 +283,9 @@
       "url": "https://t.me/KyivIndependent_official/54084",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "키이우에서 다수의 미사일과 드론 공격이 발생해 폭발음이 들렸다는 보도가 있습니다. 현지 기자에 따르면 7월 5일 현지 시간 새벽 1시 40분경 폭발음이 감지되었으며, 우크라이나 공군은 수도에 여러 미사일이 접근 중이라고 경고했습니다.",
-      "ko_raw_brief": "키이우에서 대규모 미사일·드론 공격 발생, 폭발음 보고",
-      "ko_raw_source_limits": "해당 정보는 키이우 독립 언론과 우크라이나 공군 발표를 바탕으로 한 보도이며, 추가 확인이 필요합니다.",
+      "ko_raw_summary": "러시아가 대규모 미사일 및 드론 공격을 개시하면서 키예프에서 폭발음이 들렸다는 보고가 있습니다. 현지 시간으로 오전 1시 40분에 키예프 독립 언론 기자가 폭발음을 확인했으며, 우크라이나 공군은 수십 발의 미사일이 수도를 향해 접근 중이라고 경고했습니다. 이 정보는 현장 기자 및 군 경고에 기반한 것입니다.",
+      "ko_raw_brief": "키예프에서 러시아의 대규모 미사일·드론 공격으로 폭발음 발생",
+      "ko_raw_source_limits": "현장 기자 및 군 경고에 따른 초기 보고로 정확한 피해 규모나 결과는 아직 확인되지 않았습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -224,9 +310,9 @@
       "url": "https://t.me/KyivIndependent_official/54082",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "볼로디미르 젤렌스키 우크라이나 대통령은 러시아가 우크라이나에 대한 새로운 대규모 공격을 준비 중이라 경고하며, 동맹국들에 패트리어트 미사일 방어체계의 신속한 공급을 촉구했다. 이 메시지는 러시아의 공격 준비에 관한 경고성 발언을 담고 있다.",
-      "ko_raw_brief": "젤렌스키, 러시아의 대규모 우크라 공격 준비 경고",
-      "ko_raw_source_limits": "본 내용은 젤렌스키 대통령의 경고 발언으로, 실제 공격 발생 여부는 확인되지 않음.",
+      "ko_raw_summary": "볼로디미르 젤렌스키 우크라이나 대통령은 러시아가 우크라이나에 대한 새로운 대규모 공격을 준비하고 있다고 경고했다. 그는 동맹국들에게 패트리어트 방공 미사일의 신속한 지원을 요청했다.",
+      "ko_raw_brief": "젤렌스키 대통령, 러시아의 대규모 공격 준비 경고",
+      "ko_raw_source_limits": "이 내용은 젤렌스키 대통령의 경고 성명으로, 확인되지 않은 주장이 포함되어 있을 수 있습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -251,9 +337,9 @@
       "url": "https://t.me/KyivIndependent_official/54080",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 공군에 따르면, 러시아는 지난 하루 동안 125대의 장거리 샤헤드형 카미카제 드론과 대레이더 미사일, 유도 공대공 미사일 3발을 발사했습니다. 이 공격으로 7명이 사망하고 39명이 부상당한 것으로 알려졌습니다.",
-      "ko_raw_brief": "러시아, 우크라이나에 집중 공격…7명 사망·39명 부상",
-      "ko_raw_source_limits": "우크라이나 공군의 주장에 기반한 정보로, 독립적인 확인은 없습니다.",
+      "ko_raw_summary": "우크라이나 공군에 따르면, 지난 하루 동안 러시아가 125대의 장거리 카타르식 드론, 대레이더 미사일, 3개의 유도 공대공 미사일을 발사했다. 이 공격으로 7명이 사망하고 39명이 부상당했다.",
+      "ko_raw_brief": "러시아, 우크라이나에 대규모 드론 및 미사일 공격 감행",
+      "ko_raw_source_limits": "해당 정보는 우크라이나 공군 발표를 기반으로 하며 독립적 확인이 필요하다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -278,9 +364,9 @@
       "url": "https://t.me/KyivIndependent_official/54077",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "볼로디미르 젤렌스키 우크라이나 대통령이 7월 4일 오데사에서 부상군인들과 재향군인들을 만나 의료시설을 방문하고 별도의 행사에 참석했다. 이는 분쟁 상황과 관련된 직접적인 보고가 아닌 대통령의 공식 방문 소식이다.",
-      "ko_raw_brief": "젤렌스키 대통령, 오데사 부상군인 및 재향군인 방문",
-      "ko_raw_source_limits": "제공된 메시지는 대통령 방문에 관한 내용으로, 분쟁 상황의 직접적인 피해 보고나 확인된 사건은 아님.",
+      "ko_raw_summary": "볼로디미르 젤렌스키 우크라이나 대통령이 7월 4일 오데사에서 부상당한 군인들과 재향군인들을 방문했다. 그는 의료 시설을 찾아 부상자들을 위로하고 별도의 행사에도 참석했다.",
+      "ko_raw_brief": "젤렌스키 대통령, 오데사서 부상 군인 및 재향군인 방문",
+      "ko_raw_source_limits": "이 메시지는 공식 방문 사실을 전했으며, 추가 피해나 사건 내용은 포함하지 않는다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -305,9 +391,9 @@
       "url": "https://t.me/KyivIndependent_official/54074",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 수도 키이우의 다르니츠키 구역에서 러시아 공격으로 인한 주거 건물 피해로 인명 피해가 발생했다. 우크라이나 국가비상서비스에 따르면 7월 2일 러시아의 대규모 공격으로 31명이 사망하고 102명이 부상했다. 7월 4일에 수색 및 구조 작업이 종료되었다.",
-      "ko_raw_brief": "러시아 공격으로 키이우 주거지 31명 사망·102명 부상 확인",
-      "ko_raw_source_limits": "본 정보는 우크라이나 국가비상서비스의 보고를 기반으로 하며, 현장 상황과 향후 확인에 따라 변경될 수 있습니다.",
+      "ko_raw_summary": "키이우 다르니츠키 구역의 주거 건물에 대한 러시아의 공격으로 사망자 31명, 부상자 102명이 발생했다고 우크라이나 국가비상서비스(DSNS)가 밝혔습니다. 7월 4일 기준으로 수색 및 구조 활동이 종료되었습니다.",
+      "ko_raw_brief": "키이우 주거지 건물 러시아 공격, 사망 31명 부상 102명",
+      "ko_raw_source_limits": "이 정보는 우크라이나 국가비상서비스(DSNS)의 발표에 기반하며, 현장 상황의 추가 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -332,9 +418,9 @@
       "url": "https://t.me/OSINTdefender/19384",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "우크라이나 대통령 젤렌스키가 우크라이나군이 공격한 이후 상트페테르부르크 석유 터미널이 불타는 모습을 공개했다. 그는 이 공격이 러시아의 전쟁 노력을 저해하기 위한 장기 제재의 일환이라고 설명했다. 해당 내용은 확인되지 않은 주장임을 유의해야 한다.",
-      "ko_raw_brief": "상트페테르부르크 석유 터미널 우크라이나군 공격 주장 공개",
-      "ko_raw_source_limits": "이 정보는 우크라이나 대통령의 주장에 기반한 것으로 독립적 확인이 필요하다.",
+      "ko_raw_summary": "우크라이나 대통령 젤렌스키는 우크라이나군이 상트페테르부르크의 석유 터미널을 공격해 불타는 장면을 공개했다. 그는 이번 공격이 러시아에 대한 장기 제재의 일환이라고 설명하면서 러시아의 전쟁 노력을 방해하려는 목적이라고 밝혔다. 이 메시지는 확인되지 않은 주장임을 유의해야 한다.",
+      "ko_raw_brief": "상트페테르부르크 석유 터미널 불타는 영상 공개, 우크라 작전이라 주장",
+      "ko_raw_source_limits": "공격 주장은 공식 확인 없이 우크라이나 대통령 발표에 기반함.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -359,9 +445,9 @@
       "url": "https://t.me/OSINTdefender/19383",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "러시아가 제란-4와 같은 제트 추진 무인기를 사용하여 키이우를 공격하고 있으며, 이 무인기는 시속 310마일까지 도달해 우크라이나 방공망이 요격하기 어렵다고 합니다. 이러한 무인기 공격이 늘면서 민간인 피해와 피해가 심각해지고 있다는 주장이 나오고 있습니다. 이는 확인된 사실보다는 주장에 해당합니다.",
-      "ko_raw_brief": "러시아, 제란-4 무인기로 키이우 공격 증가 주장",
-      "ko_raw_source_limits": "본 내용은 주장에 근거하며 독립적인 확인이 필요합니다.",
+      "ko_raw_summary": "러시아가 최고 시속 310마일에 달하는 제란-4 같은 새로운 제트 추진 드론을 사용해 키이우를 공격하고 있습니다. 이 드론은 우크라이나 방공망이 요격하기 어려우며, 민간인 사상자와 피해를 증가시키는 데 기여하고 있습니다. 해당 내용은 확인되지 않은 주장임을 유의해야 합니다.",
+      "ko_raw_brief": "러시아, 신형 제트 추진 드론으로 키이우 공격 중",
+      "ko_raw_source_limits": "본 정보는 주장에 기반하며 독립적인 검증이 이루어지지 않았습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -386,9 +472,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22121",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "이란인들이 최고 지도자 알리 하메네이의 장례식을 앞두고 테헤란 거리에서 추모 집회를 벌이고 있다. 하메네이는 1989년부터 이란을 이끌었으며, 이번 메시지에서는 2월 28일 미국과 이스라엘의 공습으로 사망했다고 주장하고 있다. 장례식은 토요일부터 시작해 다음 주 목요일까지 진행될 예정이다.",
-      "ko_raw_brief": "이란 최고 지도자 하메네이 사망 추모 집회 진행 중",
-      "ko_raw_source_limits": "이 정보는 주장이 포함되어 있으며, 하메네이 사망 원인은 독립적으로 확인되지 않았다.",
+      "ko_raw_summary": "이란 국민들이 최고 지도자 카메네이를 추모하기 위해 테헤란 거리로 나왔다. 카메네이는 2월 28일 미-이스라엘 합동 공습으로 사망했다는 주장이 포함되어 있으나 이는 확인되지 않았다. 장례식은 토요일부터 시작하여 다음 주 목요일에 마슈하드에서 거행될 예정이다.",
+      "ko_raw_brief": "이란 최고 지도자 카메네이 사망 및 추모 집회 보도(미-이스라엘 공습 주장 포함)",
+      "ko_raw_source_limits": "카메네이 사망이 미-이스라엘 공습 때문이라는 점은 채널 주장으로 공식 확인되지 않았음.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -413,9 +499,9 @@
       "url": "https://t.me/KyivIndependent_official/54067",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아 상트페테르부르크의 석유 터미널이 우크라이나 무인기에 의해 공격받았다고 현지 Telegram 매체들이 보도했습니다. 이 공격은 7월 4일 이른 새벽에 발생했으며, 우크라이나 군이 관련된 것으로 알려졌으나 공식 확인은 없습니다.",
-      "ko_raw_brief": "우크라이나 무인기의 상트페테르부르크 석유 터미널 공격 보도",
-      "ko_raw_source_limits": "정보는 러시아 텔레그램 매체를 통해 전해진 주장으로, 공식 확인이 이루어지지 않았습니다.",
+      "ko_raw_summary": "러시아 상트페테르부르크의 석유 터미널이 우크라이나 군대의 드론 공격을 받았다는 러시아 텔레그램 미디어 채널의 보도가 있습니다. 이는 7월 4일 새벽에 발생한 사건으로 알려졌습니다. 해당 정보는 보도 내용에 근거한 주장으로 확인된 사실 여부는 명확하지 않습니다.",
+      "ko_raw_brief": "우크라이나 군, 상트페테르부르크 석유 터미널 드론 공격 보도",
+      "ko_raw_source_limits": "정보는 러시아 텔레그램 미디어 채널의 보도에 기초한 주장으로, 사실 확인 여부는 불분명합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -441,9 +527,9 @@
       "url": "https://t.me/KyivIndependent_official/54065",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나가 7월 4일 러시아 벨고로드시에 미사일 공격을 감행해 주요 기반시설을 타격하고 도시 전역에 전력 및 수도 공급이 중단되었다고 관계자가 전했다. 이 공격으로 광범위한 정전 사태가 발생했으며 현지 주민들과 임시 주지사가 이를 확인했다.",
-      "ko_raw_brief": "우크라이나, 벨고로드 미사일 공격으로 도시 전력·수도 중단",
-      "ko_raw_source_limits": "해당 내용은 현지 관계자와 목격자 주장에 기반하며 독립적 검증이 필요함.",
+      "ko_raw_summary": "우크라이나가 러시아 벨고로드에 미사일 공격을 가해 주요 기반시설을 타격하고 도시 전체에 전력과 수도 공급이 중단되었다고 현지 관원과 목격자들이 전했다. 이 공격은 7월 4일 새벽에 이루어졌다. 이는 공식 발표로 확인된 사실에 기반한 정보이다.",
+      "ko_raw_brief": "우크라이나, 러시아 벨고로드 주요 기반시설 미사일 공격",
+      "ko_raw_source_limits": "해당 정보는 현지 행정관과 목격자들의 발언에 기반한 것으로 현장 상황에 따라 변동 가능성이 있음.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -470,9 +556,9 @@
       "url": "https://t.me/KyivIndependent_official/54064",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "수미 지역에 러시아의 공습으로 4명이 사망하고 27명이 부상했습니다. 사망자 중에는 5세 소녀와 그녀의 어머니도 포함되어 있으며, 공격은 7월 3일 인구가 많은 주거지에 6발의 유도 공습 폭탄이 떨어졌습니다. 부상자 중에는 여러 어린이도 포함되어 있습니다.",
-      "ko_raw_brief": "수미 러시아 공습으로 4명 사망, 27명 부상",
-      "ko_raw_source_limits": "해당 정보는 수미 당국 발표에 따른 것으로, 독립적 확인이 필요합니다.",
+      "ko_raw_summary": "수미(Sumy)에 러시아 공습으로 4명이 사망하고 27명이 부상했습니다. 희생자 중에는 5세 소녀와 그녀의 어머니가 포함되어 있으며, 7월 3일 6발의 유도폭탄이 거주 밀집 지역을 강타했습니다. 부상자 중 다수는 어린이입니다.",
+      "ko_raw_brief": "수미에 러시아 공습으로 4명 사망, 27명 부상",
+      "ko_raw_source_limits": "정보는 현지 당국 발표에 기반하며 추가 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -497,9 +583,9 @@
       "url": "https://t.me/KyivIndependent_official/54063",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아 대통령 블라디미르 푸틴은 우크라이나에 대한 대규모 미사일 공격을 계속해야 한다고 발언했다. 그는 우크라이나 군사산업단지 및 그 운영 지원 시설에 대한 조직적인 대규모 타격이 지속되어야 한다고 강조했다. 이 메시지는 확인된 사건 보고가 아닌 푸틴의 발언임을 명확히 해야 한다.",
-      "ko_raw_brief": "푸틴, 우크라이나에 대한 대규모 미사일 공격 계속 촉구",
-      "ko_raw_source_limits": "이 내용은 러시아 대통령의 발언으로, 실제 공격 상황에 대한 독립적 확인은 제공되지 않았다.",
+      "ko_raw_summary": "푸틴 러시아 대통령은 우크라이나 군수산업단지 및 지원 시설에 대한 대규모 미사일 공격이 계속되어야 한다고 발언했습니다. 이 메시지는 러시아의 정책 방향에 관한 주장으로, 확인된 사건 보고는 아닙니다.",
+      "ko_raw_brief": "푸틴, 우크라이나 미사일 대량 공격 지속 지시 발언",
+      "ko_raw_source_limits": "이는 러시아 대통령 발언에 따른 주장으로, 실제 공격 지속 여부나 구체적 피해는 확인되지 않았습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -524,9 +610,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22119",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "텔아비브에서 이스라엘 시민들이 2023년 10월 7일 하마스의 공격 1,000일을 맞아 정부를 규탄하는 집회를 열었습니다. 시위대는 국가 조사위원회 구성을 요구하며 정부의 책임을 촉구했습니다. 이는 공식 확인된 사건이 아니라 시위 및 정치적 주장의 일환입니다.",
-      "ko_raw_brief": "텔아비브서 이스라엘 정부 규탄 시위 열려",
-      "ko_raw_source_limits": "제공된 메시지는 시위와 정치적 주장을 담고 있으며 공식 확인된 사건은 아닙니다.",
+      "ko_raw_summary": "이스라엘 텔아비브에서 2023년 10월 7일 하마스 공격 1,000일을 맞아 정부에 대한 항의 집회가 열렸습니다. 참가자들은 정부의 책임을 묻기 위해 국가 조사위원회 설치를 요구했습니다. 이는 확인된 사건이라기보다는 정부 비판과 집회 발생을 알리는 내용입니다.",
+      "ko_raw_brief": "텔아비브에서 하마스 공격 1,000일 맞아 정부 규탄 집회 발생",
+      "ko_raw_source_limits": "제공된 메시지는 공식 확인된 사건보다 집회 및 요구 사항을 전달하는 내용으로, 실제 영향과 결과에 대한 추가 검증이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -551,9 +637,9 @@
       "url": "https://t.me/KyivIndependent_official/54062",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "수미 시내에서 러시아의 공습으로 어린이를 포함해 4명이 사망하고 최소 20명이 부상당했습니다. 주지사 오레흐 흐리호로프에 따르면 러시아 드론과 활공 폭탄이 시내 아파트를 타격했습니다. 부상자 중 여러 명은 중태입니다.",
-      "ko_raw_brief": "수미 도심 러시아 공습, 4명 사망·20명 부상",
-      "ko_raw_source_limits": "제공된 정보는 현지 주지사의 발언에 기반하며 독립 확인은 없습니다.",
+      "ko_raw_summary": "수미 도심에 러시아의 공습이 발생해 아동 1명을 포함해 4명이 사망하고 최소 20명이 부상당했습니다. 올레흐 흐리호로프 주지사는 러시아 드론과 활공폭탄이 아파트를 강타했다고 밝혔습니다. 현재 부상자 중 다수가 병원에 입원해 있으며, 몇몇은 중태입니다.",
+      "ko_raw_brief": "수미 도심 러시아 공습으로 4명 사망, 20명 부상",
+      "ko_raw_source_limits": "정보는 주지사의 발언에 기초하며 외부 확인 필요",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -578,9 +664,9 @@
       "url": "https://t.me/KyivIndependent_official/54061",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 드론 공격으로 인해 러시아의 주요 정유소인 루코일-니즈네고로드르신테즈 공장이 다시 가동 중단했다. 이 시설은 러시아에서 네 번째로 큰 정유소이자 루코일의 최대 정유소이다.",
-      "ko_raw_brief": "우크라이나 드론 공격으로 러시아 대형 정유소 가동 중단",
-      "ko_raw_source_limits": "이 정보는 텔레그램 채널의 주장으로, 독립적 확인이 필요하다.",
+      "ko_raw_summary": "러시아의 대형 정유 공장인 루코일-니즈헤고로드르신테즈가 우크라이나 무인기 공격으로 인해 다시 가동 중단 상태에 들어갔습니다. 이 공장은 러시아 내에서 네 번째로 큰 정유 시설이며 가솔린 생산량 기준으로 두 번째로 큽니다. 이 정보는 공격이 확인된 사건임을 시사하지만, 구체적인 피해 규모나 추가 상황은 언급되지 않았습니다.",
+      "ko_raw_brief": "러시아 대형 정유공장, 우크라 무인기 공격으로 또 가동 중단",
+      "ko_raw_source_limits": "정보는 우크라이나 무인기 공격으로 인한 정유공장 가동 중단을 보도하나, 피해 규모와 추가 상황에 대한 상세 확인은 필요함.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -605,9 +691,9 @@
       "url": "https://t.me/OSINTdefender/19379",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "젤렌스키 대통령은 러시아의 키이우 공격 이후 우크라이나의 방공능력 강화를 위해 패트리어트 미사일의 국내 생산 필요성을 강조했습니다. 그는 국내 생산이 생명 보호와 국가 안보 강화에 필수적이라고 믿고 있습니다. 이 메시지는 확인된 사건보다는 주장의 성격을 띱니다.",
-      "ko_raw_brief": "젤렌스키, 패트리어트 미사일 국내 생산 필요성 강조",
-      "ko_raw_source_limits": "이 메시지는 공식 확인된 사건이 아니라 주장의 형태입니다.",
+      "ko_raw_summary": "젤렌스키 대통령은 최근 러시아의 키이우 대규모 공격 이후 우크라이나가 자체적으로 패트리엇 미사일을 생산해야 한다고 강조했습니다. 그는 국내 생산이 국민 생명 보호와 국가 안보 강화에 필수적이라고 믿고 있습니다.",
+      "ko_raw_brief": "젤렌스키, 패트리엇 미사일 국내 생산 필요성 강조",
+      "ko_raw_source_limits": "발언은 공식 주장이며, 독립적인 사건 확인은 필요함.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -632,9 +718,9 @@
       "url": "https://t.me/OSINTdefender/19377",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "우크라이나가 크림을 포함한 러시아 군 공군 기지에 대한 드론 공격을 감행했다고 보도되었습니다. 젤렌스키 대통령은 이러한 작전이 러시아에 대한 군사 압박을 강화하고 전쟁 종식을 강요하기 위한 광범위한 캠페인의 일환이라고 밝혔습니다. 해당 내용은 확인되지 않은 주장으로, 상황 추이를 지켜볼 필요가 있습니다.",
-      "ko_raw_brief": "우크라이나, 크림 등 러시아 군사기지에 드론 공격 단행 주장",
-      "ko_raw_source_limits": "이 메시지는 우크라이나 측의 주장에 기반하며 독립적 확인이 필요합니다.",
+      "ko_raw_summary": "우크라이나가 러시아의 군사 공항을 대상으로 크림반도를 포함해 드론 공격을 실시했다고 우크라이나 대통령 젤렌스키가 밝혔다. 이는 러시아에 대한 군사 압박을 강화하고 전쟁 종식을 촉구하기 위한 전략의 일환으로 알려졌다. 해당 내용은 주장으로, 추가 확인이 필요하다.",
+      "ko_raw_brief": "우크라이나, 크림 포함 러시아 군사공항에 드론 공격 개시 주장",
+      "ko_raw_source_limits": "이 정보는 우크라이나 대통령 발언에 기반한 주장으로, 독립적 검증이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -661,9 +747,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22118",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "가자지구의 디르엘발라 지역에서 팔레스타인 난민들이 2023년 10월 7일 하마스가 주도한 공격 이후 시작된 이스라엘의 공격과 봉쇄로 인한 강제 이주 및 파괴가 1,000일째 접어들었음을 기념했다. 가자지구 정부 미디어 사무소에 따르면, 이 기간 동안 7만 3천명 이상이 사망했고 2만 명 이상의 어린이가 포함되었다고 주장한다. 또한 가자지구의 90% 이상이 파괴됐으며, 이스라엘군이 80%의 영토를 통제하고 있다고 보고되었다.",
-      "ko_raw_brief": "가자지구 팔레스타인 난민 1,000일간의 이스라엘 공격 및 봉쇄 상황 발표",
-      "ko_raw_source_limits": "제공된 내용은 팔레스타인 측 주장에 기반하며 독립적 검증 정보는 포함되어 있지 않음",
+      "ko_raw_summary": "가자 지구 내 데이르 엘-발라에 있는 팔레스타인 난민들이 2023년 10월 7일 이후 이스라엘의 공격으로 1,000일째 되는 날을 맞이했다고 발표했다. 가자 정부 언론실은 2023년 10월 이후 이스라엘이 7만 3천 명 이상의 팔레스타인을 사망시키고, 2만 1천 5백 명 이상의 어린이 포함, 9,500명 이상이 실종되었으며 17만 3천 명 이상이 부상했다고 밝혔다. 또한 이스라엘이 가자 지구의 90% 이상을 파괴했고, 현재 영토의 80%를 통제하고 있다고 전했다.",
+      "ko_raw_brief": "팔레스타인 난민, 이스라엘 공격 1,000일 맞아 피해 현황 발표",
+      "ko_raw_source_limits": "제공된 정보는 팔레스타인 당국 발표를 기반으로 하며 독립적인 확인은 필요함.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -688,9 +774,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22117",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "Dr Nika Soon-Shiong은 팔레스타인 언론인 사망자 집계에서 팔레스타인인을 광범위하게 제외하려는 결정에 반대하다가 언론인보호위원회(CPJ) 이사회에서 해임되었다고 밝혔다. CPJ는 최근 이스라엘-가자 전쟁 기간 사망 언론인 기록을 재검토했고, 무장 단체 구성원으로 확인된 20명을 명단에서 제외했다. Soon-Shiong은 CPJ가 '언론인' 정의를 재정의하려는 움직임에 우려를 표명했으며, 이후 CPJ 이사회는 원래 정의를 재확인하는 결정을 내렸다.",
-      "ko_raw_brief": "CPJ 이사회 해임과 팔레스타인 언론인 사망자 집계 논란",
-      "ko_raw_source_limits": "이 내용은 내부 정책 및 정의 변경에 관한 주장과 반발을 다루며, 사건의 사실관계에 대한 독립적 검증이 필요함.",
+      "ko_raw_summary": "Dr Nika Soon-Shiong은 팔레스타인 기자들의 사망 통계에서 배제될 위험을 우려하며 기자 보호 위원회(CPJ) 이사회에서 해임되었다고 밝혔다. 지난주 CPJ는 이스라엘-가자 전쟁 중 사망한 기자 명단을 재검토했으며, 무장단체 관련자 20명을 제외했다. Soon-Shiong은 CPJ가 '기자' 정의를 변경하려는 움직임에 우려를 표명했으나, 이후 CPJ 이사회가 기존 정의를 재확인하는 결정을 내렸다.",
+      "ko_raw_brief": "기자 보호 위원회 내 팔레스타인 기자 사망 통계 배제 논란과 이사회 해임 사건",
+      "ko_raw_source_limits": "This is a claim and commentary from Dr Nika Soon-Shiong and does not confirm independent verification of incidents or changes by the CPJ.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -715,9 +801,9 @@
       "url": "https://t.me/KyivIndependent_official/54053",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아의 대규모 공격으로 키이우의 대기질이 급격히 악화되었으며, 연기와 안개가 수도 상공에 남아있다. 당국은 주민들에게 창문을 닫고 외출을 자제하며 수분 섭취와 공기청정기 사용을 권고하고 있다. 이는 확인된 사건에 대한 보도이다.",
-      "ko_raw_brief": "러시아 대규모 공격 후 키이우 대기질 급격 악화",
-      "ko_raw_source_limits": "해당 정보는 키이우 지역 당국 및 현지 보도에 기반하였으나, 추가 확인이 필요할 수 있음.",
+      "ko_raw_summary": "러시아가 전쟁 중 수도 키이브를 대상으로 한 최대 공격 이후, 키이브의 대기질이 급격히 악화되었습니다. 수도에는 연기 냄새와 연무가 짙게 깔렸으며, 당국은 주민들에게 창문을 닫고 야외 활동을 제한하며 충분한 수분 섭취와 공기청정기 사용을 권고하고 있습니다. 해당 내용은 사실 확인이 필요한 상황입니다.",
+      "ko_raw_brief": "러시아 최대 공격 후 키이브 대기질 급락 및 주민 주의 당부",
+      "ko_raw_source_limits": "이 메시지는 주장성 내용으로, 사실 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -742,9 +828,9 @@
       "url": "https://t.me/KyivIndependent_official/54052",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "모나코 당국이 우크라이나 출신 사업가를 다치게 한 폭탄 테러 용의자로 39세 우크라이나 여성 아나스타시아 베레조프스카에 대해 인터폴 적색 수배령을 발부했다. 이 체포 영장은 국제적인 체포 망명 조치에 해당한다.",
-      "ko_raw_brief": "모나코, 우크라 여성 폭탄 테러 용의자 인터폴 적색 수배령 발부",
-      "ko_raw_source_limits": "이 정보는 모나코 당국의 발표를 기반으로 하며, 사건의 사실관계는 추가 확인이 필요하다.",
+      "ko_raw_summary": "모나코는 우크라이나 출신 사업가를 다치게 한 폭탄 공격 용의자인 39세 우크라이나 여성 아나스타시야 베레조프스카에 대해 체포 영장을 발부하고 인터폴 '레드 노티스'를 발령했습니다. 이 사건은 공식 확인된 사건으로 보도되었습니다.",
+      "ko_raw_brief": "모나코, 우크라이나 여성 폭탄 공격 용의자에 체포 영장 발부",
+      "ko_raw_source_limits": "제공된 메시지에 근거한 내용으로, 추가 정보나 독립적인 확인은 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -769,9 +855,9 @@
       "url": "https://t.me/KyivIndependent_official/54050",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아의 우크라이나 공격이 계속되어 최근 하루 동안 최소 17명이 사망하고 125명이 부상했습니다. 사망자 중에는 2세와 7세 어린이 2명이 포함되며, 4개 지역에서 최소 10명의 어린이가 부상당했습니다. 이 내용은 현지 당국의 보고를 근거로 합니다.",
-      "ko_raw_brief": "러시아 공격으로 최소 17명 사망, 어린이 2명 포함",
-      "ko_raw_source_limits": "현지 당국의 발표를 기반으로 하나 독립적 확인은 필요함",
+      "ko_raw_summary": "우크라이나 현지 당국에 따르면 지난 하루 동안 러시아의 공격으로 최소 17명이 사망하고 125명이 부상당했습니다. 사망자 중에는 2세와 7세의 어린이 2명이 포함되어 있으며, 4개 주 전역에서 최소 10명의 어린이가 부상당했습니다. 본 내용은 현지 당국의 보고에 근거한 것이며 추가 확인이 필요합니다.",
+      "ko_raw_brief": "러시아 공격으로 우크라이나에서 어린이 포함 17명 사망·125명 부상 보고",
+      "ko_raw_source_limits": "정보는 우크라이나 현지 당국의 보고를 기반으로 하며, 독립적 확인은 아직 이루어지지 않았습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -796,9 +882,9 @@
       "url": "https://t.me/OSINTdefender/19373",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "보고에 따르면 마르코 루비오가 지난달 나토 회의에서 미국 국방장관 피트 혀그셋의 유럽 내 주요 병력 감축 계획 발표를 막는 데 기여했다는 주장이 있습니다. 이 내용은 확인되지 않은 주장입니다.",
-      "ko_raw_brief": "마르코 루비오, 미국의 유럽 병력 감축 계획 발표 저지했다는 보도",
-      "ko_raw_source_limits": "제공된 메시지는 주장에 기반한 내용으로, 사실 여부가 확인되지 않았습니다.",
+      "ko_raw_summary": "Marco Rubio가 지난달 NATO 회의에서 유럽 내 대규모 군대 감축 계획을 발표하려던 국방장관 Pete Hegseth의 계획을 막는 데 도움을 준 것으로 알려졌습니다. 이는 확인된 사건이 아닌 보도 내용입니다.",
+      "ko_raw_brief": "Marco Rubio, NATO 회의서 유럽 군대 감축 계획 저지 도움 보도",
+      "ko_raw_source_limits": "제공된 메시지는 보도 내용이며, 사실 확인이 필요한 주장입니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -824,9 +910,9 @@
       "url": "https://t.me/OSINTdefender/19372",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "러시아가 폴란드 또는 발트 3국에 대해 제한적인 군사 도발을 계획 중일 수 있으며, 미사일 또는 드론 공격, 사이버 공격, 혹은 소규모 국경 침입이 포함될 수 있다는 주장입니다. 이는 나토의 결의를 시험하기 위한 시도로 해석됩니다. 이는 확인되지 않은 주장임을 유의해야 합니다.",
-      "ko_raw_brief": "러시아의 제한적 군사 도발 가능성 주장",
-      "ko_raw_source_limits": "이 정보는 확인되지 않은 주장으로, 공식 확인된 사건이 아닙니다.",
+      "ko_raw_summary": "러시아가 폴란드 또는 발트 3국에 대해 미사일, 드론 공격, 사이버 공격, 또는 소규모 국경 침입을 포함하는 제한적 군사 도발을 계획 중일 수 있다는 주장이 제기되고 있다. 이는 나토의 대응 의지를 시험하기 위한 시도로 해석된다. 이 정보는 확인되지 않은 추정성 주장임을 명확히 해야 한다.",
+      "ko_raw_brief": "러시아, 제한적 군사 도발 가능성 주장",
+      "ko_raw_source_limits": "본 메시지는 확인되지 않은 추정성 주장으로, 실제 사건 발생 여부는 불분명함.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -854,9 +940,9 @@
       "url": "https://t.me/KyivIndependent_official/54045",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 국영 긴급구조서비스에 따르면 7월 2일 러시아의 대규모 미사일 및 드론 공격으로 인해 키이우에서 최소 30명이 사망했다. 추가로 잔해에서 3구의 시신이 발견되어 사망자 수가 증가했다.",
-      "ko_raw_brief": "키이우, 러시아 공격으로 최소 30명 사망 보고",
-      "ko_raw_source_limits": "정보 출처는 우크라이나 긴급구조서비스이며 현장 상황에 따라 사망자 수가 변동될 수 있습니다.",
+      "ko_raw_summary": "우크라이나 국토비상사태국에 따르면 7월 2일 러시아의 대규모 미사일 및 드론 공격으로 키예프에서 최소 30명이 사망했다. 잔해에서 시신 3구가 추가로 수습되면서 사망자 수가 증가했다.",
+      "ko_raw_brief": "러시아 7월 2일 키예프 대규모 공격으로 최소 30명 사망",
+      "ko_raw_source_limits": "해당 정보는 우크라이나 국토비상사태국 발표에 따른 것이며, 현장 상황 변동 가능성이 있음.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -881,9 +967,9 @@
       "url": "https://t.me/KyivIndependent_official/54044",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나가 7월 3일 새벽 러시아 벨고로드에 있는 에너지 장비 공장을 공격했다고 러시아 텔레그램 매체들이 보도했습니다. 이 보도는 아직 독립적으로 확인되지 않았습니다.",
+      "ko_raw_summary": "우크라이나 군이 7월 3일 밤 러시아 벨고로드시에 있는 에너지 장비 공장을 공격했다고 러시아 텔레그램 채널들이 보도했습니다. 이 공격은 공식 확인되지 않았으며 우크라이나 측의 주장으로 보입니다.",
       "ko_raw_brief": "우크라이나, 벨고로드 에너지 장비 공장 공격 보도",
-      "ko_raw_source_limits": "정보는 러시아 텔레그램 매체를 출처로 하며, 독립적인 사실 확인이 필요합니다.",
+      "ko_raw_source_limits": "정보는 러시아 텔레그램 채널을 통해 전해진 우크라이나 공격 주장에 근거하며, 공식 확인은 없습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -908,9 +994,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22113",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "이스라엘 의회에서 무슬림 예배 호출인 아단(adhan)을 제한하는 법안이 예비 심사를 통과했다. 팔레스타인 측은 이를 종교 전쟁 선언이자 예배 자유에 대한 공격이라고 비난했다. 이 법안은 이스라엘 당국이 정한 기준에 따라 모스크의 확성기 설치 및 사용을 허가제로 제한하려는 내용을 포함하고 있다.",
-      "ko_raw_brief": "이스라엘, 아단 제한 법안 예비 심사 통과",
-      "ko_raw_source_limits": "제공된 메시지는 법안 심사 과정과 주장에 대한 설명이며, 법안 최종 통과 여부와 실제 영향은 불확실함.",
+      "ko_raw_summary": "이스라엘 의회에서 무슬림의 기도 호출인 아단을 제한하는 법안이 예비 심사를 통과했다. 팔레스타인 측은 이를 종교 전쟁 선언이자 예배 자유에 대한 공격이라고 규탄했다. 해당 법안은 최종 법안 통과 전 추가 심사가 필요하다.",
+      "ko_raw_brief": "이스라엘, 아단 제한 법안 예비심사 통과",
+      "ko_raw_source_limits": "제공된 메시지는 법안 진행 상황과 관련된 주장과 반응을 포함하며, 법안의 최종 확정 여부는 명시되어 있지 않음.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -935,9 +1021,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22111",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "미국 대사 제프 바르토스는 UN 연례 기금 모금 회의에서 국가들에게 UNRWA에 대한 자금 지원을 중단하고 대신 트럼프 대통령이 설립한 평화 이사회와 가자 행정 위원회에 재정 지원을 하라고 촉구했다. 미국은 2024년 1월 이전까지 UNRWA의 최대 후원국이었으나, 이스라엘이 증거 없이 2023년 10월 하마스 공격 사건과 일부 UNRWA 직원의 연루를 주장하면서 자금 지원을 중단했다. UNRWA는 가자, 서안지구, 요르단 등지에서 약 590만 팔레스타인 난민을 지원한다.",
-      "ko_raw_brief": "미국, UNRWA 자금 지원 중단 및 평화 이사회 지원 촉구",
-      "ko_raw_source_limits": "이 내용은 미국 대사의 발언을 바탕으로 한 주장으로, 관련 사실 확인이 필요하다.",
+      "ko_raw_summary": "2026년 7월 2일 UN 연례 기부 회의에서 미국 대사 제프 바르토스는 유엔 팔레스타인난민구호사업기구(UNRWA)에 대한 자금 지원을 중단하고 대신 트럼프 대통령의 평화위원회와 가자 국정관리위원회로 지원을 전환할 것을 촉구했다. 2024년 1월 이전까지 미국은 UNRWA의 최대 기부국이었으나, 이스라엘이 하마스의 2023년 10월 공격과 관련해 근거 없는 혐의를 제기한 후 자금 지원을 중단했다. UNRWA는 가자, 요르단강 서안, 요르단, 시리아, 레바논 등지의 약 590만 팔레스타인 난민을 지원하고 있다.",
+      "ko_raw_brief": "미국, UNRWA 자금 지원 중단 및 대체 기구 지원 촉구",
+      "ko_raw_source_limits": "제공된 정보는 미국 대사의 발언을 중심으로 한 주장이며, 사실 확인이 필요함.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -965,9 +1051,9 @@
       "url": "https://t.me/KyivIndependent_official/54039",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아의 대규모 미사일 및 드론 공격으로 인해 키이우에서 사망자가 27명으로 증가했다. 부상자는 최소 91명이며, 피해자는 잔해 더미에서 발견되거나 병원에서 사망한 것으로 보고되었다. 이 정보는 키이우 시 행정 책임자 티무르 트카첸코가 7월 2일에 발표했다.",
-      "ko_raw_brief": "러시아 공격으로 키이우 사망자 27명, 부상자 91명 발생",
-      "ko_raw_source_limits": "출처는 키이우 시 행정 책임자의 발표로, 추가 확인이 필요할 수 있습니다.",
+      "ko_raw_summary": "러시아의 대규모 미사일 및 드론 공격으로 키이우에서 사망자 수가 27명으로 증가했다고 키이우 시청장이 보고했습니다. 추가 피해자가 잔해 더미에서 발견되었고 병원에서 사망한 이도 있습니다. 최소 91명이 부상당했습니다.",
+      "ko_raw_brief": "러시아 대규모 공격으로 키이우 사망자 27명으로 늘어",
+      "ko_raw_source_limits": "해당 정보는 키이우 시청장 발표에 근거한 것으로, 현장 상황에 따라 변동 가능성이 있습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -993,9 +1079,9 @@
       "url": "https://t.me/OSINTdefender/19368",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "EU 외교정책 책임자인 카야 칼라스는 최근 키이우에 대한 대규모 공격에 대응해 러시아에 새로운 제재를 제안했다. 이번 공격으로 인명 피해와 민간 인프라 피해가 발생했다고 전해진다. 이는 모스크바에 대한 압박을 강화할 필요성을 강조한 발언이다.",
-      "ko_raw_brief": "EU, 키이우 공격 대응 러시아 신규 제재 제안",
-      "ko_raw_source_limits": "해당 메시지는 제재 제안에 관한 주장으로, 공격 피해와 제재 효과에 대해 독립적 확인은 필요함.",
+      "ko_raw_summary": "EU 외교정책 책임자 카야 칼라스는 최근 키이우에 대한 대규모 공격에 대응하여 러시아에 대한 새로운 제재를 제안했다. 이 공격은 민간 인프라에 피해를 입히고 인명 피해를 초래한 것으로 전해졌다. 이는 모스크바에 대한 압박을 강화할 필요성을 강조한 주장이다.",
+      "ko_raw_brief": "EU 외교책임자, 키이우 공격에 러시아 제재 제안",
+      "ko_raw_source_limits": "제공된 메시지는 주장 및 제안 내용으로, 사건의 공식 확인된 정보가 아님을 유의해야 한다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1020,9 +1106,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22108",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "본 기고문에서 Dr. Amina Shareef는 팔레스타인 행동 사건이 테러리즘 담론의 한계를 드러낸다고 설명한다. 해당 사건은 무슬림 위협에 대한 인종적 편견과 테러리즘 연계라는 잘못된 가정들을 비판하며, 반무슬림 인종차별과 폭력의 구조적 언어를 도전하는 정치적 공간을 열었다고 주장한다.",
-      "ko_raw_brief": "팔레스타인 행동 사건이 드러낸 테러리즘 담론의 인종적 한계",
-      "ko_raw_source_limits": "이 메시지는 사건에 대한 해석과 의견을 담은 기고문으로, 사실 확인된 충돌 사건 보고는 아니다.",
+      "ko_raw_summary": "Dr. Amina Shareef는 팔레스타인 액션 법정 싸움을 통해 테러리즘과 무슬림 위협 이미지 간의 인종적 연관성에 대한 잘못된 가정을 드러낸다고 설명합니다. 이 사건은 현대 테러리즘 담론의 인종적 전제를 폭로하며 중립성 주장에 의문을 제기하고, 반무슬림 인종차별과 인종폭력을 조직하는 주요 언어에 대한 정치적 도전을 열었다고 평가합니다.",
+      "ko_raw_brief": "팔레스타인 액션 사건, 테러리즘 담론의 인종적 한계 지적",
+      "ko_raw_source_limits": "이 메시지는 사건에 대한 의견 기사이며, 확인된 사건 보고가 아닙니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1047,9 +1133,9 @@
       "url": "https://t.me/KyivIndependent_official/54035",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 출판사 책 약 80만 권이 러시아의 야간 공격으로 파괴되었다고 북셰프(BookChef)가 전했다. 이 공격으로 물류 파트너의 중앙 창고가 완전히 파괴되었다고 한다. 이는 확인되지 않은 주장이다.",
-      "ko_raw_brief": "우크라이나 출판사 책 80만 권 러시아 공격으로 파괴 주장",
-      "ko_raw_source_limits": "해당 내용은 북셰프의 주장으로, 독립적 확인이 필요하다.",
+      "ko_raw_summary": "우크라이나 출판사의 약 80만 권의 책이 러시아의 야간 공격으로 파괴되었습니다. 이는 BookChef가 밝힌 물류 파트너의 중앙 창고가 완전히 파괴된 결과입니다.",
+      "ko_raw_brief": "우크라이나 출판사 책 80만 권 러시아 공격으로 파괴",
+      "ko_raw_source_limits": "이 정보는 우크라이나 출판사 및 BookChef의 주장에 기반하며 독립적 확인은 이루어지지 않았습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1074,9 +1160,9 @@
       "url": "https://t.me/KyivIndependent_official/54034",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 공군은 곧 스웨덴의 그리펜 전투기에 탑재되는 미터 미사일을 보유하게 된다. 이 미사일은 기존 우크라이나 미사일보다 사거리가 길어 러시아 전투기의 작전 범위를 제한할 수 있다. 전문가 안드리 카루크는 이 미사일이 러시아의 유도폭탄 공격 효과를 감소시키는 데 도움이 될 것이라고 설명했다.",
-      "ko_raw_brief": "우크라이나, 스웨덴 미터 미사일로 러시아 공격 대응력 강화 전망",
-      "ko_raw_source_limits": "이 내용은 군사 전문가 발언과 전망을 바탕으로 한 주장으로, 실제 성능이나 효과는 추후 검증 필요.",
+      "ko_raw_summary": "우크라이나 공군은 곧 스웨덴의 그리펜 전투기와 장거리 미사일인 미티어 미사일을 도입할 예정입니다. 이 무기는 기존 미사일보다 사거리가 길어 러시아의 공격 범위를 줄이는 데 기여할 것으로 분석됩니다. 이는 우크라이나 군사 항공 전문가 안드리 카룩의 의견을 바탕으로 한 주장입니다.",
+      "ko_raw_brief": "우크라이나, 스웨덴 미티어 미사일 도입으로 공군 사거리 확대 전망",
+      "ko_raw_source_limits": "이 내용은 우크라이나 전문가의 분석에 기반한 주장으로, 실제 작전 적용이나 효과는 추가 검증이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1101,9 +1187,9 @@
       "url": "https://t.me/liveuamap/12202",
       "source_reliability": 0.75,
       "region_hint": "global",
-      "ko_raw_summary": "시리아 보건부 구급 및 응급 서비스 국장은 다마스쿠스 나스르 거리의 한 카페 내에 설치된 급조 폭발물 폭발로 인한 사망자가 4명, 부상자는 10명으로 증가했다고 확인했다. 이 사건은 폭발로 분류되며, 추가적인 세부 사항은 아직 확인되지 않았다.",
-      "ko_raw_brief": "다마스쿠스 카페 폭발로 사망 4명, 부상 10명 발생",
-      "ko_raw_source_limits": "정보는 현지 보건 당국 국장 발언에 기반하며, 추가 확인이 필요할 수 있음.",
+      "ko_raw_summary": "시리아 다마스쿠스 나스르 거리의 카페에서 자작 폭발물이 폭발해 사망자가 4명, 부상자가 10명 발생했다고 보건부 구급 및 응급 서비스 국장이 확인했습니다. 이 사건은 현지 보건 당국에 의해 공식 보고되었습니다.",
+      "ko_raw_brief": "다마스쿠스 카페 자작 폭발물 테러, 4명 사망·10명 부상",
+      "ko_raw_source_limits": "정보는 시리아 보건부 관계자의 발표에 근거하며, 현장 상황에 따라 변동 가능성이 있습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1128,9 +1214,9 @@
       "url": "https://t.me/liveuamap/12201",
       "source_reliability": 0.75,
       "region_hint": "global",
-      "ko_raw_summary": "시리아 히자즈 지역의 카페 안에서 폭발이 발생하여 부상자가 생겼다는 초기 보도가 있습니다. 현재까지 상세한 추가 정보는 제공되지 않았습니다.",
-      "ko_raw_brief": "히자즈 지역 카페 내 폭발로 부상 발생 보도",
-      "ko_raw_source_limits": "출처는 SANA 초기 보도를 인용하였으며, 사건의 구체적 경위 및 피해 규모는 확인되지 않았습니다.",
+      "ko_raw_summary": "SANA 보도에 따르면 시리아 히자즈 지역의 한 카페에서 폭발이 발생해 부상자가 발생했다는 초기 보고가 있다. 자세한 상황은 추가 확인이 필요하다.",
+      "ko_raw_brief": "히자즈 지역 카페 폭발로 부상자 발생 (초기 보고)",
+      "ko_raw_source_limits": "정보는 SANA 초기 보고에 근거하며, 추가 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1155,9 +1241,9 @@
       "url": "https://t.me/KyivIndependent_official/54032",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 북서부 리브네주에서 기차와 미니버스가 충돌하는 사고가 발생했습니다. 우크라이나 국영 철도 운영사 우크르잘리즈니차가 7월 2일 충돌 사실을 보고했으며, 인명 피해가 있다는 예비 보고가 있습니다. 해당 사고에 대한 자세한 확인된 정보는 아직 없습니다.",
-      "ko_raw_brief": "우크라이나 북서부서 기차와 미니버스 충돌 신고, 인명 피해 예비 보고",
-      "ko_raw_source_limits": "출처는 우크르잘리즈니차의 예비 보고를 인용했으며, 피해 규모 등은 아직 확인되지 않았습니다.",
+      "ko_raw_summary": "우크라이나 북서부 리브네 주에서 미니버스와 기차가 건널목에서 충돌했다는 보고가 있다. 우크라이나 국영 철도 운영사인 Ukrzaliznytsia가 7월 2일에 발표했으며, 부상자가 있다는 예비 보고가 있다.",
+      "ko_raw_brief": "우크라이나 리브네 주 미니버스-기차 충돌, 부상자 예비 보고",
+      "ko_raw_source_limits": "사고 관련 부상자 여부는 아직 공식 확인되지 않은 예비 보고임.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1182,9 +1268,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22106",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "미국 대사가 연례 유엔 기부 회의에서 유엔 난민 구호 기구(UNRWA) 자금 지원 중단을 요구하고, 트럼프 대통령이 설립한 평화 위원회(Board of Peace)와 가자 행정 위원회에 지원을 집중하도록 촉구했다. UNRWA는 2023년 10월 하마스 공격 연루 의혹으로 미국 지원이 끊긴 상태이며, 이 기구는 약 590만 명의 팔레스타인 난민에게 서비스를 제공하고 있다. 이 메시지는 분쟁 상황에 대한 공식 확인이라기보다는 정치적 주장과 정책 제안에 해당한다.",
-      "ko_raw_brief": "미국 대사, UNRWA 지원 중단 및 평화 위원회 지원 촉구",
-      "ko_raw_source_limits": "제공된 메시지는 주장 및 정치적 입장 표명으로, 사실 확인되지 않은 내용이 포함될 수 있음.",
+      "ko_raw_summary": "미국 대사가 UNRWA(유엔 팔레스타인 난민 구호 및 작업 기구) 자금 지원 중단을 요구하며 트럼프 대통령의 평화 위원회 지원을 촉구했다. UNRWA는 팔레스타인 난민 약 590만 명을 지원하며, 미국은 2024년 1월 이전까지 최대 기부국이었으나 이스라엘의 혐의 제기로 자금 지원을 중단했다. 이 발언은 확인되지 않은 주장과 정치적 입장을 포함하고 있다.",
+      "ko_raw_brief": "미 대사, UNRWA 자금지원 중단 및 트럼프 평화위원회 지지 촉구",
+      "ko_raw_source_limits": "제공된 정보는 정치적 주장이 포함되어 있으며, 일부 혐의는 증거 없이 제기된 것으로 확인됨.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1212,9 +1298,9 @@
       "url": "https://t.me/KyivIndependent_official/54029",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "키이우에서 러시아의 미사일과 드론 공격으로 최소 18명이 사망하고 86명이 부상당했다고 현지 당국이 발표했습니다. 다르니츠키 지역에서는 고층 주거용 건물이 부분적으로 붕괴되어 현재 수색 및 구조 작업이 진행 중입니다.",
-      "ko_raw_brief": "키이우 대규모 미사일·드론 공격으로 최소 18명 사망",
-      "ko_raw_source_limits": "현지 당국 발표를 기반으로 하나, 현장 상황에 따라 사상자 수치는 변동 가능성이 있습니다.",
+      "ko_raw_summary": "현지 당국에 따르면 7월 2일 밤 러시아의 미사일과 드론 공격으로 키예프에서 최소 18명이 사망하고 86명이 부상당했습니다. 다르니츠키 지구의 고층 주택 건물 일부가 붕괴되어 구조 작업이 진행 중입니다.",
+      "ko_raw_brief": "키예프 대규모 미사일 및 드론 공격으로 18명 사망, 86명 부상",
+      "ko_raw_source_limits": "현지 당국 발표를 기반으로 하며, 추가 검증이 필요할 수 있습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1242,9 +1328,9 @@
       "url": "https://t.me/KyivIndependent_official/54027",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아의 대규모 미사일 및 드론 공격으로 키이우에서 13명이 사망하고 80명 이상이 부상을 입었습니다. 키이우 시장인 비탈리 클리츠코에 따르면 부상자 86명 중 70명이 병원에 입원 중입니다.",
-      "ko_raw_brief": "키이우에서 러시아 미사일·드론 공격으로 다수 사상 발생",
-      "ko_raw_source_limits": "현장 상황에 대한 정보는 키이우 시장 발표에 기초하였으며, 추가 확인이 필요함.",
+      "ko_raw_summary": "키예프에서 러시아의 대규모 미사일과 드론 공격이 발생해 13명이 사망하고 80명 이상이 부상당했다고 키예프 시장 비탈리 클리치코가 밝혔다. 부상자 86명 중 70명이 병원에 입원 중이다.",
+      "ko_raw_brief": "키예프서 러시아 대규모 미사일·드론 공격으로 13명 사망",
+      "ko_raw_source_limits": "이 정보는 키예프 시장 발표에 기반한 것으로, 독립적 확인되지 않은 내용임.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1270,9 +1356,9 @@
       "url": "https://t.me/KyivIndependent_official/54026",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "키이우 전역에서 발생한 공격으로 최소 10명이 사망하고 56명이 부상했으며, 그 중 두 명은 아동입니다. 이번 공격으로 30곳 이상의 지역에서 피해와 파괴가 발생한 것으로 보고되었습니다.",
-      "ko_raw_brief": "키이우 전역 공격으로 10명 사망, 56명 부상",
-      "ko_raw_source_limits": "이 정보는 공격과 피해에 대한 현지 보고를 기반으로 하며, 독립적인 확인이 필요합니다.",
+      "ko_raw_summary": "키이우에서 발생한 공격으로 10명이 사망하고 최소 56명이 부상당했으며, 이 중에는 두 명의 어린이가 포함되어 있습니다. 현지 시간 오전 7시 기준으로 키이우 전 구역에서 30곳 이상에 피해와 파괴가 확인되었습니다.",
+      "ko_raw_brief": "키이우 공격으로 사망 10명, 부상 56명 이상 발생",
+      "ko_raw_source_limits": "제공된 정보는 텔레그램 채널 발신 내용에 기반하며, 피해 규모와 피해자 수는 당국 공식 확인을 기다려야 합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1298,9 +1384,9 @@
       "url": "https://t.me/liveuamap/12199",
       "source_reliability": 0.75,
       "region_hint": "global",
-      "ko_raw_summary": "우크라이나 키이우에서 러시아 미사일과 드론 공격으로 인해 최소 9명이 사망하고 56명이 부상당했습니다. 이번 공격으로 키이우 내 30여 곳에서 피해와 파괴가 발생했습니다. 해당 내용은 텔레그램 채널에서 보고된 사건입니다.",
+      "ko_raw_summary": "러시아의 미사일과 드론 공격으로 키이우 전역 30여 곳에서 피해가 발생하여 최소 9명이 사망하고 56명이 부상당했습니다. 피해 규모와 인명 피해가 상당한 상황입니다.",
       "ko_raw_brief": "키이우 러시아 미사일·드론 공격으로 최소 9명 사망·56명 부상",
-      "ko_raw_source_limits": "정보는 텔레그램 채널에 기반하며 현장 확인이나 독립적 검증이 필요합니다.",
+      "ko_raw_source_limits": "제공된 정보는 현지 소식에 근거한 것으로, 추가 확인이 필요할 수 있습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1326,9 +1412,9 @@
       "url": "https://t.me/KyivIndependent_official/54025",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "키이우에서 진행 중인 러시아의 공격으로 최소 8명이 사망하고 34명이 부상했다고 보고되었습니다. 키이우 시 군사행정 책임자 티무르 트카첸코는 적군이 주거 지역을 겨냥하여 민간인, 특히 어린이들을 다수 희생시키고 있다고 밝혔습니다.",
-      "ko_raw_brief": "키이우 러시아 공격으로 민간인 다수 사상",
-      "ko_raw_source_limits": "제공된 메시지는 현지 행정 책임자의 발언에 기반한 정보로, 독립적 검증이 필요합니다.",
+      "ko_raw_summary": "러시아군의 지속적인 키이우 공격으로 8명이 사망하고 최소 34명이 부상당했습니다. 키이우 시 군사 행정 책임자인 티무르 트카첸코는 적이 다시 주거 지역을 겨냥해 민간인을 공격했다고 밝혔습니다. 어린이를 포함한 다수의 희생자와 심각한 피해가 발생했습니다.",
+      "ko_raw_brief": "러시아의 키이우 공격으로 민간인 다수 사상",
+      "ko_raw_source_limits": "이 정보는 현지 군사 행정 책임자의 발언에 근거하며, 독립적인 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1355,9 +1441,9 @@
       "url": "https://t.me/KyivIndependent_official/54024",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "공격으로 인해 2명이 사망하고 최소 20명이 부상당했으며, 드론 위협이 계속되고 있습니다. 5시 기준으로 최소 28곳, 대부분 주거지 및 민간 인프라에 피해가 신고되었습니다.",
-      "ko_raw_brief": "드론 공격으로 2명 사망, 20명 부상 및 다수 건물 피해 발생",
-      "ko_raw_source_limits": "보도는 공식 발표를 인용했으나, 상황의 전체적인 확인은 아직 불분명합니다.",
+      "ko_raw_summary": "드론 공격으로 2명이 사망하고 최소 20명이 부상했으며, 도시 내 드론 위협이 계속되고 있습니다. 5시 기준으로 최소 28곳의 주거 및 민간 기반시설이 피해를 입은 것으로 확인되었습니다.",
+      "ko_raw_brief": "드론 공격으로 인명피해 및 다수 시설 피해 발생",
+      "ko_raw_source_limits": "현장 상황에 대한 추가 확인이 필요하며, 출처 기반 정보임.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1383,9 +1469,9 @@
       "url": "https://t.me/KyivIndependent_official/54023",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "키예프에서 러시아의 대대적인 공습으로 1명이 사망하고 최소 11명이 부상했습니다. 부상자 모두 병원에 입원했으며, 이는 시장 비탈리 클리치코와 키예프시 군사행정 책임자인 티무르 트카첸코의 발표에 따른 내용입니다.",
-      "ko_raw_brief": "키예프 러시아 공습으로 1명 사망, 11명 부상 발생",
-      "ko_raw_source_limits": "관련 정보는 키예프 시장과 군사행정 책임자의 발표에 기반하며 독립적 확인이 필요합니다.",
+      "ko_raw_summary": "키예프에서 대규모 러시아 공습으로 1명이 사망하고 최소 11명이 부상했다는 소식입니다. 비탈리 클리치코 시장과 티무르 트카첸코 키예프시 군사행정 책임자가 확인했으며, 부상자 전원은 병원에 입원 중입니다.",
+      "ko_raw_brief": "키예프에서 러시아 공습으로 1명 사망, 최소 11명 부상 발생",
+      "ko_raw_source_limits": "해당 정보는 키예프 시장과 군사행정 책임자의 발표에 기반하며, 현장 상황에 따라 변동될 수 있습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1412,9 +1498,9 @@
       "url": "https://t.me/KyivIndependent_official/54022",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아의 탄도 미사일 공격으로 키이우 시내 중심부의 아파트 건물이 파괴되었으며, 최소 5명이 부상당했다고 당국이 밝혔습니다. 이 공격은 러시아의 미사일 및 드론 공격의 일환으로 계속되고 있습니다.",
-      "ko_raw_brief": "러시아 미사일 공격으로 키이우 아파트 건물 파괴 및 5명 부상",
-      "ko_raw_source_limits": "이 정보는 당국의 발표에 근거하며, 추가 확인이 필요할 수 있습니다.",
+      "ko_raw_summary": "러시아의 탄도 미사일 공격으로 키이우 도심의 아파트가 파괴되었으며 최소 5명이 부상했다는 당국의 발표가 있다. 이번 공격은 미사일과 드론을 이용한 것으로 보인다. 이는 확인된 사고 사항으로 보인다.",
+      "ko_raw_brief": "키이우 도심 미사일 공격으로 최소 5명 부상",
+      "ko_raw_source_limits": "이 정보는 당국 발표를 바탕으로 하나, 추가 확인이 필요하다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1439,9 +1525,9 @@
       "url": "https://t.me/KyivIndependent_official/54018",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아의 공격으로 키이우 중심부 셴체브키우스키 구역에 위치한 호텔에 화재가 발생했습니다. 당국은 밤새 상황이 악화될 수 있다고 경고하고 있습니다. 키이우 주민들은 대규모 공습에 대비해 지하철역에 대피했습니다.",
-      "ko_raw_brief": "러시아 공격으로 키이우 중앙 호텔 화재 및 주민 대피",
-      "ko_raw_source_limits": "메시지는 당국의 경고와 주민 대피 상황을 전달하며, 피해 규모와 구체적 사상자는 확인되지 않았습니다.",
+      "ko_raw_summary": "러시아의 우크라이나 공격으로 키이우 중심부 셴체브키우스키 구역에 위치한 호텔이 불에 탔습니다. 당국은 이번 공격이 밤새 악화될 수 있음을 경고하고 있으며, 많은 주민들이 대규모 타격에 대비해 지하철 역으로 대피하고 있습니다.",
+      "ko_raw_brief": "키이우 중심 호텔 화재, 러시아 공격 발생",
+      "ko_raw_source_limits": "해당 정보는 러시아의 공격 가능성에 대한 경고와 현장 사진을 포함한 현지 소식이며, 정확한 피해 규모나 추가 확인 사항은 제시되지 않았습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1466,9 +1552,9 @@
       "url": "https://t.me/KyivIndependent_official/54016",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "키이우에서 폭발음이 들리며 공습 경보가 발령되었습니다. 이는 볼로디미르 젤렌스키 대통령이 러시아가 대규모 공격을 준비 중이라고 경고한 직후에 발생한 사건입니다. 현재 상황은 긴장된 상태로 분석됩니다.",
-      "ko_raw_brief": "키이우 내 폭발 발생, 러시아 대규모 공격 우려 속 긴장 고조",
-      "ko_raw_source_limits": "이 메시지는 현지 언론의 보고에 기초한 것으로, 상황의 전면적인 확인은 필요합니다.",
+      "ko_raw_summary": "키이우에서 폭발음이 들리고 대공 방어 활동이 포착되었습니다. 이는 우크라이나 대통령 젤렌스키가 러시아의 대규모 공격 준비를 경고한 직후 발생한 일로, 우크라이나는 다음 공격에 대비하고 있습니다.",
+      "ko_raw_brief": "키이우 폭발 및 대공 방어 활동 보고, 러시아 공격 대비 중",
+      "ko_raw_source_limits": "이 내용은 현지 기자 보도와 대통령 발언에 기반한 것으로, 실제 상황의 완전한 확인은 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1494,9 +1580,9 @@
       "url": "https://t.me/KyivIndependent_official/54014",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "젤렌스키 대통령이 러시아가 우크라이나에 대한 새로운 대규모 공격을 준비하고 있다고 경고했습니다. 하르키우에서 발생한 공격으로 10대가 사망하고 32명이 부상했으며, 여러 지역에서 발생한 공격으로 최소 6명이 사망하고 100명 이상이 부상했습니다. 이 정보는 현장 상황에 대한 경고와 보고입니다.",
-      "ko_raw_brief": "젤렌스키, 러시아 대규모 공격 경고 및 하르키우 공격 피해 보고",
-      "ko_raw_source_limits": "이 내용은 공식 발표를 기반으로 한 경고와 보고이며, 구체적 상황은 추가 확인이 필요합니다.",
+      "ko_raw_summary": "젤렌스키 대통령은 러시아가 우크라이나에 대한 새로운 대규모 공격을 준비하고 있다고 경고했다. 하르키우 공격으로 한 10대가 사망하고 32명이 부상했으며, 여러 지역에서 최소 6명이 사망하고 100명 이상이 부상했다.",
+      "ko_raw_brief": "젤렌스키, 러시아의 대규모 공격 경고 및 하르키우 공격 인명 피해 보고",
+      "ko_raw_source_limits": "제공된 메시지는 경고 발언과 피해 상황을 포함한 주장으로, 완전한 검증된 정보는 아님을 유의해야 함.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1521,9 +1607,9 @@
       "url": "https://t.me/KyivIndependent_official/54005",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 전역에서 러시아의 공격으로 지난 하루 동안 6명이 사망하고 109명이 부상했다고 보고되었습니다. 특히 헤르손에서는 적 드론이 민간인 통근용 미니버스를 겨냥해 공격했으며, 이는 의도된 행위라고 우크라이나 측 관계자가 밝혔습니다.",
-      "ko_raw_brief": "러시아 드론, 헤르손 민간 버스 공격으로 인명 피해 발생",
-      "ko_raw_source_limits": "이 정보는 우크라이나 측 발표에 기반한 내용으로, 독립적 제3자의 확인은 포함되어 있지 않습니다.",
+      "ko_raw_summary": "우크라이나 전역에서 러시아의 공격으로 6명이 사망하고 109명이 부상했으며, 헤르손에서 적 드론이 민간인 통근용 미니버스를 공격했다는 주장이 제기되었다. 프로쿠딘은 적 드론 조종사가 민간 차량임을 알면서도 고의적으로 공격을 선택했다고 밝혔다.",
+      "ko_raw_brief": "러시아, 헤르손서 민간인 차량에 드론 공격 주장",
+      "ko_raw_source_limits": "정보는 출처 주장에 기반하며 독립적 확인이 필요함.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1548,9 +1634,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22097",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "이란 축구 대표팀이 월드컵에서 탈락했으나, 이란 정부는 이를 승리로 포장하고 있습니다. 일부 국제 언론과 분석가들은 이란 팀이 불운이 아니라 미국 주최 측의 '사보타주', '차별', '부패'를 당했다는 주장을 제기하며 논쟁이 일고 있습니다. 이번 메시지는 사실 확인된 사건이라기보다는 이란 축구팀을 둘러싼 다양한 정치적 해석과 주장에 대한 콘텐츠입니다.",
-      "ko_raw_brief": "이란 월드컵 탈락, 정부는 승리로 포장·국제적 논쟁 중",
-      "ko_raw_source_limits": "이 메시지는 주로 주장과 해석을 담고 있으며, 사실 확인된 사건 보고가 아닙니다.",
+      "ko_raw_summary": "이란이 월드컵에서 탈락했으나 정부는 이를 승리로 표현하고 있습니다. 이 메시지는 이란 축구팀이 미국 주최 측의 사보타주, 차별, 부패를 겪었다는 비판과 함께 도덕적 승리 가능성을 논의하며, 확정된 사건보다는 정치적 해석과 논쟁 중심임을 보여줍니다.",
+      "ko_raw_brief": "이란 월드컵 탈락과 정치적 해석 논쟁",
+      "ko_raw_source_limits": "본 메시지는 이란 월드컵 탈락을 둘러싼 정치적 주장과 해석을 전달하며, 사실 확인된 사건이 아닌 의견과 해설임을 유념해야 합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1575,9 +1661,9 @@
       "url": "https://t.me/KyivIndependent_official/54001",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 시민 바딤 예르몰라이예프가 6월 29일 모나코에서 발생한 공격에서 부상당했다. 그는 전국적으로 널리 알려지지 않았으나 드니프로 시에서 엄청난 영향력을 가진 인물이다. 예르몰라이예프는 오랜 기간 우크라이나에 거주하지 않았음에도 불구하고 국내에 영향력을 유지하고 있다.",
-      "ko_raw_brief": "모나코 공격에서 부상당한 우크라이나 기업가 바딤 예르몰라이예프",
-      "ko_raw_source_limits": "해당 내용은 현지 언론 설명을 기반으로 한 인물 배경 및 공격 당시 상황 설명으로, 사건의 추가 검증이 필요하다.",
+      "ko_raw_summary": "우크라이나 기업인 바딤 예르몰라예프가 모나코에서 발생한 암살 시도에서 부상을 입었다. 그는 전국적으로는 잘 알려지지 않았지만 드니프로 도시에서 막대한 영향력을 행사해왔다. 수년간 우크라이나에 거주하지 않았음에도 불구하고 여전히 국내에서 일정한 존재감을 유지하고 있다.",
+      "ko_raw_brief": "모나코 암살 시도에서 부상당한 드니프로 영향력 있는 우크라 기업인",
+      "ko_raw_source_limits": "이 메시지는 사건 개요와 인물 소개를 포함하며, 부상 사실 외에 구체적 검증된 추가 정보는 제공되지 않는다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1602,9 +1688,9 @@
       "url": "https://t.me/KyivIndependent_official/53999",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나와 루마니아는 러시아 드론이 루마니아를 공격한 이후, 향후 드론 침입을 방지하기 위해 직접 소통 라인을 개설했다. 루마니아 대통령 니쿠소 다안이 6월 30일 보도 매체 뉴스 Ro에 밝혔다.",
-      "ko_raw_brief": "러시아 드론 공격 후 우크라·루마니아 직통 소통 개설",
-      "ko_raw_source_limits": "루마니아 대통령 발언에 기반하며, 공격 세부사항과 추가 확인은 없음.",
+      "ko_raw_summary": "우크라이나와 루마니아는 러시아 드론이 루마니아를 공격한 사건 이후 향후 드론 침입을 방지하기 위해 직접 소통 채널을 개설했다고 루마니아 대통령 니쿠소르 단이 밝혔습니다. 이 조치는 부쿠레슈티와 키예프 간의 협력을 강화하기 위한 것입니다.",
+      "ko_raw_brief": "러시아 드론 공격 후 우크라·루마니아 직접 소통 채널 개설",
+      "ko_raw_source_limits": "해당 내용은 루마니아 대통령 발언에 근거한 주장으로, 사건의 세부사항과 추가 검증이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1629,9 +1715,9 @@
       "url": "https://t.me/OSINTdefender/19362",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "중국 인민해방군 로켓 부대(PLARF)가 1966년 7월 1일 창설되어 2026년 기준 거의 60년의 역사를 가지고 있다는 내용입니다. 이 메시지는 부대 창설 연혁을 소개하는 정보이며, 확인된 공격 발생 보고는 아닙니다.",
-      "ko_raw_brief": "중국 인민해방군 로켓 부대 60주년",
-      "ko_raw_source_limits": "이 정보는 부대 창설에 관한 설명으로, 공격이나 사건 발생에 대한 확인된 보고가 아닙니다.",
+      "ko_raw_summary": "중국 인민해방군 로켓군(PLARF)은 1966년 7월 1일에 창설되어 2026년 기준으로 거의 60년의 역사를 가지고 있습니다. 본 메시지는 군대의 연혁에 관한 정보이며, 구독을 권유하는 내용이 포함되어 있습니다.",
+      "ko_raw_brief": "중국 인민해방군 로켓군, 창설 60주년 근접",
+      "ko_raw_source_limits": "제공된 메시지는 군대 연혁에 관한 정보로 실제 공격이나 사건 보고가 아니며, 별도의 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1656,9 +1742,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22080",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "중동 지역 갈등으로 인해 인도 해기사들이 호르무즈 해협에서 생환을 간절히 바라는 상태이며, 일부는 사망한 가족들이 정의와 책임을 기다리고 있다. 이 메시지는 확인된 사건보다는 상황을 설명하는 내용이다.",
-      "ko_raw_brief": "중동 분쟁으로 인도 해기사 생환 불확실 상황",
-      "ko_raw_source_limits": "제공된 정보는 기사 링크에 근거하며, 현장 상황의 완전한 검증은 어려움.",
+      "ko_raw_summary": "이번 메시지는 델리에서 보도된 내용으로, 사망자 가족들이 정의와 책임을 기다리는 한편, 수백 명의 인도 선원들이 호르무즈 해협에 억류되어 집으로 무사히 돌아가기만을 희망하고 있다고 전합니다. 이는 확인된 사건보다는 현 상황을 조명하는 기사 내용입니다.",
+      "ko_raw_brief": "호르무즈 해협에 갇힌 인도 선원들, 사망자 가족들의 정의 요구",
+      "ko_raw_source_limits": "보도 내용으로, 공식 확인된 사건 정보는 아닙니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1683,9 +1769,9 @@
       "url": "https://t.me/OSINTdefender/19360",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "미국 노스럽 그러먼은 노후된 미니트맨 III를 대체할 차세대 대륙간탄도미사일 LGM-35A 센티넬의 사진을 공개했다. 이 미사일은 미국 핵 억제력 현대화의 일환으로, 2030년대 초에 실전 배치될 예정이다. 이 정보는 미확인 신뢰도 하에 보고되었다.",
-      "ko_raw_brief": "미국, 차세대 대륙간탄도미사일 LGM-35A 공개",
-      "ko_raw_source_limits": "이 정보는 채널 주장에 기반하며 독자 검증이 필요함",
+      "ko_raw_summary": "미국 노스럽 그런먼이 신형 대륙간 탄도 미사일인 LGM-35A 센티넬의 사진을 공개했다. 이 미사일은 노후된 미니트맨 III를 대체할 차세대 무기로, 미국 핵 억제력을 현대화하는 일환이다. 2030년대 초반에 실전 배치될 예정이라고 한다.",
+      "ko_raw_brief": "미국, 차세대 ICBM LGM-35A 센티넬 공개",
+      "ko_raw_source_limits": "이 정보는 공개된 사진과 발표에 기반한 것으로, 실전 배치 및 성능에 관한 자세한 검증은 불가하다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1710,9 +1796,9 @@
       "url": "https://t.me/KyivIndependent_official/53988",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아의 공격으로 지난 하루 동안 우크라이나 전역에서 13명이 사망하고 109명이 부상했습니다. 우크라이나 공군은 138개의 목표물을 격추했으며, 10개 지역에서 드론 공격이 기록되고 2개 지역에서는 낙하물 피해가 발생했습니다.",
-      "ko_raw_brief": "우크라이나 전역 러시아 공격으로 사상자 발생 및 드론 공격 보고",
-      "ko_raw_source_limits": "제공된 메시지는 현장 상황에 대한 보고로, 정보의 일부는 확인되지 않았을 수 있습니다.",
+      "ko_raw_summary": "우크라이나 전역에서 최근 24시간 동안 러시아의 공격으로 13명이 사망하고 109명이 부상했다. 우크라이나 공군은 138개의 표적을 요격했으며, 10곳에서 드론 공격, 2곳에서는 잔해 낙하가 기록되었다.",
+      "ko_raw_brief": "러시아 공격으로 우크라이나에서 인명 피해 및 드론 공격 발생",
+      "ko_raw_source_limits": "해당 정보는 텔레그램 채널 주장으로, 공식 확인이 필요함.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1737,9 +1823,9 @@
       "url": "https://t.me/KyivIndependent_official/53985",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "EU가 우크라이나에 드론 구입을 위한 지원 대출의 일부로 39억 유로를 송금했습니다. 이는 900억 유로 규모의 우크라이나 지원 대출 중 60억 유로 첫 번째 분할금에 포함된 금액입니다.",
-      "ko_raw_brief": "EU, 우크라이나 드론 구매 지원금 39억 유로 송금",
-      "ko_raw_source_limits": "이 메시지는 공식 발표된 지원금 지급 내용에 관한 것으로, 확인된 사건이 아닌 재정 지원 관련 내용입니다.",
+      "ko_raw_summary": "EU가 우크라이나에 드론 구입을 위해 39억 유로를 지원하는 대규모 지원 대출금을 보냈습니다. 이 자금은 총 900억 유로 규모인 우크라이나 지원 대출 중 드론 구매에 할당된 60억 유로 중 일부입니다.",
+      "ko_raw_brief": "EU, 우크라이나에 드론 구매용 39억 유로 지원",
+      "ko_raw_source_limits": "제공된 메시지는 공식 대출 발표 내용으로서 실제 집행과 효과에 대해서는 추가 검증이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1764,9 +1850,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22078",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "이스라엘군이 점령지인 서안지구에서 15세 팔레스타인 소년 아미르 아흐마드 자와드 자베르를 급습 중 사살했다고 보도되었다. 팔레스타인 보건부는 그가 머리와 가슴에 총상을 입고 사망했다고 밝혔고, 인권단체 B'Tselem은 2025년에 서안지구에서 54명의 팔레스타인 아동과 청소년이 이스라엘군에 의해 사망했다고 보고했다.",
-      "ko_raw_brief": "서안지구서 15세 팔레스타인 소년 이스라엘군에 의해 사살 보고",
-      "ko_raw_source_limits": "제공된 정보는 주장과 보고에 근거하며 사건의 최종 확인이 필요함.",
+      "ko_raw_summary": "이스라엘군이 점령된 요르단강 서안에서 15세 팔레스타인 청소년 아미르 아흐마드 자와드 자베르를 사살했다고 보도되었습니다. 팔레스타인 보건부는 자베르가 우므 알-샤라예트 지역에서 머리와 가슴에 총상을 입고 사망했다고 밝혔습니다. 인권단체 B'Tselem은 2025년에 서안지구에서 54명의 팔레스타인 아동과 청소년이 이스라엘군에 의해 사망했다고 발표했습니다.",
+      "ko_raw_brief": "이스라엘군, 요르단강 서안서 15세 팔레스타인 청소년 사살 보도",
+      "ko_raw_source_limits": "본 메시지는 주로 팔레스타인 보건부와 인권단체 B'Tselem의 보고에 기반한 주장 및 보도 내용이며 독립적 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1792,9 +1878,9 @@
       "url": "https://t.me/KyivIndependent_official/53983",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아 당국에 따르면 모스크바 인근 예고리예브스크에서 드론이 추락해 발생한 화재로 한 아동이 사망했다고 전해졌다. 이번 사건은 모스크바 지역에 대한 드론 공격 사례로 보고되었다.",
-      "ko_raw_brief": "모스크바 인근 드론 추락으로 아동 사망 발생",
-      "ko_raw_source_limits": "이 정보는 러시아 당국 발표를 근거로 하며 아직 독립적으로 확인되지 않았다.",
+      "ko_raw_summary": "러시아 당국에 따르면 모스크바 인근 예고리예프스크에서 드론이 추락해 주택에 화재가 발생했으며, 이 화재로 어린이가 사망했다. 모스크바가 다시 드론 공격을 받았다는 보고가 있다.",
+      "ko_raw_brief": "모스크바 인근 드론 추락, 화재로 어린이 사망",
+      "ko_raw_source_limits": "이 정보는 러시아 당국 발표를 바탕으로 한 주장으로, 독립적인 확인이 필요하다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1819,9 +1905,9 @@
       "url": "https://t.me/KyivIndependent_official/53982",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "폴란드 국방장관 블라디슬라프 코시니악-카미시가 우크라이나가 미그기를 드론과 교환하는 거래에서 철회했다고 주장했다. 그는 우크라이나가 처음에는 이를 수락했으나 결국 이행하지 않아, 드론 또는 드론 능력이 없기 때문에 미그기가 우크라이나에 전달되지 않았다고 말했다. 해당 내용은 공식 확인되지 않은 주장이다.",
-      "ko_raw_brief": "폴란드, 우크라이나의 미그기-드론 거래 철회 주장",
-      "ko_raw_source_limits": "해당 내용은 폴란드 국방장관의 주장으로, 공식 확인되지 않은 정보임.",
+      "ko_raw_summary": "폴란드 국방장관이 우크라이나가 미그기 제공 대가로 드론을 제공받는 거래를 철회했다고 주장했다. 우크라이나가 처음에는 이를 수락했으나 추후 이행하지 않아 드론이나 드론 관련 능력이 폴란드에 없기 때문에 미그기는 우크라이나에 제공되지 않았다는 것이다. 이는 주장의 형태로 전해진 내용이다.",
+      "ko_raw_brief": "폴란드 국방장관, 미그기-드론 거래 우크라이나 철회 주장",
+      "ko_raw_source_limits": "이는 폴란드 국방장관의 주장에 따른 것으로, 사실 여부가 독립적으로 확인된 내용은 아니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1846,9 +1932,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22075",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "이스라엘군이 2025년에 팔레스타인 점령지인 서안지구에서 어린이 54명을 사살해 1967년 이후 가장 높은 아동 사망률을 기록했다고 이스라엘 인권단체 B'Tselem이 발표했습니다. 2023년 10월 이후 사망한 팔레스타인인 중 약 4분의 1이 미성년자이며, 이에 대한 법적 책임자 처벌이나 기소 사례는 전무하다고 합니다. 이는 확인된 사건이 아닌 인권단체의 보고에 따른 주장입니다.",
-      "ko_raw_brief": "이스라엘군, 서안지구 팔레스타인 아동 사망 최고치 보고",
-      "ko_raw_source_limits": "정보는 인권단체 B'Tselem의 주장으로, 독립적 검증 및 공식 확인이 필요합니다.",
+      "ko_raw_summary": "이스라엘군이 점령 중인 서안지구에서 2025년에 54명의 팔레스타인 아동을 사살하며 1967년 이후 가장 높은 아동 사망률을 기록했다고 인권단체 B'Tselem이 밝혔습니다. 2023년 10월 이후 사망한 팔레스타인인 중 거의 4분의 1이 미성년자이며, 이에 대한 책임을 묻거나 기소된 사례는 없는 것으로 알려졌습니다.",
+      "ko_raw_brief": "서안지구에서 이스라엘군에 의한 팔레스타인 아동 사망률 역대 최고 기록",
+      "ko_raw_source_limits": "보고는 인권단체 B'Tselem의 주장에 근거하며, 제3자 검증이나 공식 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1874,9 +1960,9 @@
       "url": "https://t.me/KyivIndependent_official/53978",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "모나코에서 대규모 폭발이 발생해 우크라이나 가족이 부상당했다고 매체가 보도했습니다. 모나코 당국은 이번 폭발이 \"아마도 공격\"으로 보인다고 밝혔습니다. 13세 소녀와 부모가 심각한 상태로 부상했습니다.",
-      "ko_raw_brief": "모나코 대규모 폭발로 우크라이나 가족 부상",
-      "ko_raw_source_limits": "사건에 대한 공식 확인이 없으며, 보도 내용과 당국 발표를 기반으로 한 추정입니다.",
+      "ko_raw_summary": "모나코에서 대규모 폭발이 발생해 우크라이나 가족이 부상당했다는 보도가 있습니다. 현지 당국은 이번 폭발을 \"공격 가능성\"이 있다고 밝혔으며, 13세 소녀와 부모가 심각한 부상을 입었다고 합니다. 이는 확인되지 않은 주장임을 감안해야 합니다.",
+      "ko_raw_brief": "모나코 대규모 폭발, 우크라이나 가족 중상",
+      "ko_raw_source_limits": "제공된 메시지에 근거한 주장으로, 사건의 세부와 진위는 아직 확인되지 않았습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1901,9 +1987,9 @@
       "url": "https://t.me/KyivIndependent_official/53975",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 대통령 볼로디미르 젤렌스키와 덴마크 국방장관 예페 브루스가 6월 29일 회담에서 드론 협력 계약과 미사일 방어 능력 강화에 대해 논의했습니다. 이는 양국 간 군사 협력 확대 및 드론 기술 공동 개발 가능성을 시사합니다.",
-      "ko_raw_brief": "우크라이나-덴마크, 드론 협력 및 미사일 방어 능력 강화 논의",
-      "ko_raw_source_limits": "제공된 메시지는 회담 내용을 전하는 것으로, 구체적 계약 체결이나 실행 여부는 확인되지 않았습니다.",
+      "ko_raw_summary": "볼로디미르 젤렌스키 우크라이나 대통령과 옙페 브루스 덴마크 국방부 장관이 6월 29일 회담에서 드론 협력 협정과 미사일 방어 능력 강화 방안을 논의했다. 이는 양국 간 드론 거래 및 공동 대탄도 미사일 대응 능력 강화를 위한 잠재적 협력에 관한 내용이다.",
+      "ko_raw_brief": "우크라이나-덴마크 드론 협력 및 대탄도 미사일 대응 협의",
+      "ko_raw_source_limits": "해당 내용은 양국 고위 인사 회담에서 논의된 잠재적 협력 사안으로, 구체적인 계약 체결이나 실행 상황은 확인되지 않았다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1928,9 +2014,9 @@
       "url": "https://t.me/liveuamap/12197",
       "source_reliability": 0.75,
       "region_hint": "global",
-      "ko_raw_summary": "파크티아 보건 당국은 최근 동부 아프가니스탄에서 발생한 파키스탄 군사 정권의 공습으로 심각한 부상을 입은 33명의 부상자가 긴급 치료를 위해 카불로 이송되었다고 밝혔습니다. 이 사건은 동부 아프가니스탄 내 충돌과 관련된 것으로 보입니다.",
-      "ko_raw_brief": "파키스탄 공습으로 부상자 33명 카불로 긴급 이송",
-      "ko_raw_source_limits": "이 정보는 현지 보건 당국 발표에 기반하며, 독립적인 확인은 필요합니다.",
+      "ko_raw_summary": "파크티아 보건 당국에 따르면 최근 동아프가니스탄에서 발생한 공격으로 파키스탄 군사 정권의 공습에 심각한 부상을 입은 33명이 긴급 치료를 위해 카불로 헬리콥터로 이송되었다고 밝혔다. 이 정보는 갈등 상황에서 부상자 지원과 관련된 내용을 포함한다.",
+      "ko_raw_brief": "동아프간 공습 부상자 33명 카불로 긴급 이송",
+      "ko_raw_source_limits": "제공된 정보는 현지 보건 당국 발표에 기반하며, 추가 확인이 필요하다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1955,9 +2041,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22064",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "터키는 나토 정상회의를 앞두고 전국적으로 13일간 집회 금지령을 내렸으며, 이에 대해 인권단체들이 강하게 비판하고 있습니다. 정부는 '국가 안보'를 이유로 이 조치를 시행했고, 혁명 인민 해방당/전선(DHKP/C), 이슬람국가(IS) 지지자로 추정되는 인사들을 포함해 225명을 체포했습니다. 체포된 이들에는 학자, LGBTQ 권리 운동가, 환경 단체 대표, 노동조합 대변인, 변호사 등 다양한 사회 활동가들도 포함되어 있습니다.",
-      "ko_raw_brief": "터키, 나토 정상회의 앞두고 집회 금지 및 대규모 단속에 인권단체 비판",
-      "ko_raw_source_limits": "제공된 메시지는 터키 정부의 집회 금지 및 체포 활동에 대한 인권단체 및 활동가들의 비판을 다루며, 현장 상황에 대한 독립적 검증은 별도로 필요합니다.",
+      "ko_raw_summary": "터키 정부가 나토 정상회의를 앞두고 전국적으로 13일간 집회 금지령을 내리고, 이에 대한 보안 조치로 수백 명을 체포한 것에 대해 인권단체들이 비판했다. 체포된 인원 중에는 좌익 혁명인민해방당-전선(DHKP/C)과 이슬람 국가(IS) 지지자로 추정되는 사람들이 포함되었으며, 학자, 성소수자 인권운동가, 환경단체 대표 등 다양한 인사들도 구금되었다.",
+      "ko_raw_brief": "터키, 나토 정상회의 앞두고 13일간 집회 금지 및 대규모 체포 비판",
+      "ko_raw_source_limits": "제공된 정보는 인권단체들의 비판과 현지 당국 발표에 근거하며, 체포 인원 및 배경은 완전한 사실 확인이 어려울 수 있음.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -1982,9 +2068,9 @@
       "url": "https://t.me/OSINTdefender/19344",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "이란의 탄도미사일과 드론이 쿠웨이트의 알리 알 살렘 공군기지와 바레인의 미 해군 5함대 기지를 포함해 미군 8곳을 공격했다는 주장이 제기되었다. 이 공격은 이란과 그 지역 적대 세력을 둘러싼 지속적인 분쟁의 일부로 보고 있다. 해당 내용은 주장으로 확인되지 않았다.",
-      "ko_raw_brief": "이란, 쿠웨이트-바레인 미군 기지 8곳 공격 주장",
-      "ko_raw_source_limits": "제공된 정보는 주장이며, 독립적인 확인이 필요하다.",
+      "ko_raw_summary": "이란의 탄도 미사일과 무인기가 쿠웨이트의 알리 알 살렘 공군기지 및 바레인의 미국 해군 5함대 기지 등 8곳의 미국 군사 목표물을 공격했다는 주장이 제기되었다. 이 공격은 이란과 지역 적대국들 간 지속되는 분쟁의 일부로 보인다. 해당 내용은 확인되지 않은 주장임을 유의해야 한다.",
+      "ko_raw_brief": "이란, 쿠웨이트와 바레인 미군 기지 8곳 공격 주장",
+      "ko_raw_source_limits": "이 내용은 확인되지 않은 주장으로, 공식 확인된 사건이 아님.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2012,9 +2098,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22059",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "가자지구 다빗 교차로 인근에서 이스라엘의 드론 공격으로 여성과 어린이를 포함한 여러 민간인이 사망하고 중상을 입었다고 보도되었다. 두 발의 미사일이 거리의 한 청년과 인근 민간인 텐트를 공격해 엄청난 폭발 피해가 발생했다. 해당 공격과 관련된 사망 및 부상자 수에 대한 상세한 확인은 추가 조사가 필요하다.",
-      "ko_raw_brief": "가자 다빗 교차로 드론 공격, 민간인 피해 보고",
-      "ko_raw_source_limits": "제공된 메시지는 현장 관찰과 목격자 증언을 포함하나 피해 규모는 공식 확인되지 않았다.",
+      "ko_raw_summary": "가자 지구 다빗 교차로에서 이스라엘의 드론 공격으로 여성과 어린이 등 다수의 민간인이 사망하고 중상을 입었다는 중동아이(Middle East Eye) 보도입니다. 두 발의 미사일이 지나가던 청년과 인근 민간 텐트를 공격해 심각한 피해를 입혔으며, 목격자들은 텐트 내 여성의 사망 가능성도 있다고 전했습니다. 해당 내용은 확인되지 않은 주장과 통계도 함께 포함하고 있습니다.",
+      "ko_raw_brief": "가자 지역 드론 공격으로 민간인 다수 사망·부상 보도",
+      "ko_raw_source_limits": "이 내용은 주장 및 보도에 기반하며, 사실관계는 독립 검증이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2039,9 +2125,9 @@
       "url": "https://t.me/liveuamap/12192",
       "source_reliability": 0.75,
       "region_hint": "global",
-      "ko_raw_summary": "이란 이슬람 혁명수비대(IRGC)가 중동의 쿠웨이트 알리 알 살렘 공군기지와 바레인의 미 해군 제5함대를 탄도미사일과 드론으로 공격했다고 발표했다. 이 공격은 미국이 이란 연안의 5개 위치를 타격한 데 대한 대응이라고 밝혔다. IRGC는 또한 호르무즈 해협에서 선박을 표적했다며, 이란-미국 양해각서에 따라 이란이 해당 해협의 항로를 통제한다고 주장했다.",
-      "ko_raw_brief": "이란 혁명수비대, 미국 중동군사기지 탄도미사일·드론 공격 공식 확인",
-      "ko_raw_source_limits": "해당 내용은 이란 혁명수비대의 발표로, 외부에서 독립검증되지 않은 신고임.",
+      "ko_raw_summary": "이란 이슬람혁명수비대(IRGC)가 쿠웨이트의 알리 알 살렘 공군기지와 바레인의 미 해군 제5함대를 탄도 미사일과 드론으로 공격했다고 발표했습니다. 이번 공격은 미국의 이란 해안 기지 5곳에 대한 공습에 대한 보복이라고 IRGC는 밝혔습니다. 또한 호르무즈 해협에서의 선박 공격도 확인했으며, 이란이 이 미-이란 양해각서에 따라 항행 통제를 주장하고 있다고 주장했습니다.",
+      "ko_raw_brief": "이란 IRGC, 미 중동 기지 2곳 탄도미사일·드론 공격 공식 인정",
+      "ko_raw_source_limits": "이 메시지는 IRGC 발표에 근거한 주장으로, 독립적 사실 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2066,9 +2152,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22058",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "이스라엘 정착민들이 이스라엘 군인들의 보호 아래 점령지인 요르단강 서안 나블루스에서 팔레스타인 가족의 집을 강제로 점거했습니다. 영상에는 정착민들이 발코니에 앉아 있고 집주인들은 건물 밖에 서 있는 장면이 담겨 있습니다. 이러한 공격은 수십 년간 지속되어 왔으며, 2023년 10월 가자지구 전쟁 이후 서안에서의 폭력 사태가 악화되고 있습니다.",
-      "ko_raw_brief": "요르단강 서안의 팔레스타인 가옥 점거 피해",
-      "ko_raw_source_limits": "이 내용은 채널의 주장에 근거하며 독립적 확인이 필요합니다.",
+      "ko_raw_summary": "이스라엘 정착민들이 이스라엘 군인의 보호를 받으며 점령된 서안지구 나블루스에서 팔레스타인 가족의 주택을 강제로 점거했습니다. 영상에는 정착민들이 발코니에 앉아 있고, 집주인들은 건물 밖에 서 있는 모습이 담겼습니다. 이러한 공격은 수십 년간 계속되어 왔으며, 2023년 10월 가자지구 전쟁 이후로 폭력이 급증했습니다.",
+      "ko_raw_brief": "나블루스에서 이스라엘 정착민, 팔레스타인 가옥 강제 점거",
+      "ko_raw_source_limits": "제공된 내용은 주로 공격 주장과 배경 설명으로, 독립적인 사실 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2094,9 +2180,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22057",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "이란과 미국은 최근 2일간 임시 평화협정 체결 이후 최악의 긴장 고조 속에서 상호 공격을 주고받았습니다. 양측은 화물선 공격 사건과 관련해 서로 협정을 위반했다고 비난하였으며, 이란은 미국의 공습에 대한 방어 공격을 실시했다고 주장했습니다. 바레인은 이란의 드론 공격을 규탄했습니다.",
-      "ko_raw_brief": "이란-미국 간 임시평화협정 이후 최악의 교전 발생",
-      "ko_raw_source_limits": "제공된 메시지는 양측 주장 및 비난을 포함하며, 독립적인 사실 확인이 필요합니다.",
+      "ko_raw_summary": "이란과 미국은 최근 양국 간 4개월간의 전쟁을 종식하려는 임시 평화 협정 체결 이후 최악의 긴장 상황 속에서 지난 이틀간 서로에 대한 공격을 주고받았다. 미국은 이란이 화물선 공격에 책임이 있다고 비난했으며, 이란은 미국의 남부 해안 공습에 대한 방어적 공격을 수행했다고 밝혔다. 바레인은 미국 제5함대가 주둔한 자국 영토에 이란 드론 공격이 있었다고 발표했다.",
+      "ko_raw_brief": "이란과 미국, 임시 평화 협정 후 최대 군사 충돌 발생",
+      "ko_raw_source_limits": "제공된 정보는 양측 주장에 기반한 것으로, 사실관계 확인이 필요함.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2121,9 +2207,9 @@
       "url": "https://t.me/OSINTdefender/19339",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "바레인은 이란의 미사일 공격을 자국 영토에 대한 주권 침해와 지역 안보 위협으로 규탄했다. 바레인은 이란이 발사한 여러 미사일을 성공적으로 요격했다고 밝혔다. 이 메시지는 주장 형태로, 독립적인 확인이 필요하다.",
-      "ko_raw_brief": "바레인, 이란 미사일 공격 규탄 및 요격 주장",
-      "ko_raw_source_limits": "이 메시지는 바레인 측 주장으로, 독립적인 사실 확인이 필요하다.",
+      "ko_raw_summary": "바레인은 이란의 미사일 공격을 자국 주권 침해이며 지역 안보 위협으로 규탄했습니다. 바레인은 이 공격 중에 여러 발의 미사일을 성공적으로 요격했다고 밝혔습니다. 이 내용은 바레인 정부의 주장에 기반한 정보입니다.",
+      "ko_raw_brief": "바레인, 이란 미사일 공격 규탄 및 요격 발표",
+      "ko_raw_source_limits": "해당 내용은 바레인 측의 주장에 기반한 것으로, 독립적인 검증이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2148,9 +2234,9 @@
       "url": "https://t.me/OSINTdefender/19338",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "러시아에서 ZALA \"Kama\" 무인 수상선(USV)이 \"Pushesty\" 드론 포트의 지휘 및 디스패치 센터에서 운용되고 있습니다. 이 USV는 'GEOKOSMOS' 통신 및 내비게이션 시스템과 연동되어 러시아 내 어느 장소에서나 원격 조종이 가능하며, 최대 12시간 자율 운항이 가능합니다. 합동 운용 경험을 통해 항공 및 해상 무인기의 통합 제어 기술이 다양한 작전 임무 수행에 적합함이 확인되었습니다.",
-      "ko_raw_brief": "러시아 ZALA \"Kama\" 무인 수상선 통합 운용 기술 소개",
-      "ko_raw_source_limits": "제공된 메시지는 기술 소개 성격으로, 특정 공격이나 사건 발생 내용은 포함하지 않습니다.",
+      "ko_raw_summary": "러시아에서 ZALA \"Kama\" 무인 수상함(USV)이 \"Pushesty\" 드론 포트의 지휘센터에서 운영 중입니다. 이 USV는 러시아 내 어디서든 제어가 가능하며, 12시간 무인 자율 운행과 페이로드 운반이 가능합니다. 드론 및 해상 무인기 통합 운용 기술의 준비 상황을 평가한 시험도 이루어졌다는 주장입니다.",
+      "ko_raw_brief": "러시아 ZALA \"Kama\" 무인 수상함 운영 및 기술 준비 현황",
+      "ko_raw_source_limits": "제공된 메시지는 장비 기능과 기술 준비 상태에 관한 주장으로, 실제 작전 사례나 검증된 사건 보고는 아닙니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2176,9 +2262,9 @@
       "url": "https://t.me/OSINTdefender/19334",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "우크라이나가 볼고그라드에 위치한 타이탄-배리케이드 군수공장을 미사일로 타격했다는 주장이 제기되었습니다. 이 공장은 이스칸데르와 야르스 등 다양한 미사일 시스템의 발사기와 부품을 생산하는 주요 시설입니다. 해당 내용은 우크라이나 측 공격 전략에 관한 정보로, 공식 확인 여부는 명시되어 있지 않습니다.",
-      "ko_raw_brief": "우크라이나, 볼고그라드 미사일 생산시설 미사일 공격 주장",
-      "ko_raw_source_limits": "이 정보는 주장에 기반하며, 공식적인 확인이 이루어지지 않았습니다.",
+      "ko_raw_summary": "우크라이나 미사일이 러시아 볼고그라드에 있는 타이탄-배리케이드 군수공장을 타격했다는 주장이 제기되었습니다. 이 시설은 이스칸데르 및 야르스 미사일 시스템 관련 발사기와 부품을 생산하는 핵심 시설입니다. 해당 메시지는 우크라이나가 러시아 영토 내 군사 인프라를 공격하는 전략을 보여준다는 분석을 담고 있으나, 사실 여부는 확인되지 않았습니다.",
+      "ko_raw_brief": "우크라이나, 러시아 볼고그라드 미사일 군수공장 타격 주장",
+      "ko_raw_source_limits": "제공된 메시지는 주장을 포함하며, 독립적 검증은 이루어지지 않았습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2204,9 +2290,9 @@
       "url": "https://t.me/OSINTdefender/19333",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "미국 군용기가 이란 내 목표물을 공격했다고 보도되었습니다. 이번 공격은 이란이 미 상선에 대한 드론 공격을 가한 데 따른 대응 조치로 해석됩니다. 해당 사건은 계속되는 군사적 긴장 상황 중 하나입니다.",
-      "ko_raw_brief": "미국, 이란 내 목표물 공습 보도",
-      "ko_raw_source_limits": "해당 내용은 주장 중심의 정보로, 독립적인 확인이 필요합니다.",
+      "ko_raw_summary": "미국 군용기가 이란 내 목표물을 공격했다는 주장이 있습니다. 이는 이란의 드론 공격에 따른 미국 측의 군사적 대응 일환으로 보입니다. 그러나 이 정보는 주장이며, 사실 확인이 필요합니다.",
+      "ko_raw_brief": "미국, 이란 내 목표물 공습 주장",
+      "ko_raw_source_limits": "이 내용은 주장이며, 독립적인 확인이 이루어지지 않았습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2231,9 +2317,9 @@
       "url": "https://t.me/OSINTdefender/19331",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "러시아 국방부에 따르면, 2026년 6월 26일 새벽 우크라이나가 러시아 지역에 대해 실시한 역대 최대 공중 공격에서 660대의 우크라이나 드론이 요격·파괴되었다고 한다. 이는 러시아 측 발표에 기반한 정보다.",
-      "ko_raw_brief": "우크라이나, 러시아 지역에 최대 규모 드론 공격 시도 – 러시아 국방부 발표",
-      "ko_raw_source_limits": "해당 정보는 러시아 국방부의 주장에 근거하며 독립적인 확인이 필요하다.",
+      "ko_raw_summary": "러시아 국방부에 따르면 2026년 6월 26일 자정을 기해 우크라이나가 러시아 지역에 대해 실시한 최대 규모의 공습에서 660대의 우크라이나 드론이 요격 및 격추되었다. 해당 내용은 러시아 측 발표에 근거한 주장이다.",
+      "ko_raw_brief": "우크라이나, 러시아 지역에 최대 규모 드론 공습 시도 주장",
+      "ko_raw_source_limits": "정보원은 러시아 국방부로, 주장이며 독립적 확인은 필요함.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2258,9 +2344,9 @@
       "url": "https://t.me/liveuamap/12191",
       "source_reliability": 0.75,
       "region_hint": "global",
-      "ko_raw_summary": "트럼프 전 대통령이 호르무즈 해협을 통과하는 선박들에 대한 이란의 공격을 휴전 위반이라고 주장했다. 그는 이란이 최소 네 대의 공격 드론을 발사해 한 대의 드론이 대형 화물선의 상부 갑판을 명중시켰으며, 나머지 세 대는 요격되었다고 밝혔다. 이 발언은 트럼프의 소셜 미디어 게시물을 인용한 것이며, 사건의 진위는 별도로 확인할 필요가 있다.",
-      "ko_raw_brief": "트럼프, 이란의 호르무즈 해협 선박 공격을 휴전 위반으로 규탄",
-      "ko_raw_source_limits": "트럼프의 주장에 근거한 정보이며, 사건의 공식 확인은 없음",
+      "ko_raw_summary": "트럼프 전 대통령은 이란이 호르무즈 해협을 지나는 선박들에 최소 4기의 일방공격 드론을 발사한 것을 휴전 위반이라고 주장했습니다. 그중 한 드론이 큰 화물선 갑판을 명중시켜 피해를 입혔으나 선박은 계속 항해할 수 있었다고 전했습니다. 그는 3기 드론을 격추했으며, 이번 공격이 휴전 합의를 어긴 어리석은 행동이라고 비판했습니다.",
+      "ko_raw_brief": "트럼프, 이란의 호르무즈 해협 선박 드론 공격을 휴전 위반으로 규정",
+      "ko_raw_source_limits": "이 발언은 트럼프의 주장으로, 독립적인 확인이 필요함",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2286,9 +2372,9 @@
       "url": "https://t.me/liveuamap/12190",
       "source_reliability": 0.75,
       "region_hint": "global",
-      "ko_raw_summary": "이스라엘 군은 남부 레바논의 '보안 지대' 인근에서 공습을 통해 헤즈볼라 7명을 사살했다고 발표했습니다. 이 내용은 레바논 지역의 한 소식통을 통해 전해졌습니다. 확인되지 않은 주장으로, 독립적인 검증이 필요합니다.",
-      "ko_raw_brief": "이스라엘, 레바논 남부 공습으로 헤즈볼라 7명 사살 주장",
-      "ko_raw_source_limits": "해당 내용은 이스라엘 군의 주장에 기반하며 독립적인 확인은 이루어지지 않았습니다.",
+      "ko_raw_summary": "이스라엘 군이 남부 레바논 '안보 구역' 인근에서 공습을 통해 헤즈볼라 소속 7명을 사살했다고 주장하고 있습니다. 이는 이스라엘 군의 공식 발표에 기반한 정보입니다.",
+      "ko_raw_brief": "이스라엘, 남부 레바논 공습으로 헤즈볼라 7명 사살 주장",
+      "ko_raw_source_limits": "주장된 사건으로, 독립적 검증이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2314,9 +2400,9 @@
       "url": "https://t.me/OSINTdefender/19330",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "북한은 김정은 정권 하에서 90km 사거리의 업그레이드된 240mm 다연장 로켓 발사기와 공항 타격용 전술 탄도미사일을 포함한 포병 및 미사일 시스템을 시험하였습니다. 이는 5년 군 현대화 계획의 일환으로 진행된 것으로 알려졌습니다. 해당 메시지는 정보 제공 및 홍보 목적의 내용입니다.",
-      "ko_raw_brief": "북한, 군 현대화 일환으로 신형 미사일 체계 시험",
-      "ko_raw_source_limits": "해당 정보는 공식 확인되지 않은 공개 정보로, 구체적 피해나 성과에 대한 검증이 필요합니다.",
+      "ko_raw_summary": "북한이 김정은 지도 하에 90km 사거리의 240mm 다연장로켓 발사기와 공항 타격용 전술 탄도미사일을 포함한 업그레이드된 포병 및 미사일 체계 시험을 실시했다. 이는 5년간 군사 현대화 계획의 일부다. 해당 내용은 확인되지 않은 주장임을 감안해야 한다.",
+      "ko_raw_brief": "북한, 군사 현대화 차원 미사일 및 포병 시스템 시험 주장",
+      "ko_raw_source_limits": "제공된 메시지는 북한의 군사 시험 주장으로, 독립적 검증이 이루어지지 않은 정보임.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2341,9 +2427,9 @@
       "url": "https://t.me/OSINTdefender/19320",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "도널드 트럼프 전 미국 대통령이 이란 전쟁에서 독일이 미국을 지원하지 않은 것에 대해 실망을 표명하며, 이로 인해 양국 관계가 긴장되고 독일 내 미군 감축 등의 결과가 초래될 수 있다고 언급했습니다. 해당 발언은 정치적 입장 표명으로 평가됩니다.",
-      "ko_raw_brief": "트럼프, 독일의 이란 전쟁 지원 부족에 실망 표명",
-      "ko_raw_source_limits": "이 메시지는 트럼프 전 대통령의 정치적 발언을 인용한 것으로, 사실 확인이 필요한 주장입니다.",
+      "ko_raw_summary": "트럼프 전 대통령이 이란과의 전쟁에서 독일이 미국을 지원하지 않은 점에 대해 실망을 표현했습니다. 그는 독일의 지원 부족이 양국 관계에 긴장을 초래했으며, 독일 주둔 미군 축소 등의 결과를 초래할 수 있다고 언급했습니다.",
+      "ko_raw_brief": "트럼프, 이란 전쟁서 독일의 미국 미지원 비판",
+      "ko_raw_source_limits": "이 메시지는 주장 및 정치적 발언으로, 검증된 사건 보고는 아닙니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2368,9 +2454,9 @@
       "url": "https://t.me/liveuamap/12184",
       "source_reliability": 0.75,
       "region_hint": "global",
-      "ko_raw_summary": "이스라엘 공습이 레바논의 자우타르와 마이파둔 사이에서 레인지로버 차량을 목표로 진행되어 3명이 사망하고 1명이 중상을 입었다. 이 사건은 현지 시간 2026년 6월 25일에 발생했다.",
-      "ko_raw_brief": "레바논 자우타르 인근 이스라엘 공습, 3명 사망",
-      "ko_raw_source_limits": "이 정보는 현지 보도 채널에서 나온 것으로, 독립적 확인이 필요하다.",
+      "ko_raw_summary": "이스라엘이 레바논의 Zawtar와 Mayfadoun 사이에서 공격을 감행해 한 대의 레인지 로버를 타격했다. 이 공격으로 3명이 사망하고 1명이 중상을 입었다.",
+      "ko_raw_brief": "레바논에서 이스라엘 공습으로 3명 사망",
+      "ko_raw_source_limits": "이 정보는 현지 출처에 따른 보도이며, 독립적으로 확인되지 않았다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2397,9 +2483,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22017",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "도널드 트럼프 전 미국 대통령은 2월 28일 이란 초등학교를 타격한 미사일 공격에 대해 미국이 책임이 있다는 증거를 보지 못했다고 주장했다. 그러나 3월 미국 군사조사에서는 미 해군이 톰복 미사일을 사용해 이 공격을 실행했으며, 이로 인해 155명이 사망한 것으로 확인됐다. 트럼프는 이전에도 이 공격 책임을 회피하려 했으며, 이란도 톰복 미사일을 사용하고 있다고 주장한 바 있다.",
-      "ko_raw_brief": "트럼프, 이란 초등학교 미사일 공격 미국 책임 부인",
-      "ko_raw_source_limits": "메시지는 트럼프의 주장과 미국 군 내부 조사 보고서 간 상충하는 정보를 담고 있어, 진위 여부 추가 확인 필요.",
+      "ko_raw_summary": "도널드 트럼프 전 미국 대통령은 2월 28일 이란 초등학교를 타격한 미사일 공격에 대해 미국의 책임을 입증할 증거를 본 적이 없다고 주장했다. 당시 미국 군 내부 조사는 미국이 Tomahawk 미사일을 사용해 공격을 실행했다고 밝히고 있으며, 이 공격으로 155명이 사망했다. 트럼프는 이란도 Tomahawk 미사일을 사용한다며 책임 회피 성향을 보였다.",
+      "ko_raw_brief": "트럼프 전 대통령, 이란 초등학교 미사일 공격 미국 책임 부인",
+      "ko_raw_source_limits": "메시지는 트럼프의 주장과 내부 조사 결과를 모두 언급하나, 최종 사실 확인은 별도 필요.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2424,9 +2510,9 @@
       "url": "https://t.me/KyivIndependent_official/53876",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 전쟁에서 지상 로봇이 보급품 수송, 부상 병사 후송, 지뢰 제거, 전투 임무 수행 등 다양한 역할을 하며 병사들의 위험을 줄이고 있습니다. 키예프 인디펜던트의 카테리나 호두노바가 우크라이나 방위 기술 회사인 RoverTech의 CEO 바실 코레노프스키와 인터뷰를 진행했습니다. 그는 간단한 지뢰 제거 기계가 현재 전장에서 사용되는 다양한 지상 로봇 시스템으로 발전한 과정을 설명합니다.",
-      "ko_raw_brief": "우크라이나 전장에서 지상 로봇의 역할 확대와 기술 발전 소개",
-      "ko_raw_source_limits": "이 내용은 인터뷰와 설명에 기반한 것으로, 실제 전투 상황에서의 구체적 효과나 피해 규모 등은 언급하지 않습니다.",
+      "ko_raw_summary": "우크라이나 전쟁에서 지상 로봇이 보급품 운송, 부상병 후송, 지뢰 제거, 전투 임무 수행 등 다양한 역할을 하며 중요성이 커지고 있다고 Kyiv Independent가 전했다. RoverTech의 CEO 바실 코레노브스키는 간단한 지뢰 제거 기계가 진화하여 전장에 사용되는 지상 로봇 시스템으로 발전했다고 설명했다. 이는 확인된 현장 활동보다는 기술 발전과 역할에 대한 해설 영상 내용이다.",
+      "ko_raw_brief": "우크라이나 전쟁에서 지상 로봇의 활용 확대와 기술 발전",
+      "ko_raw_source_limits": "제공된 내용은 현장 상황 직접 보고가 아니라 기술회사 대표의 설명과 해설 영상이며, 구체적 피해나 전투 결과에 대한 내용은 포함되지 않음.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2451,9 +2537,9 @@
       "url": "https://t.me/KyivIndependent_official/53871",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아의 공격으로 우크라이나 전역에서 10명이 사망하고 72명이 부상했으며, 크리비리흐에서는 치명적인 탄도 미사일 공격이 있었습니다. 러시아는 밤사이 101대의 드론을 발사했으나 우크라이나 방공망이 95대를 요격하거나 전파 방해했습니다.",
-      "ko_raw_brief": "러시아의 광범위한 공격으로 우크라이나에서 사상자 발생 및 탄도 미사일 공격 보고",
-      "ko_raw_source_limits": "우크라이나 공군 보고에 기반한 정보로, 독립적 확인 필요",
+      "ko_raw_summary": "우크라이나 전역에서 러시아의 공격으로 10명이 사망하고 72명이 부상당했다고 보도되었습니다. 최근 크리비리흐에서 치명적인 탄도 미사일 공격이 있었습니다. 러시아가 밤사이 101대의 드론을 발사했으나, 우크라이나 방공부대가 그 중 95대를 격추 또는 교란시켰습니다.",
+      "ko_raw_brief": "러시아 탄도 미사일 공격으로 10명 사망, 크리비리흐 타격",
+      "ko_raw_source_limits": "제공된 정보는 현지 군사 보고를 인용한 내용이나 독립적인 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2478,9 +2564,9 @@
       "url": "https://t.me/MiddleEastEye_TG/22013",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "이스라엘 국가안보장관 이타마르 벤 그비르는 이스라엘 군인 4명이 남부 레바논에서 사망한 뒤 레바논에 대한 복수 공격 강화를 촉구했다. 그는 소셜미디어 영상에서 \"이스라엘 어머니 한 명의 눈물마다 천 명의 레바논 어머니가 울어야 한다\"라며 강경 발언을 되풀이했다.",
-      "ko_raw_brief": "이스라엘 안보장관, 레바논에 대한 강경 복수 촉구",
-      "ko_raw_source_limits": "발언은 확인된 사건에 대한 정치적 견해로, 사실 확인이 필요한 주장임.",
+      "ko_raw_summary": "이스라엘 국토안보장관 이타마르 벤 기브르는 레바논 남부에서 네 명의 이스라엘 군인이 사망한 후 레바논에 대한 보복 공격 강화를 촉구했다. 그는 소셜미디어 영상을 통해 '이스라엘 어머니 한 명의 눈물마다 레바논 어머니 천 명이 울어야 한다'며 레바논 전체가 타야 한다고 주장했다. 이 발언은 국제적 비난을 받고 있다.",
+      "ko_raw_brief": "이스라엘 국토안보장관, 레바논에 대한 보복 공격 촉구 발언",
+      "ko_raw_source_limits": "이 메시지는 정치적 발언 및 주장으로, 사실 확인된 사건 보고가 아님.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2505,9 +2591,9 @@
       "url": "https://t.me/liveuamap/12179",
       "source_reliability": 0.75,
       "region_hint": "global",
-      "ko_raw_summary": "우크라이나 군 무인 시스템 사령관이 세바스토폴 전력 변전소에 대한 드론 공습을 확인했습니다. 이 정보는 공식 확인된 내용입니다.",
-      "ko_raw_brief": "우크라이나 군, 세바스토폴 전력 변전소 드론 공습 확인",
-      "ko_raw_source_limits": "정보는 우크라이나 군 무인 시스템 사령관의 확인에 기반하며, 추가 독립적 검증이 필요합니다.",
+      "ko_raw_summary": "우크라이나 군 무인시스템 사령관이 세바스토폴 전력 변전소에 대한 드론 공격을 확인했습니다. 해당 정보는 라이브유에이맵에서 제공되었습니다.",
+      "ko_raw_brief": "우크라이나 군 드론, 세바스토폴 전력 변전소 공격 확인",
+      "ko_raw_source_limits": "제공된 메시지는 우크라이나 군 무인시스템 사령관의 확인을 기반으로 한 주장으로, 독립적인 추가 검증이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2532,9 +2618,9 @@
       "url": "https://t.me/KyivIndependent_official/53861",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 국방부 고문 세르히이 '플래시' 베스크레스트노프가 6월 23일 러시아가 흑해에서 무인 수상정을 이용해 우크라이나 남서부 해안에 공격을 시도했으나, 우크라이나가 이를 제거했다고 보고했다. 러시아 무인정은 스타링크 기술로 구동된 것으로 알려졌다. 이는 러시아의 선제 공격 시도로 분석된다.",
-      "ko_raw_brief": "우크라이나, 스타링크로 작동된 러시아 무인정 제거",
-      "ko_raw_source_limits": "제보는 공식 발표를 인용하였으나 독립적인 추가 검증은 필요함.",
+      "ko_raw_summary": "우크라이나 국방부 자문관 세르히이 베스크레스노프는 6월 23일 러시아가 흑해에서 무인 수상정을 이용해 우크라이나 남서부 해안을 공격하려 했다고 밝혔습니다. 우크라이나는 스타링크로 조종되는 이 러시아 무인정을 격추시켰다고 공식 발표했습니다.",
+      "ko_raw_brief": "우크라이나, 스타링크로 조종된 러시아 무인정 격추",
+      "ko_raw_source_limits": "이 정보는 우크라이나 국방부 자문관의 발표를 바탕으로 한 주장으로, 독립적 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2560,9 +2646,9 @@
       "url": "https://t.me/KyivIndependent_official/53860",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 군 당국은 6월 23일 밤 러시아가 점령한 크림 반도 내 북부 크림 운하의 철도 교량과 연료 시설, 군사 기반 시설을 대상으로 대규모 공격을 감행했다고 밝혔다. 같은 날 크리비리흐에서는 러시아의 탄도 미사일 공격으로 민간 시설이 타격을 입어 최소 3명이 사망하고 25명이 부상당했다고 현지 당국이 전했다.",
-      "ko_raw_brief": "우크라이나, 크림 반도 주요 철도 교량 파괴 및 크리비리흐 러시아 미사일 공격 사상자 발생 보고",
-      "ko_raw_source_limits": "우크라이나 군 당국과 현지 당국의 발표를 바탕으로 한 보도로, 독립적 확인은 별도 필요함.",
+      "ko_raw_summary": "우크라이나 군 당국에 따르면, 우크라이나가 러시아 점령 크림 반도 내 주요 철도 교량과 연료 시설, 군사 인프라를 대규모 작전으로 공격했다. 한편 크리비리흐에서는 러시아의 탄도미사일 공격으로 최소 3명이 사망하고 25명이 부상당했다는 현지 당국의 보고가 있다. 이는 확인된 전투 행위와 민간 피해 관련 공식 보고이다.",
+      "ko_raw_brief": "우크라이나, 점령 크림 내 주요 인프라 공격 및 러시아 미사일로 크리비리흐 민간인 피해 발생",
+      "ko_raw_source_limits": "제공된 메시지와 현지 당국 보고를 기반으로 하나, 현장 상황에 따라 피해 규모는 변경될 수 있다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2587,9 +2673,9 @@
       "url": "https://t.me/KyivIndependent_official/53851",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아군이 도네츠크주 코스탄틴리브카 도시에 진입하며 도네츠크 요새 지대에서 본격적인 전투가 시작되었습니다. 우크라이나는 이 도시 방어 여부가 도네츠크 지역의 향후 전세에 중요한 변수가 될 것으로 보고 있습니다. 이 소식은 러시아 정제소 화재 및 보급망 차단과 관련된 긍정적 보도와 함께 전해졌습니다.",
-      "ko_raw_brief": "러시아군, 코스탄틴리브카 진입하며 도네츠크 도시 전투 개시",
-      "ko_raw_source_limits": "정보는 현지 언론의 분석에 기반하였으며, 전투의 최종 결과나 피해 규모 등은 아직 확인되지 않았습니다.",
+      "ko_raw_summary": "러시아군이 돈바스 지역의 방어진지인 코스티안티니우카 도시에 진입하며 본격적인 전투가 시작되었다. 이 도시는 돈바스 지역의 전략적 요충지로, 전투의 향방은 이 지역의 향후 통제권 확보에 중요한 영향을 미칠 것으로 보인다. 우크라이나 측의 대응이 이 도시를 러시아의 최후 요새로 만들지, 또는 돈바스 내 우크라이나 영토 유지의 분기점이 될지 결정할 전망이다.",
+      "ko_raw_brief": "러시아군, 돈바스 코스티안티니우카 돌입 본격 전투 시작",
+      "ko_raw_source_limits": "이 메시지는 분석과 현황을 담고 있으나, 전투 결과나 구체적 피해 상황에 대한 공식 확인은 제공되지 않음",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2615,9 +2701,9 @@
       "url": "https://t.me/KyivIndependent_official/53848",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "크리비리흐에서 러시아 이스칸데르-M 탄도 미사일이 민간시설을 공격해 최소 3명이 사망하고 25명이 부상했다고 현지 당국이 보고했습니다. 이 공격에는 집속탄이 사용된 것으로 알려졌습니다. 사건은 아직 완전한 확인이 필요한 상황입니다.",
-      "ko_raw_brief": "크리비리흐 미사일 공격으로 민간인 사상 발생",
-      "ko_raw_source_limits": "현지 당국의 보고를 바탕으로 한 주장으로, 추가 확인이 필요합니다.",
+      "ko_raw_summary": "크리비 리흐에서 러시아의 이스칸데르-M 탄도 미사일이 민간 시설을 공격해 최소 3명이 사망하고 25명이 부상당했다고 현지 당국이 보고했습니다. 이번 공격은 클러스터탄을 포함한 미사일에 의한 것으로 알려졌습니다.",
+      "ko_raw_brief": "크리비 리흐 미사일 공격으로 3명 사망·25명 부상",
+      "ko_raw_source_limits": "이 정보는 현지 당국 보고를 인용한 것으로 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2642,9 +2728,9 @@
       "url": "https://t.me/KyivIndependent_official/53844",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "지난 하루 동안 러시아의 공격으로 우크라이나 전역에서 5명이 사망하고 49명이 부상당했습니다. 특히, 헤르손 지역에 대한 드론 공격이 계속되고 있으며, 우크라이나 공군에 따르면 6월 23일 밤 러시아가 135대의 샤헤드형 공격 드론을 발사했습니다.",
-      "ko_raw_brief": "러시아, 우크라이나 공격으로 사망 5명·부상 49명 발생 및 헤르손 드론 공격 지속",
-      "ko_raw_source_limits": "해당 내용은 우크라이나 공군 발표를 근거로 한 것이며, 현장 상황과 차이가 있을 수 있습니다.",
+      "ko_raw_summary": "우크라이나의 우크라이나 공군에 따르면, 러시아의 무인공격기 135대가 6월 23일 밤 사이에 발사되었으며 지난 하루 동안 러시아의 공격으로 5명이 사망하고 49명이 부상당했다고 합니다. 무인기 공격은 헤르손 지역을 계속해서 타격하고 있습니다.",
+      "ko_raw_brief": "러시아, 6월 23일 헤르손 포함 우크라 전역에 무인공격기 135대 투입해 사상자 발생",
+      "ko_raw_source_limits": "제공된 정보는 우크라이나 공군과 텔레그램 채널의 주장에 기반하며 독립적 확인은 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2669,9 +2755,9 @@
       "url": "https://t.me/OSINTdefender/19308",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "이 메시지는 러시아와 미국 간 갈등과 관련된 주장으로, 러시아가 매월 약 4만 명의 인명 피해를 내고 경제적 압박을 받고 있다는 내용이다. 우크라이나는 빠르게 혁신하고 있으며, 현 사태는 외교와 협상으로 해결되어야 한다고 강조한다. 이는 확인되지 않은 주장이며 공식 확인된 정보가 아니다.",
-      "ko_raw_brief": "러시아-우크라이나 갈등 관련 미확인 주장 및 외교 필요성 강조",
-      "ko_raw_source_limits": "메시지는 확인되지 않은 주장과 정치적 견해를 포함하며, 공식 확인된 사실로 간주할 수 없음",
+      "ko_raw_summary": "지난 G7 정상회의에서 트럼프 대통령은 러시아가 협상에 도달해야 한다고 명확히 밝혔습니다. 메시지는 러시아의 높은 사상자 수와 경제적 어려움을 언급하며, 우크라이나의 빠른 혁신을 강조하고 있습니다. 전달 내용은 외교와 협상이 유일한 해결책임을 주장하는 정치적 입장입니다.",
+      "ko_raw_brief": "트럼프 대통령, 러시아-우크라이나 분쟁 조속한 협상 촉구",
+      "ko_raw_source_limits": "이 메시지는 주장과 정치적 견해를 포함하고 있으며, 확인된 사실과 구별해야 합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2696,9 +2782,9 @@
       "url": "https://t.me/KyivIndependent_official/53837",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 군이 러시아 보로네시의 첨단 미사일 부품 생산 전자 공장을 타격했다고 우크라이나 총참모부가 보고했다. 한편, 벨라루스 망명 야당은 대통령 부대에 벨라루스가 곧 러시아의 우크라이나 전쟁에 참전할 수 있음을 경고하는 징후 목록을 전달했다. 이 내용은 6월 22일 우크라이나 외무장관에게 공식 전달되었다.",
-      "ko_raw_brief": "러시아 미사일 부품 공장 타격 및 벨라루스 전쟁 개입 경고",
-      "ko_raw_source_limits": "전투 사실은 우크라이나 총참모부 발표에 근거하며, 벨라루스 전쟁 참전 경고는 망명 야당의 주장임.",
+      "ko_raw_summary": "러시아의 전자 부품 공장이 우크라이나 군에 의해 타격을 입은 것으로 우크라이나 총참모부가 보고했습니다. 한편, 벨라루스 망명 반대파가 벨라루스가 곧 러시아의 전쟁에 개입할 수 있다는 경고 신호 목록을 우크라이나에 전달했다고 전했습니다. 이 메시지는 확인되지 않은 주장 내용을 포함하고 있습니다.",
+      "ko_raw_brief": "러시아 미사일 부품 공장 폭격 및 벨라루스 전쟁 개입 경고 보고",
+      "ko_raw_source_limits": "해당 정보는 벨라루스 망명 반대파의 주장과 우크라이나 군 발표에 기반하며 독립적 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2723,9 +2809,9 @@
       "url": "https://t.me/OSINTdefender/19305",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "2026년 6월 22일 우크라이나 신형 스톰 섀도우 순항미사일이 러시아 보로네시 반도체 공장을 공격해 큰 피해와 화재를 발생시켰으며, 청정실 장비와 수입된 서방 기계가 파괴되어 시설 가동이 중단된 것으로 보고됐다. 보로네시 지역 주지사는 이번 공격으로 3명이 부상했다고 전했다. 이 내용은 공식 확인된 사건 정보를 바탕으로 하고 있다.",
-      "ko_raw_brief": "우크라이나, 러시아 보로네시 반도체 공장 미사일 공격으로 큰 피해 발생",
-      "ko_raw_source_limits": "해당 정보는 지역 주지사 발표에 기반하며, 현장 상황에 대한 추가 확인이 필요함.",
+      "ko_raw_summary": "2026년 6월 22일, 우크라이나의 스톰 섀도우 미사일이 러시아 보로네시 반도체 공장을 공격해 큰 피해와 화재를 일으켰고, 청정실 장비와 수입된 서방 기계가 파괴되어 공장이 가동 중단 상태에 놓였다고 보로네시 주지사가 전했습니다. 이 공격으로 3명이 부상당했다고 합니다.",
+      "ko_raw_brief": "우크라이나, 보로네시 반도체 공장 스톰 섀도우 미사일 공격으로 피해 발생",
+      "ko_raw_source_limits": "보도 내용은 해당 지역 주지사 발언에 근거하며, 독립적인 확인이 필요함.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2750,9 +2836,9 @@
       "url": "https://t.me/OSINTdefender/19304",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "독일은 벨라루스와 러시아 관련 안보 우려에 대응하여 나토 동부 전선을 강화하기 위해 약 5,000명의 병력을 리투아니아에 항구적으로 배치했다. 이번 배치에는 제45 기갑여단이 포함되며, 이는 제2차 세계대전 이후 독일의 첫 해외 영구 병력 배치이다.",
-      "ko_raw_brief": "독일, 리투아니아에 약 5,000명 병력 영구 배치",
-      "ko_raw_source_limits": "이 정보는 텔레그램 OSINT 채널의 공개 게시물에 기반하며, 공식 확인되지 않은 정보일 수 있습니다.",
+      "ko_raw_summary": "독일은 벨라루스와 러시아와 관련된 안보 우려에 대응하여 나토 동부 방위 강화를 위해 약 5,000명의 병력을 리투아니아에 영구 배치했다. 이번 배치에는 제45기갑여단이 포함되며, 이는 독일이 제2차 세계대전 이후 처음으로 실시하는 해외 영구 병력 배치이다.",
+      "ko_raw_brief": "독일, 리투아니아에 나토 동부 방위 위한 5,000명 병력 영구 배치",
+      "ko_raw_source_limits": "제공된 메시지는 배치 사실에 관한 주장으로, 독립적인 확인은 필요하다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2779,9 +2865,9 @@
       "url": "https://t.me/KyivIndependent_official/53830",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "지난 하루 동안 러시아의 공격으로 우크라이나 전역에서 10명이 사망하고 48명이 부상당했습니다. 수미 주에서는 러시아 무인기가 주택을 공격해 13세 소년, 36세 아버지, 73세 할머니가 사망했습니다.",
-      "ko_raw_brief": "수미 드론 공격으로 가족 3명 사망 포함 최근 우크라이나 내 러시아 공격으로 10명 사망 보고",
-      "ko_raw_source_limits": "이 정보는 현지 보도에 기반한 것으로, 상황 확인과 추가 검증이 필요할 수 있습니다.",
+      "ko_raw_summary": "우크라이나 전역에서 러시아의 공격으로 지난 하루 동안 10명이 사망하고 48명이 부상당했습니다. 수미 지역에서는 러시아 드론 공격으로 한 가족이 사망했으며, 13세 소년과 그의 아버지(36세), 그리고 할머니(73세)가 희생되었습니다. 이 정보는 KyivIndependent_official 채널에서 보고되었습니다.",
+      "ko_raw_brief": "수미서 러시아 드론 공격으로 가족 3명 사망, 우크라 전역 10명 사망",
+      "ko_raw_source_limits": "이 정보는 현지 보도에 기반을 둔 주장으로, 추가 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2807,9 +2893,9 @@
       "url": "https://t.me/KyivIndependent_official/53829",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "에스토니아에서 우크라이나의 러시아 공격 직후 폭발물을 실은 드론이 발견되었다고 에스토니아 당국이 밝혔다. 이 드론은 6월 3일 러시아 북서부를 대상으로 한 우크라이나 항공 공격과 연관된 것으로 추정된다.",
-      "ko_raw_brief": "에스토니아에서 발견된 우크라이나 공격 연관 폭발물 드론",
-      "ko_raw_source_limits": "이 정보는 에스토니아 당국의 발표에 근거하나 사건의 전면적 검증은 이루어지지 않았다.",
+      "ko_raw_summary": "에스토니아에서 우크라이나의 러시아 공격 후 폭발물을 실은 드론이 발견되었다고 에스토니아 당국이 밝혔다. 이 드론은 6월 3일 북서부 러시아에 대한 우크라이나의 공중 공격과 연관이 있을 수 있다. 이는 확인되지 않은 주장임을 감안해야 한다.",
+      "ko_raw_brief": "에스토니아에서 우크라이나 드론 발견 주장",
+      "ko_raw_source_limits": "해당 내용은 당국 발표에 기반한 주장으로, 사건의 완전한 사실 확인이 필요하다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2834,9 +2920,9 @@
       "url": "https://t.me/KyivIndependent_official/53828",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아의 공격으로 우크라이나의 주요 FPV 생산 시설이 피해를 입었습니다. 회사 창립자인 야로슬라브 그리신은 이에 \"우리는 이러한 상황에 대비하고 있었다\"며 \"적이 우리를 멈추지 못할 것\"이라고 밝혔습니다. 이 메시지는 확인되지 않은 공격 주장입니다.",
-      "ko_raw_brief": "우크라이나 FPV 기업 생산 시설 러시아 공격 피해 주장",
-      "ko_raw_source_limits": "이 정보는 당사자 주장을 기반으로 하며 독립적 확인이 필요합니다.",
+      "ko_raw_summary": "러시아의 공격으로 우크라이나의 FPV 대기업 생산 시설이 피해를 입었다는 보도가 있습니다. 회사 설립자 야로슬라프 그리신은 이번 사태를 전쟁의 일부로 규정하며 적의 시도가 성공하지 못할 것이라고 밝혔습니다. 이는 확인된 피해 사건에 대한 회사 측 발언입니다.",
+      "ko_raw_brief": "러시아 공격으로 우크라 FPV 기업 생산 시설 피해 발생",
+      "ko_raw_source_limits": "메시지는 회사 설립자의 발언을 인용한 것으로, 독립적 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2862,9 +2948,9 @@
       "url": "https://t.me/KyivIndependent_official/53821",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아가 6월 2일과 15일에 올해 최대 규모의 탄도 및 극초음속 미사일 공격을 감행했다. 이러한 공격은 우크라이나의 패트리어트 요격 미사일 부족 상황을 이용해 도시들에 집중적인 미사일 사격으로 최대 피해를 주려는 새로운 전술 변화를 시사한다.",
-      "ko_raw_brief": "러시아, 우크라이나에 집중적 탄도 및 극초음속 미사일 공격 전술 변화 감지",
-      "ko_raw_source_limits": "이 내용은 분석과 주장에 기반한 전술 변화 관찰로, 공식 확인된 피해나 결과를 포함하지 않음.",
+      "ko_raw_summary": "러시아는 6월 2일 올해 최대 규모의 탄도 및 극초음속 미사일 공격을 실시했으며, 6월 15일에는 거의 이를 능가하는 공격을 수행했습니다. 이번 공격은 우크라이나가 패트리엇 요격 미사일 부족 문제에 직면한 가운데, 러시아가 도시를 겨냥한 집중 미사일 공격 전술을 발전시키고 있음을 시사합니다. 전술 변화는 집중적인 탄도 및 극초음속 미사일 공격을 통한 최대 피해 유도에 중점을 두고 있습니다.",
+      "ko_raw_brief": "러시아, 우크라이나에 집중 탄도미사일 공격 전술 도입 징후",
+      "ko_raw_source_limits": "이 정보는 러시아 공격 전술 변화에 대한 분석이며, 구체적 피해나 추가 확인이 필요한 상황을 반영합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2889,9 +2975,9 @@
       "url": "https://t.me/MiddleEastEye_TG/21993",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "이스라엘 총리 네타냐후가 이란과의 전쟁을 시작한 후, 이란과 미국 간 협상과 합의가 이루어졌다. 예루살렘 히브리 대학교가 실시한 여론조사에서 92%의 이스라엘인이 이란이 전쟁에서 승리했다고 평가했으며, 대다수가 전쟁과 그 결과를 부정적으로 인식하고 있다. 해당 내용은 확인되지 않은 여론조사 결과 및 정치적 평가임을 유의해야 한다.",
-      "ko_raw_brief": "이스라엘 내 92% \"이란이 전쟁에서 승리\" 여론조사 결과 공개",
-      "ko_raw_source_limits": "이 내용은 여론조사와 정치적 해석에 기반한 주장으로, 실제 사건 확인은 필요함.",
+      "ko_raw_summary": "이스라엘 총리 베냐민 네타냐후가 2월 말 이란과의 전쟁을 시작한 이후, 최근 이란과 미국 간 협정 체결 및 스위스 협상 지속 상황에서 새로운 여론조사 결과 이스라엘인의 92%가 이란이 전쟁에서 승리했다고 믿고 있음을 보여줍니다. 여론조사는 대부분의 이스라엘인이 전쟁과 협정 결과를 부정적으로 평가하며, 83%는 이 캠페인이 이스라엘의 장기 안보를 약화시켰다고 보고, 86%는 결과에 대해 부정적인 감정을 가지고 있다고 밝혔습니다.",
+      "ko_raw_brief": "이스라엘 국민 92% 이란이 전쟁에서 승리했다는 여론조사 결과",
+      "ko_raw_source_limits": "해당 내용은 여론조사 결과와 평가로 사건 확인정보가 아닙니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2916,9 +3002,9 @@
       "url": "https://t.me/MiddleEastEye_TG/21992",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "알자지라 영상기자 아흐메드 위샤가 2023년 10월 7일 이후 가자지구 부레이즈 난민촌에서 이스라엘 공격으로 사망했다. 위샤는 그동안 이스라엘 공격으로 숨진 200명 이상의 언론인 중 한 명이다. 사랑하는 이들이 그를 추모하기 위해 모였다.",
-      "ko_raw_brief": "가자지구에서 이스라엘 공격으로 알자지라 기자 사망",
-      "ko_raw_source_limits": "제공된 메시지는 주장의 형태로, 독립적인 확인이 필요합니다.",
+      "ko_raw_summary": "알자지라 영상기자 아흐메드 위샤가 부레이지 난민촌에서 이스라엘 공격으로 사망하여 유족들이 작별 인사를 나누고 있습니다. 위샤는 2023년 10월 7일 이후 가자 지구에서 이스라엘에 의해 사망한 200명 이상의 언론인 중 한 명입니다. 이 메시지는 확인된 사망 사건을 보고하고 있습니다.",
+      "ko_raw_brief": "이스라엘 공격으로 알자지라 기자 아흐메드 위샤 사망",
+      "ko_raw_source_limits": "사망자 수 등은 제공된 메시지에 근거하며 독립 확인이 필요합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2943,9 +3029,9 @@
       "url": "https://t.me/OSINTdefender/19296",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "중국이 타클라마칸 사막에 USS 제럴드 R. 포드 항공모함과 알레이 버크급 구축함의 실물 크기 모형을 건설해 미군 함대를 모의 타격하는 훈련에 사용하고 있습니다. 이 정보는 중국의 미 해군에 대한 미사일 공격 능력 향상 의도를 보여줍니다. 해당 내용은 확인되지 않은 주장임을 유의해야 합니다.",
-      "ko_raw_brief": "중국, 미군 함정 모형 건설해 미사일 훈련 실시 주장",
-      "ko_raw_source_limits": "본 내용은 확인되지 않은 주장에 기반하며, 출처의 진위 여부가 명확하지 않습니다.",
+      "ko_raw_summary": "중국이 타클라마칸 사막에 USS 제럴드 R. 포드 항공모함과 알레이 버크급 구축함의 실제 크기 모형을 건설하여 미사일 타격 훈련에 활용하고 있다고 합니다. 이는 미국 해군에 대한 군사 능력 강화를 위한 것으로 보입니다. 본 메시지는 확인되지 않은 주장임을 유념해야 합니다.",
+      "ko_raw_brief": "중국, 미사일 훈련용 미국 함정 모형 사막에 건설",
+      "ko_raw_source_limits": "제공된 정보는 확인되지 않은 주장으로, 내용의 사실 여부를 독자 스스로 판단해야 합니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2970,9 +3056,9 @@
       "url": "https://t.me/KyivIndependent_official/53816",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "전 폴란드 국회의원 피오트르 포글러가 제롬 스켄스키 대통령에 대한 훈장 박탈 결정에 항의하며 금성 공로 십자훈장을 반환했다고 6월 20일 밝혔습니다. 이 행위는 폴란드 대통령 카롤 나브로츠키가 젤렌스키 대통령에게 백수사 훈장을 박탈한 데 대한 항의 표시입니다.",
-      "ko_raw_brief": "전 폴란드 국회의원, 젤렌스키 훈장 박탈에 항의해 훈장 반환",
-      "ko_raw_source_limits": "해당 내용은 주장의 형태이며 사건의 사실 여부는 별도 확인이 필요합니다.",
+      "ko_raw_summary": "전 폴란드 국회의원 피오트르 포글러가 젤렌스키 대통령에게 수여된 훈장을 폴란드 대통령 카롤 나브로츠키가 박탈한 것에 항의하며 국가 훈장인 황금공로십자를 반납했다고 6월 20일 밝혔다. 이는 정치적 입장을 표명하는 행위로 보인다.",
+      "ko_raw_brief": "전 폴란드 국회의원, 젤렌스키 훈장 박탈에 항의해 훈장 반납",
+      "ko_raw_source_limits": "제공된 메시지는 정치적 항의 행위에 대한 보도로, 사건의 진위와 영향에 대한 추가 확인이 필요하다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -2997,9 +3083,9 @@
       "url": "https://t.me/KyivIndependent_official/53814",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아가 점령한 크림 반도에서 우크라이나 드론 공격이 이어지자 민간인에 대한 가스 판매가 전면 중단되었다고 현 점령지 행정관 세르게이 악시오노프가 6월 21일 밝혔습니다. 가스는 공화국의 필수 활동과 안전을 담당하는 국가 서비스에만 공급될 예정이라고 전했습니다.",
-      "ko_raw_brief": "크림, 우크라 드론 공격에 민간 가스 판매 전면 중단",
-      "ko_raw_source_limits": "정보는 러시아 점령지역 행정관의 발언에 근거하며, 사실 확인 및 추가 상황 변동 가능성이 있음.",
+      "ko_raw_summary": "러시아가 점령 중인 크림 반도는 우크라이나 드론 공격으로 인한 압박으로 민간인에 대한 가스 판매를 전면 중단했다. 세르게이 악시오노프 크림 점령지 주지사는 군사 및 필수 국가 서비스에만 연료 공급이 이루어진다고 발표했다.",
+      "ko_raw_brief": "크림, 드론 공격 후 민간인 가스 판매 전면 중단",
+      "ko_raw_source_limits": "이 정보는 러시아 점령지 당국자의 발언에 기반하며, 독립적으로 확인되지 않았습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -3025,9 +3111,9 @@
       "url": "https://t.me/KyivIndependent_official/53812",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아군이 6월 20일 저녁 폴타바 도시에 미사일 공격을 감행해 11명이 부상당했으며, 이 중 5명은 어린이입니다. 이 사건은 현지 당국에 의해 보고되었습니다.",
-      "ko_raw_brief": "폴타바시에 러시아 미사일 공격으로 11명 부상",
-      "ko_raw_source_limits": "정보는 현지 당국 발표를 기반으로 하지만, 추가 확인이 필요합니다.",
+      "ko_raw_summary": "러시아군이 6월 20일 저녁 폴타바시에 미사일 공격을 가해 11명이 부상당했으며, 이 중 5명은 어린이인 것으로 보고되었습니다. 이 사건은 공식 발표를 근거로 하고 있습니다.",
+      "ko_raw_brief": "폴타바 미사일 공격으로 11명 부상, 5명은 어린이",
+      "ko_raw_source_limits": "이 내용은 공식 발표를 근거로 하나 현장 상황에 따라 부상자 수나 피해 규모가 달라질 수 있습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -3052,9 +3138,9 @@
       "url": "https://t.me/KyivIndependent_official/53811",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "우크라이나 공격으로 추정되는 사건으로 케르치 해협 양쪽에서 석유 터미널과 항만 인프라에 대규모 화재가 발생했다는 러시아 크라스노다르 지방의 카프카즈 항구에서 불이 났다는 보도가 있다.",
-      "ko_raw_brief": "케르치 해협 인근 항만서 우크라이나 공격 추정 화재 발생",
-      "ko_raw_source_limits": "제공된 정보는 현지 러시아 텔레그램 매체 채널을 인용한 보도로, 사건의 공식 확인 여부는 불분명하다.",
+      "ko_raw_summary": "러시아 크라스노다르 지역의 케르치 해협 양쪽에 위치한 오일 터미널과 항구 인프라가 우크라이나 공격으로 인해 화재가 발생한 것으로 러시아 텔레그램 매체 채널에서 보도했습니다. 카프카즈 항구의 대형 화재가 6월 21일 새벽에 발생했다고 전해졌습니다.",
+      "ko_raw_brief": "케르치 해협 양쪽 오일 터미널 및 항구 화재 발생 보고",
+      "ko_raw_source_limits": "해당 내용은 러시아 텔레그램 매체 채널을 인용한 비확인 주장임.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -3080,9 +3166,9 @@
       "url": "https://t.me/KyivIndependent_official/53810",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "수미 시에서 오전 5시부터 5시 45분 사이에 여러 차례 폭발음이 들렸다는 보고가 있습니다. 현지 공영방송 수스필네는 러시아 미사일 공격이 예상된다고 전했습니다. 이 메시지는 미사일 공격 가능성에 대한 정보이며, 확정된 사건 보고는 아닙니다.",
-      "ko_raw_brief": "수미 지역에서 여러 차례 폭발음 발생, 러시아 미사일 공격 가능성 제기",
-      "ko_raw_source_limits": "본 정보는 현지 방송 보도와 보고에 근거하며, 사건의 최종 확인 상태는 명확하지 않습니다.",
+      "ko_raw_summary": "수미 시에서 5시부터 5시 45분까지 여러 차례 폭발음이 들렸으며, 이는 러시아 미사일 공격 가능성과 관련된 것으로 현지 공개 방송사 수스필네가 보도했습니다. 이 메시지는 확인된 사건보다는 보고에 기반한 내용입니다.",
+      "ko_raw_brief": "수미 시 미사일 공격 관련 다발적 폭발음 보고",
+      "ko_raw_source_limits": "제공된 정보는 현지 보도에 기초한 보고이며, 사건의 공식 확인은 없습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -3107,9 +3193,9 @@
       "url": "https://t.me/KyivIndependent_official/53808",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "러시아 독립 매체 Mediazona와 BBC 러시아 서비스가 협력하여 우크라이나에서 사망한 러시아 군인 227,680명의 신원을 확인했다고 보도했습니다. 이 자료는 언론 조사를 기반으로 했으며, 공식 확인 여부는 명시되어 있지 않습니다.",
-      "ko_raw_brief": "러시아 군인 22만7천여 명 우크라이나 사망 신원 확인 보도",
-      "ko_raw_source_limits": "이 수치는 언론 조사에 근거하며 공식 군사 통계가 아닐 수 있습니다.",
+      "ko_raw_summary": "러시아 독립 매체 Mediazona와 BBC 러시아 서비스가 협력하여 우크라이나에서 사망한 러시아 군인 227,680명의 신원을 확인했다고 보도했습니다. 이는 미디어 조사 결과로, 공식 확인되지 않은 수치입니다.",
+      "ko_raw_brief": "우크라이나에서 사망한 러시아 군인 22만7천명 신원 확인 보도",
+      "ko_raw_source_limits": "보도 내용은 미디어 조사를 기반으로 하며 공식 군사 통계로 확인된 것은 아닙니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -3134,9 +3220,9 @@
       "url": "https://t.me/KyivIndependent_official/53801",
       "source_reliability": 0.85,
       "region_hint": "ukraine",
-      "ko_raw_summary": "자포리자 지역에서 러시아군이 9발의 활공폭탄을 투하하여 최소 5명이 사망하고 10명이 부상당했다는 초기 정보가 있다. 이재명 주지사 이반 페도로프는 파괴된 주택 잔해에서 한 희생자의 시신이 발견되었다고 밝혔다. 해당 내용은 확인된 공식 발표에 기반하고 있다.",
-      "ko_raw_brief": "러시아군 자포리자 폭격으로 최소 5명 사망, 10명 부상 보고",
-      "ko_raw_source_limits": "초기 정보로서 상황 전개에 따라 변경 가능하며 추가 확인 필요함.",
+      "ko_raw_summary": "러시아군이 자포리자 지역 수도에 9발의 활공폭탄을 투하해 최소 5명이 사망하고 10명이 부상당했다. 사망자 중 한 명은 파괴된 주택 잔해에서 발견되었다고 이반 페도로프 주지사가 밝혔다. 해당 정보는 예비 단계이다.",
+      "ko_raw_brief": "자포리자 러시아군 폭격 최소 5명 사망, 10명 부상",
+      "ko_raw_source_limits": "해당 내용은 예비 정보로 현장 상황에 따라 변경될 수 있음.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -3162,9 +3248,9 @@
       "url": "https://t.me/MiddleEastEye_TG/21988",
       "source_reliability": 0.78,
       "region_hint": "middle_east_north_africa",
-      "ko_raw_summary": "레바논 남부와 베카밸리 동부에서 이스라엘의 공격으로 최소 29명이 사망하고 다수가 부상했다는 보도가 있습니다. 이는 휴전 발표 이틀 만에 발생한 사건으로, 레바논의 나바티에 지역에서 발생한 공격으로 16명이 사망하고 12명이 부상했다고 민방위대가 밝혔습니다. 한편, 미국과 이란은 적대행위 중단을 위한 양해각서를 추진 중이나, 이스라엘의 공격으로 후속 협상이 연기된 상태입니다.",
-      "ko_raw_brief": "이스라엘 공격으로 레바논서 최소 29명 사망 보고",
-      "ko_raw_source_limits": "제공된 정보는 보도된 주장에 기반하며, 독립적 확인이 필요합니다.",
+      "ko_raw_summary": "레바논 남부와 동부 베카 계곡에서 이스라엘 공격으로 최소 29명이 사망했다는 보고가 있다. 이는 정전 발표 하루 만에 발생했으며, 미-이란 간의 적대행위 중단 합의가 진행 중이던 시점과 맞물린다. 이 공격은 확인된 사건으로, 이스라엘과 레바논 간 긴장이 고조되고 있다.",
+      "ko_raw_brief": "이스라엘의 레바논 공격으로 최소 29명 사망 보고",
+      "ko_raw_source_limits": "해당 정보는 현지 민방위 기관 발표 및 제3자 보고에 기반하나, 현장 상황은 추가 확인이 필요함.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -3189,9 +3275,9 @@
       "url": "https://t.me/OSINTdefender/19287",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "크림 반도의 연료 부족 상황이 케르치 교를 통한 공급 증가와 이동식 소방팀 배치로 개선되고 있다고 보고되었습니다. 또한, 중거리 우크라이나 드론 공격이 감소한 것으로 보입니다. 이 내용은 구체적인 확인이 필요하며, 주로 관측 및 주장에 기반합니다.",
-      "ko_raw_brief": "크림 반도 연료 부족 완화 및 드론 공격 감소 보고",
-      "ko_raw_source_limits": "정보는 관측과 주장에 기반하며, 공식 확인되지 않았습니다.",
+      "ko_raw_summary": "크림 반도에서 러시아 연료 부족 상황이 케르치 교량을 통한 수송 증가와 이동 소방팀 배치로 개선되고 있습니다. 또한, 중거리 우크라이나 드론 공격이 감소했다고 보고되고 있습니다. 다만, 이 정보는 확인되지 않은 소식입니다.",
+      "ko_raw_brief": "크림 연료 부족 개선과 드론 공격 감소 보고",
+      "ko_raw_source_limits": "제공된 메시지는 확인되지 않은 보고 내용이며, 진위 여부가 명확하지 않습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -3216,9 +3302,9 @@
       "url": "https://t.me/OSINTdefender/19286",
       "source_reliability": 0.6,
       "region_hint": "global_osint",
-      "ko_raw_summary": "레바논에서 이스라엘 공습으로 최소 다섯 명의 민간인과 한 명의 레바논 군인이 사망했다는 주장이 제기되었다. 이번 공습은 헤즈볼라와의 분쟁 중인 해당 지역에서의 군사 작전의 일환으로 보인다. 이 정보는 채널의 주장에 기반하고 있어 추가 확인이 필요하다.",
-      "ko_raw_brief": "이스라엘 공습으로 레바논 민간인 및 군인 사망 주장",
-      "ko_raw_source_limits": "이 정보는 출처의 주장에 따른 것이며 독립적으로 확인되지 않았다.",
+      "ko_raw_summary": "레바논 남부에서 이스라엘의 공습으로 최소 다섯 명의 민간인과 한 명의 레바논 군인이 사망했다는 주장이 있습니다. 이 공습은 헤즈볼라와의 충돌 중 계속되는 군사작전의 일환으로 보입니다. 해당 내용은 확인된 사건이라기보다 외신이나 제3자 채널을 통한 주장입니다.",
+      "ko_raw_brief": "레바논 남부 이스라엘 공습으로 민간인·군인 사망 주장",
+      "ko_raw_source_limits": "제공된 정보는 제3자 채널의 주장으로, 공식 확인되지 않은 내용일 수 있습니다.",
       "ko_raw_summary_model": "gpt-4.1-mini"
     },
     {
@@ -3243,11 +3329,7 @@
       "raw_text": "⚡️Russian attacks kill three and injure 45 civilians in Ukraine over last day. \n\nIn the city of Kharkiv, two people were killed and 10 were injured, including a child and a teenager, after Russian drones and glide bombs struck apartment buildings in an overnight attack, Kharkiv Oblast Governor Oleh Synehubov wrote on his Telegram channel.",
       "url": "https://t.me/KyivIndependent_official/53797",
       "source_reliability": 0.85,
-      "region_hint": "ukraine",
-      "ko_raw_summary": "지난 하루 동안 러시아 공격으로 우크라이나에서 민간인 3명이 사망하고 45명이 부상했다. 하르키우 시에서는 러시아 드론과 활공 폭탄이 아파트 건물을 공격해 2명이 사망하고 어린이와 청소년 포함 10명이 부상했다는 내용이다.",
-      "ko_raw_brief": "러시아 공격으로 하르키우에서 민간인 사상 발생",
-      "ko_raw_source_limits": "해당 정보는 현지 주지사의 텔레그램 채널 게시물에 기반한 주장임.",
-      "ko_raw_summary_model": "gpt-4.1-mini"
+      "region_hint": "ukraine"
     },
     {
       "event_id": "08d80bb5370e5739ebe75bf9",
@@ -3271,11 +3353,7 @@
       "raw_text": "A Lebanese soldier was killed in an Israeli airstrike on the Kafr Rumman road in southern Lebanon. https://lebanon.liveuamap.com/en/2026/20-june-07-a-lebanese-soldier-was-killed-in-an-israeli-airstrike",
       "url": "https://t.me/liveuamap/12174",
       "source_reliability": 0.75,
-      "region_hint": "global",
-      "ko_raw_summary": "이스라엘 공습으로 레바논 남부 카프르 루만 도로에서 레바논 병사 1명이 사망했습니다. 이는 확인된 공격 사건으로 보입니다.",
-      "ko_raw_brief": "이스라엘 공습으로 레바논 병사 사망",
-      "ko_raw_source_limits": "이 정보는 단일 소스에서 제공되었으며 추가 확인이 필요할 수 있습니다.",
-      "ko_raw_summary_model": "gpt-4.1-mini"
+      "region_hint": "global"
     },
     {
       "event_id": "f1256057f8d24164630abaf5",
@@ -3299,11 +3377,7 @@
       "raw_text": "Summary of Israeli attacks from midnight until now: Warplanes: Haboush, Al-Namiriya, Al-Rafie, Nabatieh, Arab Salim, between Toul and Al-Kafour, Sajd, surrounding Zibdine, Al-Mahmoudiya, Al-Rafie, Al-Rayhan, Kafrjouz, Kafr Remman, Shoukin, Nabatieh Al-Fouqa, Burj Qalawi, Barish, Kafr Tebnit, Qabrikha. Drone strikes: Kafr Remman, Al-Duweir, Deir Al-Zahrani, Nabatieh, Deir Qanoun, Ras Al-Ain. Artillery shelling: Majdalzoun, Kafrjouz, Haboush, Nabatieh Al-Fouqa, Ali Al-Taher, Kafr Tebnit. https://lebanon.liveuamap.com/en/2026/20-june-06-summary-of-israeli-attacks-from-midnight-until",
       "url": "https://t.me/liveuamap/12173",
       "source_reliability": 0.75,
-      "region_hint": "global",
-      "ko_raw_summary": "이스라엘 공군 및 드론, 포병이 레바논 여러 지역을 대상으로 공격을 가했습니다. 공격 지역으로는 하부쉬, 알-나미리야, 나바티에 등 다양한 마을과 주변 지역들이 포함되어 있습니다. 이는 확인된 사건 보고입니다.",
-      "ko_raw_brief": "레바논 내 다수 지역에 대한 이스라엘 공군·드론·포병 공격 발생",
-      "ko_raw_source_limits": "제공된 정보는 특정 시간대에 이루어진 공격 내역 요약이며, 전체 상황이나 피해 규모에 대한 추가 확인이 필요합니다.",
-      "ko_raw_summary_model": "gpt-4.1-mini"
+      "region_hint": "global"
     },
     {
       "event_id": "201e77c374035a1a713f50c6",
@@ -4284,29 +4358,6 @@
       "message_time": "2026-06-07T13:15:29+00:00",
       "raw_text": "The Israeli Air Force carried out strikes in Beirut's southern suburbs a short while ago. Prime Minister Benjamin Netanyahu and Defense Minister Israel Katz in a statement say that the strikes targeted Hezbollah command centers, in response to the terror group's rocket fire on northern Israel this morning https://lebanon.liveuamap.com/en/2026/7-june-12-the-israeli-air-force-carried-out-strikes-in-beiruts",
       "url": "https://t.me/liveuamap/12139",
-      "source_reliability": 0.75,
-      "region_hint": "global"
-    },
-    {
-      "event_id": "83b2e1a0726f567137fc7dc9",
-      "is_conflict_related": true,
-      "country": "LBN",
-      "location_name": "lebanon",
-      "latitude": 33.8547,
-      "longitude": 35.8623,
-      "location_precision": "country",
-      "event_type": "conflict_signal",
-      "severity": 0.78,
-      "confidence": 0.95,
-      "summary": "Lebanon army says several soldiers including an officer have been killed in Israeli strike on their military vehicle along the Khardali-Nabatieh road in southern lebanon https://lebanon.liveuamap.com/en/2026/6-june-06-l...",
-      "matched_keywords": [
-        "killed"
-      ],
-      "channel": "liveuamap",
-      "message_id": "12137",
-      "message_time": "2026-06-06T08:40:30+00:00",
-      "raw_text": "Lebanon army says several soldiers including an officer have been killed in Israeli strike on their military vehicle along the Khardali-Nabatieh road in southern lebanon https://lebanon.liveuamap.com/en/2026/6-june-06-lebanon-army-says-several-soldiers-including-an",
-      "url": "https://t.me/liveuamap/12137",
       "source_reliability": 0.75,
       "region_hint": "global"
     }

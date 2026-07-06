@@ -1,21 +1,21 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-06T04:24:10.331011+00:00`
+- Generated at: `2026-07-06T08:58:10.784006+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1096`
-- Extracted rows: `1096`
-- Conflict events: `300`
-- Fresh conflict events: `163`
-- Non-conflict extracted rows: `796`
+- Raw messages: `1102`
+- Extracted rows: `1102`
+- Conflict events: `303`
+- Fresh conflict events: `165`
+- Non-conflict extracted rows: `799`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 368 | 127 | 34.5% |
+| KyivIndependent_official | 371 | 129 | 34.8% |
 | OSINTdefender | 275 | 57 | 20.7% |
-| MiddleEastEye_TG | 222 | 56 | 25.2% |
-| liveuamap | 130 | 48 | 36.9% |
+| MiddleEastEye_TG | 223 | 56 | 25.1% |
+| liveuamap | 132 | 49 | 37.1% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
 | demo_security | 1 | 0 | 0.0% |
@@ -27,22 +27,22 @@
 | missing_country | 25 | 8.3% |
 | missing_location | 25 | 8.3% |
 | missing_coordinates | 25 | 8.3% |
-| country_centroid_fallback | 147 | 49.0% |
+| country_centroid_fallback | 148 | 48.8% |
 | low_confidence_lt_0.75 | 10 | 3.3% |
-| high_severity_low_confidence | 8 | 2.7% |
+| high_severity_low_confidence | 8 | 2.6% |
 | negation_or_uncertainty_suspects | 3 | 1.0% |
-| older_than_30_days | 137 | 45.7% |
+| older_than_30_days | 138 | 45.5% |
 | possible_duplicate_groups | 5 | - |
 
 ## Top Matched Keywords
 
 | keyword | count |
 | --- | --- |
-| attack | 106 |
-| drone | 93 |
-| killed | 74 |
-| missile | 66 |
-| wounded | 25 |
+| attack | 108 |
+| drone | 94 |
+| killed | 77 |
+| missile | 67 |
+| wounded | 26 |
 | airstrike | 10 |
 | casualties | 9 |
 | protest | 8 |
@@ -97,6 +97,7 @@
 
 ### Older Than 30 Days
 
+- `liveuamap` `2026-06-06T08:40:30+00:00` LBN / conflict_signal conf=0.95, sev=0.78: Lebanon army says several soldiers including an officer have been killed in Israeli strike on their military vehicle along the Khardali-Nabatieh road in southern lebanon https:/... https://t.me/liveuamap/12137
 - `liveuamap` `2026-06-05T06:50:04+00:00` LBN / conflict_signal conf=0.95, sev=0.78: Civil Defense: Seven people killed in Israeli airstrikes on Tyre, southern Lebanon, Thursday night/Friday morning https://lebanon.liveuamap.com/en/2026/5-june-06-civil-defense-s... https://t.me/liveuamap/12134
 - `liveuamap` `2026-06-04T19:43:01+00:00` LBN / strike conf=0.95, sev=0.95: Ministry of Health: 5 dead and one wounded as a result of an airstrike on the town of Sahmar in the Western Bekaa https://lebanon.liveuamap.com/en/2026/4-june-19-ministry-of-hea... https://t.me/liveuamap/12133
 - `KyivIndependent_official` `2026-06-04T10:08:43+00:00` UKR / strike conf=0.97, sev=0.90: Why Ukraine is talking about ending ‘hot phase’ of Russia’s war before winter Kyiv hopes U.S.-mediated peace talks with Moscow could yield results before winter as Ukrainian off... https://t.me/KyivIndependent_official/53493
@@ -104,7 +105,6 @@
 - `KyivIndependent_official` `2026-06-04T08:27:32+00:00` UKR / strike conf=0.97, sev=0.83: ⚡️ 16 killed, 86 injured in Russian attacks across Ukraine over past day, massive drone assault hits Kherson. The Air Force said Russia launched 293 drones, 264 of which were in... https://t.me/KyivIndependent_official/53492
 - `MiddleEastEye_TG` `2026-06-04T07:31:16+00:00` LBN / military_movement conf=0.96, sev=0.40: 📹 Last week, Israeli forces ordered the evacuation of Tyre, a city in southern Lebanon with major historical and cultural significance, and declared all areas south of the Zahra... https://t.me/MiddleEastEye_TG/21886
 - `OSINTdefender` `2026-06-04T05:53:26+00:00` USA / strike conf=0.92, sev=0.90: #USA #Iran U.S. fighters fired a missile at a Botswana-flagged tanker heading for Iran's Kharg terminal, destroying its engine room and immobilizing it due to defiance of the ma... https://t.me/OSINTdefender/19110
-- `MiddleEastEye_TG` `2026-06-04T05:02:45+00:00` PSE / conflict_signal conf=0.96, sev=0.60: Progressive candidate Adam Hamawy has won the Democratic primary for New Jersey’s 12th Congressional District. Hamawy, a US Army veteran and surgeon who volunteered in Gaza duri... https://t.me/MiddleEastEye_TG/21884
 
 ### Possible Duplicate Groups
 
