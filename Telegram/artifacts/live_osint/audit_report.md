@@ -1,21 +1,21 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-07T12:41:17.752236+00:00`
+- Generated at: `2026-07-07T15:45:09.678644+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1143`
-- Extracted rows: `1143`
-- Conflict events: `320`
-- Fresh conflict events: `182`
-- Non-conflict extracted rows: `823`
+- Raw messages: `1150`
+- Extracted rows: `1150`
+- Conflict events: `324`
+- Fresh conflict events: `185`
+- Non-conflict extracted rows: `826`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 387 | 137 | 35.4% |
-| OSINTdefender | 284 | 59 | 20.8% |
+| KyivIndependent_official | 391 | 139 | 35.5% |
+| OSINTdefender | 286 | 60 | 21.0% |
 | MiddleEastEye_TG | 233 | 61 | 26.2% |
-| liveuamap | 138 | 51 | 37.0% |
+| liveuamap | 139 | 52 | 37.4% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
 | demo_security | 1 | 0 | 0.0% |
@@ -24,32 +24,32 @@
 
 | flag | count | rate_among_conflict_events |
 | --- | --- | --- |
-| missing_country | 26 | 8.1% |
-| missing_location | 26 | 8.1% |
-| missing_coordinates | 26 | 8.1% |
-| country_centroid_fallback | 156 | 48.8% |
+| missing_country | 26 | 8.0% |
+| missing_location | 26 | 8.0% |
+| missing_coordinates | 26 | 8.0% |
+| country_centroid_fallback | 159 | 49.1% |
 | low_confidence_lt_0.75 | 11 | 3.4% |
 | high_severity_low_confidence | 9 | 2.8% |
-| negation_or_uncertainty_suspects | 3 | 0.9% |
-| older_than_30_days | 138 | 43.1% |
+| negation_or_uncertainty_suspects | 4 | 1.2% |
+| older_than_30_days | 139 | 42.9% |
 | possible_duplicate_groups | 5 | - |
 
 ## Top Matched Keywords
 
 | keyword | count |
 | --- | --- |
-| attack | 116 |
+| attack | 117 |
 | drone | 95 |
 | killed | 81 |
 | missile | 71 |
 | wounded | 26 |
 | airstrike | 11 |
+| casualties | 10 |
 | protest | 9 |
-| casualties | 9 |
+| troop | 7 |
+| rocket | 7 |
 | explosion | 7 |
 | battle | 6 |
-| troop | 6 |
-| rocket | 6 |
 | evacuation | 5 |
 | shelling | 4 |
 | clash | 1 |
@@ -91,12 +91,14 @@
 
 ### Negation Or Uncertainty Suspects
 
+- `liveuamap` `2026-07-07T13:30:07+00:00` IRN / conflict_signal conf=0.80, sev=0.33: UKMTO has received a report of an incident involving a tanker transiting the Strait of Hormuz. The tanker was struck by an unidentified projectile and is believed to have struct... https://t.me/liveuamap/12211
 - `OSINTdefender` `2026-06-18T17:20:41+00:00` UKR / strike conf=0.92, sev=0.75: #Russia #Ukraine #Belarus Will the incident with the bus in the Bryansk region be used for a new round of escalation? Russian and Belarusian officials officially blamed Ukrainia... https://t.me/OSINTdefender/19262
 - `OSINTdefender` `2026-06-18T04:31:32+00:00` UKR / conflict_signal conf=0.77, sev=0.37: #Russia #Ukraine Dozens of Ukrainian drones attacked the Moscow Refinery, causing damage but no casualties, according to Mayor Sergey Sobyanin. Emergency services are currently... https://t.me/OSINTdefender/19257
 - `KyivIndependent_official` `2026-05-30T19:56:02+00:00` UKR / strike conf=0.97, sev=0.75: ⚡️Kyiv denies Russia's claims of Ukrainian drone strike on Zaporizhzhia nuclear plant. "The version promoted by Russia does not withstand any verification of the facts," the Ukr... https://t.me/KyivIndependent_official/53416
 
 ### Older Than 30 Days
 
+- `liveuamap` `2026-06-07T13:15:29+00:00` LBN / strike conf=0.95, sev=0.85: The Israeli Air Force carried out strikes in Beirut's southern suburbs a short while ago. Prime Minister Benjamin Netanyahu and Defense Minister Israel Katz in a statement say t... https://t.me/liveuamap/12139
 - `liveuamap` `2026-06-06T08:40:30+00:00` LBN / conflict_signal conf=0.95, sev=0.78: Lebanon army says several soldiers including an officer have been killed in Israeli strike on their military vehicle along the Khardali-Nabatieh road in southern lebanon https:/... https://t.me/liveuamap/12137
 - `liveuamap` `2026-06-05T06:50:04+00:00` LBN / conflict_signal conf=0.95, sev=0.78: Civil Defense: Seven people killed in Israeli airstrikes on Tyre, southern Lebanon, Thursday night/Friday morning https://lebanon.liveuamap.com/en/2026/5-june-06-civil-defense-s... https://t.me/liveuamap/12134
 - `liveuamap` `2026-06-04T19:43:01+00:00` LBN / strike conf=0.95, sev=0.95: Ministry of Health: 5 dead and one wounded as a result of an airstrike on the town of Sahmar in the Western Bekaa https://lebanon.liveuamap.com/en/2026/4-june-19-ministry-of-hea... https://t.me/liveuamap/12133
@@ -104,7 +106,6 @@
 - `MiddleEastEye_TG` `2026-06-04T09:30:27+00:00` PSE / conflict_signal conf=0.96, sev=0.78: 📹 Activists erected a statue of Marwan Barghouti in London’s Parliament Square, before it was removed by police. Marwan Barghouti is a Palestinian political leader who has been... https://t.me/MiddleEastEye_TG/21888
 - `KyivIndependent_official` `2026-06-04T08:27:32+00:00` UKR / strike conf=0.97, sev=0.83: ⚡️ 16 killed, 86 injured in Russian attacks across Ukraine over past day, massive drone assault hits Kherson. The Air Force said Russia launched 293 drones, 264 of which were in... https://t.me/KyivIndependent_official/53492
 - `MiddleEastEye_TG` `2026-06-04T07:31:16+00:00` LBN / military_movement conf=0.96, sev=0.40: 📹 Last week, Israeli forces ordered the evacuation of Tyre, a city in southern Lebanon with major historical and cultural significance, and declared all areas south of the Zahra... https://t.me/MiddleEastEye_TG/21886
-- `OSINTdefender` `2026-06-04T05:53:26+00:00` USA / strike conf=0.92, sev=0.90: #USA #Iran U.S. fighters fired a missile at a Botswana-flagged tanker heading for Iran's Kharg terminal, destroying its engine room and immobilizing it due to defiance of the ma... https://t.me/OSINTdefender/19110
 
 ### Possible Duplicate Groups
 
