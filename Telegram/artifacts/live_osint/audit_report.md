@@ -1,21 +1,21 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-07T10:05:58.739592+00:00`
+- Generated at: `2026-07-07T12:41:17.752236+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1133`
-- Extracted rows: `1133`
-- Conflict events: `317`
-- Fresh conflict events: `179`
-- Non-conflict extracted rows: `816`
+- Raw messages: `1143`
+- Extracted rows: `1143`
+- Conflict events: `320`
+- Fresh conflict events: `182`
+- Non-conflict extracted rows: `823`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 382 | 135 | 35.3% |
+| KyivIndependent_official | 387 | 137 | 35.4% |
 | OSINTdefender | 284 | 59 | 20.8% |
-| MiddleEastEye_TG | 231 | 61 | 26.4% |
-| liveuamap | 135 | 50 | 37.0% |
+| MiddleEastEye_TG | 233 | 61 | 26.2% |
+| liveuamap | 138 | 51 | 37.0% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
 | demo_security | 1 | 0 | 0.0% |
@@ -24,21 +24,21 @@
 
 | flag | count | rate_among_conflict_events |
 | --- | --- | --- |
-| missing_country | 26 | 8.2% |
-| missing_location | 26 | 8.2% |
-| missing_coordinates | 26 | 8.2% |
-| country_centroid_fallback | 154 | 48.6% |
-| low_confidence_lt_0.75 | 11 | 3.5% |
+| missing_country | 26 | 8.1% |
+| missing_location | 26 | 8.1% |
+| missing_coordinates | 26 | 8.1% |
+| country_centroid_fallback | 156 | 48.8% |
+| low_confidence_lt_0.75 | 11 | 3.4% |
 | high_severity_low_confidence | 9 | 2.8% |
 | negation_or_uncertainty_suspects | 3 | 0.9% |
-| older_than_30_days | 138 | 43.5% |
+| older_than_30_days | 138 | 43.1% |
 | possible_duplicate_groups | 5 | - |
 
 ## Top Matched Keywords
 
 | keyword | count |
 | --- | --- |
-| attack | 114 |
+| attack | 116 |
 | drone | 95 |
 | killed | 81 |
 | missile | 71 |
@@ -46,10 +46,10 @@
 | airstrike | 11 |
 | protest | 9 |
 | casualties | 9 |
-| explosion | 6 |
+| explosion | 7 |
+| battle | 6 |
 | troop | 6 |
 | rocket | 6 |
-| battle | 5 |
 | evacuation | 5 |
 | shelling | 4 |
 | clash | 1 |
