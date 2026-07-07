@@ -1,20 +1,20 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-07T15:45:09.678644+00:00`
+- Generated at: `2026-07-07T17:52:38.208075+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1150`
-- Extracted rows: `1150`
-- Conflict events: `324`
-- Fresh conflict events: `185`
-- Non-conflict extracted rows: `826`
+- Raw messages: `1164`
+- Extracted rows: `1164`
+- Conflict events: `329`
+- Fresh conflict events: `190`
+- Non-conflict extracted rows: `835`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 391 | 139 | 35.5% |
-| OSINTdefender | 286 | 60 | 21.0% |
-| MiddleEastEye_TG | 233 | 61 | 26.2% |
+| KyivIndependent_official | 394 | 141 | 35.8% |
+| OSINTdefender | 295 | 62 | 21.0% |
+| MiddleEastEye_TG | 235 | 62 | 26.4% |
 | liveuamap | 139 | 52 | 37.4% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
@@ -24,35 +24,35 @@
 
 | flag | count | rate_among_conflict_events |
 | --- | --- | --- |
-| missing_country | 26 | 8.0% |
-| missing_location | 26 | 8.0% |
-| missing_coordinates | 26 | 8.0% |
-| country_centroid_fallback | 159 | 49.1% |
-| low_confidence_lt_0.75 | 11 | 3.4% |
-| high_severity_low_confidence | 9 | 2.8% |
+| missing_country | 26 | 7.9% |
+| missing_location | 26 | 7.9% |
+| missing_coordinates | 26 | 7.9% |
+| country_centroid_fallback | 162 | 49.2% |
+| low_confidence_lt_0.75 | 11 | 3.3% |
+| high_severity_low_confidence | 9 | 2.7% |
 | negation_or_uncertainty_suspects | 4 | 1.2% |
-| older_than_30_days | 139 | 42.9% |
-| possible_duplicate_groups | 5 | - |
+| older_than_30_days | 139 | 42.2% |
+| possible_duplicate_groups | 6 | - |
 
 ## Top Matched Keywords
 
 | keyword | count |
 | --- | --- |
 | attack | 117 |
-| drone | 95 |
+| drone | 98 |
 | killed | 81 |
 | missile | 71 |
 | wounded | 26 |
 | airstrike | 11 |
 | casualties | 10 |
 | protest | 9 |
-| troop | 7 |
+| troop | 8 |
 | rocket | 7 |
 | explosion | 7 |
 | battle | 6 |
 | evacuation | 5 |
 | shelling | 4 |
-| clash | 1 |
+| clash | 2 |
 
 ## Samples To Review
 
@@ -110,19 +110,23 @@
 ### Possible Duplicate Groups
 
 - Group 1: 3 events
+  - `KyivIndependent_official` `2026-07-07T17:39:31+00:00` UKR / strike conf=0.97, sev=0.75: ⚡️Update: Ukraine signs drone cooperation deal with Denmark. President Volodymyr Zelensky and Danish Prime Minister Mette Frederiksen also discussed strengthening air defenses a... https://t.me/KyivIndependent_official/54116
+  - `OSINTdefender` `2026-07-07T17:16:37+00:00` UKR / strike conf=0.92, sev=0.75: #Ukraine #Russia #EU Ukraine's Unmanned Systems Forces have conducted drone strikes on tankers in the Azov Sea, bringing the total number of tankers struck today to 12. This esc... https://t.me/OSINTdefender/19407
+  - `KyivIndependent_official` `2026-07-07T16:31:14+00:00` UKR / strike conf=0.97, sev=0.75: ⚡️Ukraine signs drone cooperation deals with Estonia, Netherlands. The agreements are part of Ukraine's broader push to expand drone technology cooperation with partners in Euro... https://t.me/KyivIndependent_official/54114
+- Group 2: 3 events
   - `OSINTdefender` `2026-07-03T17:45:11+00:00` UKR / conflict_signal conf=0.92, sev=0.75: #Ukraine #USA Zelensky emphasizes the need for Ukraine to establish its own production of Patriot missiles to enhance air defense capabilities following a significant Russian at... https://t.me/OSINTdefender/19379
   - `KyivIndependent_official` `2026-07-03T13:10:56+00:00` UKR / conflict_signal conf=0.97, sev=0.75: ⚡️Kyiv air quality plunges after Russia's biggest attack on capital of entire war. The smell of smoke and haze lingered over the capital. Authorities urge residents to keep wind... https://t.me/KyivIndependent_official/54053
   - `KyivIndependent_official` `2026-07-03T12:03:45+00:00` UKR / conflict_signal conf=0.97, sev=0.75: ⚡️Update: Monaco issues arrest warrant for Ukrainian woman suspected of bomb attack that injured Ukraine-born businessman. Monaco issued an Interpol "red notice" — an internatio... https://t.me/KyivIndependent_official/54052
-- Group 2: 2 events
+- Group 3: 2 events
   - `OSINTdefender` `2026-06-28T05:22:35+00:00` USA / conflict_signal conf=0.92, sev=0.75: #Kuwait #Bahrain Iranian ballistic missiles and drones reportedly struck 8 US military targets, including Ali Al Salem Air Base in Kuwait and the US Navy's 5th Fleet base in Bah... https://t.me/OSINTdefender/19344
   - `liveuamap` `2026-06-28T02:56:07+00:00` USA / conflict_signal conf=0.95, sev=0.75: In a statement, Iran's Islamic Revolutionary Guard Corps (IRGC) has confirmed that it attacked US forces in two military bases in the Middle East, the Ali Al Salem air base in K... https://t.me/liveuamap/12192
-- Group 3: 2 events
+- Group 4: 2 events
   - `OSINTdefender` `2026-06-22T18:09:00+00:00` UKR / conflict_signal conf=0.92, sev=0.75: #Russia #Ukraine On June 22, 2026, Ukrainian Storm Shadow cruise missiles struck the Voronezh Semiconductor Devices Plant, causing extensive damage, a major fire, and reportedly... https://t.me/OSINTdefender/19305
   - `KyivIndependent_official` `2026-06-22T12:33:09+00:00` UKR / conflict_signal conf=0.97, sev=0.75: ⚡️ Russian attack damages production facility of Ukraine’s FPV giant. “This is war. We were prepared for such events,” the company’s founder, Yaroslav Gryshyn, said. “The enemy... https://t.me/KyivIndependent_official/53828
-- Group 4: 2 events
+- Group 5: 2 events
   - `OSINTdefender` `2026-05-29T17:55:26+00:00` ROU / strike conf=0.92, sev=0.75: #Germany #Romania #Russia German Chancellor Friedrich Merz emphasized that Germany is prepared to defend the territory of NATO allies, particularly in light of recent security c... https://t.me/OSINTdefender/19056
   - `KyivIndependent_official` `2026-05-29T12:58:59+00:00` ROU / strike conf=0.97, sev=0.75: ⚡️NATO condemns ‘reckless’ Russian drone strike on Romanian residential building NATO Secretary General Mark Rutte has said "Russia's reckless behaviour is a danger to us all,"... https://t.me/KyivIndependent_official/53396
-- Group 5: 2 events
+- Group 6: 2 events
   - `OSINTdefender` `2026-05-29T05:08:37+00:00` ROU / strike conf=0.92, sev=0.75: #Romania A Russian drone crashed in Galați, Romania, causing minor damage to a residential building and injuring two people. The drone was reported to have an explosive payload,... https://t.me/OSINTdefender/19045
   - `KyivIndependent_official` `2026-05-29T01:27:35+00:00` ROU / strike conf=0.97, sev=0.75: ⚡️Drone reportedly strikes residential building in Romania. A drone reportedly struck a residential building in Galati, Romania, overnight on May 29, news outlet Viata Libera re... https://t.me/KyivIndependent_official/53391
 
