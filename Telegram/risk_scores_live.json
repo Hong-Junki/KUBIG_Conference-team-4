@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-07-08T13:49:05Z",
+  "generated_at": "2026-07-08T15:18:11Z",
   "source": "supabase.latest_risk_scores",
   "score_system": "dashboard_policy_v1_candidate3_candidate4",
   "countries": {
     "SSD": {
       "country": "SSD",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.483517,
       "calm_flag": null,
@@ -21,7 +21,7 @@
     "SYR": {
       "country": "SYR",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.401698,
       "calm_flag": null,
@@ -36,7 +36,7 @@
     "MMR": {
       "country": "MMR",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.504188,
       "calm_flag": null,
@@ -51,7 +51,7 @@
     "TCD": {
       "country": "TCD",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.692581,
       "calm_flag": null,
@@ -66,7 +66,7 @@
     "BFA": {
       "country": "BFA",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.503779,
       "calm_flag": null,
@@ -81,7 +81,7 @@
     "PSE": {
       "country": "PSE",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.473882,
       "calm_flag": null,
@@ -96,7 +96,7 @@
     "IRQ": {
       "country": "IRQ",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.373574,
       "calm_flag": null,
@@ -111,7 +111,7 @@
     "RUS": {
       "country": "RUS",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.515082,
       "calm_flag": null,
@@ -126,7 +126,7 @@
     "NER": {
       "country": "NER",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.549462,
       "calm_flag": null,
@@ -141,7 +141,7 @@
     "LBY": {
       "country": "LBY",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.601043,
       "calm_flag": null,
@@ -156,7 +156,7 @@
     "ETH": {
       "country": "ETH",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.49996,
       "calm_flag": null,
@@ -171,7 +171,7 @@
     "CMR": {
       "country": "CMR",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.476421,
       "calm_flag": null,
@@ -186,7 +186,7 @@
     "PAK": {
       "country": "PAK",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.365082,
       "calm_flag": null,
@@ -201,7 +201,7 @@
     "MOZ": {
       "country": "MOZ",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.549288,
       "calm_flag": null,
@@ -216,7 +216,7 @@
     "SOM": {
       "country": "SOM",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.446802,
       "calm_flag": null,
@@ -231,7 +231,7 @@
     "TJK": {
       "country": "TJK",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.791624,
       "calm_flag": null,
@@ -246,7 +246,7 @@
     "IRN": {
       "country": "IRN",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.607122,
       "calm_flag": null,
@@ -261,7 +261,7 @@
     "UKR": {
       "country": "UKR",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.27763,
       "calm_flag": null,
@@ -276,7 +276,7 @@
     "UGA": {
       "country": "UGA",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.533415,
       "calm_flag": null,
@@ -291,7 +291,7 @@
     "SDN": {
       "country": "SDN",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.238086,
       "calm_flag": null,
@@ -306,7 +306,7 @@
     "EGY": {
       "country": "EGY",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.533439,
       "calm_flag": null,
@@ -321,7 +321,7 @@
     "PHL": {
       "country": "PHL",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.370791,
       "calm_flag": null,
@@ -336,7 +336,7 @@
     "HTI": {
       "country": "HTI",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.483556,
       "calm_flag": null,
@@ -351,7 +351,7 @@
     "YEM": {
       "country": "YEM",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.202604,
       "calm_flag": null,
@@ -366,7 +366,7 @@
     "MLI": {
       "country": "MLI",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.334026,
       "calm_flag": null,
@@ -381,7 +381,7 @@
     "NGA": {
       "country": "NGA",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.331825,
       "calm_flag": null,
@@ -396,7 +396,7 @@
     "KGZ": {
       "country": "KGZ",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.616961,
       "calm_flag": null,
@@ -411,7 +411,7 @@
     "TUR": {
       "country": "TUR",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.270707,
       "calm_flag": null,
@@ -426,7 +426,7 @@
     "ISR": {
       "country": "ISR",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.553532,
       "calm_flag": null,
@@ -441,7 +441,7 @@
     "COD": {
       "country": "COD",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.361957,
       "calm_flag": null,
@@ -456,7 +456,7 @@
     "KEN": {
       "country": "KEN",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.427777,
       "calm_flag": null,
@@ -471,7 +471,7 @@
     "DZA": {
       "country": "DZA",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.496335,
       "calm_flag": null,
@@ -486,7 +486,7 @@
     "COL": {
       "country": "COL",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.43768,
       "calm_flag": null,
@@ -501,7 +501,7 @@
     "CAF": {
       "country": "CAF",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.209375,
       "calm_flag": null,
@@ -516,7 +516,7 @@
     "LBN": {
       "country": "LBN",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.477986,
       "calm_flag": null,
@@ -531,7 +531,7 @@
     "IND": {
       "country": "IND",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.296688,
       "calm_flag": null,
@@ -546,7 +546,7 @@
     "ARM": {
       "country": "ARM",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.574133,
       "calm_flag": null,
@@ -561,7 +561,7 @@
     "ZWE": {
       "country": "ZWE",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.426335,
       "calm_flag": null,
@@ -576,7 +576,7 @@
     "TUN": {
       "country": "TUN",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.412637,
       "calm_flag": null,
@@ -591,7 +591,7 @@
     "SEN": {
       "country": "SEN",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.531797,
       "calm_flag": null,
@@ -606,7 +606,7 @@
     "IDN": {
       "country": "IDN",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.399484,
       "calm_flag": null,
@@ -621,7 +621,7 @@
     "ERI": {
       "country": "ERI",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.510438,
       "calm_flag": null,
@@ -636,7 +636,7 @@
     "MDG": {
       "country": "MDG",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.487429,
       "calm_flag": null,
@@ -651,7 +651,7 @@
     "AFG": {
       "country": "AFG",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.114063,
       "calm_flag": null,
@@ -666,7 +666,7 @@
     "SAU": {
       "country": "SAU",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.417733,
       "calm_flag": null,
@@ -681,7 +681,7 @@
     "AZE": {
       "country": "AZE",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.236689,
       "calm_flag": null,
@@ -696,7 +696,7 @@
     "THA": {
       "country": "THA",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.335225,
       "calm_flag": null,
@@ -711,7 +711,7 @@
     "CIV": {
       "country": "CIV",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.467455,
       "calm_flag": null,
@@ -726,7 +726,7 @@
     "ECU": {
       "country": "ECU",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.202606,
       "calm_flag": null,
@@ -741,7 +741,7 @@
     "TGO": {
       "country": "TGO",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.42637,
       "calm_flag": null,
@@ -756,7 +756,7 @@
     "BGD": {
       "country": "BGD",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.347775,
       "calm_flag": null,
@@ -771,7 +771,7 @@
     "HND": {
       "country": "HND",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.188205,
       "calm_flag": null,
@@ -786,7 +786,7 @@
     "MEX": {
       "country": "MEX",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.055214,
       "calm_flag": null,
@@ -801,7 +801,7 @@
     "GNB": {
       "country": "GNB",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.242801,
       "calm_flag": null,
@@ -816,7 +816,7 @@
     "GIN": {
       "country": "GIN",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.343388,
       "calm_flag": null,
@@ -831,7 +831,7 @@
     "GTM": {
       "country": "GTM",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.154515,
       "calm_flag": null,
@@ -846,7 +846,7 @@
     "VEN": {
       "country": "VEN",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.078469,
       "calm_flag": null,
@@ -861,7 +861,7 @@
     "SLE": {
       "country": "SLE",
       "date": "2026-07-08",
-      "run_ts": "2026-07-08T13:49:00.601834+00:00",
+      "run_ts": "2026-07-08T15:18:07.492576+00:00",
       "base_pred": null,
       "onset_prob": 0.156156,
       "calm_flag": null,
@@ -1730,6 +1730,21 @@
         "map_risk_level": "WATCH",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "watch"
+      },
+      {
+        "country": "AFG",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 41.9032,
+        "onset_alert_score": 9.03701905871116,
+        "watchlist_score": 9.03701905871116,
+        "current_risk_score": 41.9032235144152,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
       }
     ],
     "ARM": [
@@ -2577,6 +2592,21 @@
         "country": "ARM",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 43.835,
+        "onset_alert_score": 67.5576982341037,
+        "watchlist_score": 67.5576982341037,
+        "current_risk_score": 43.8350125984213,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "ARM",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -3444,6 +3474,21 @@
         "map_risk_level": "WATCH",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "watch"
+      },
+      {
+        "country": "AZE",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 40.5489,
+        "onset_alert_score": 21.3050892625931,
+        "watchlist_score": 21.3050892625931,
+        "current_risk_score": 40.5489352052286,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
       }
     ],
     "BFA": [
@@ -4291,6 +4336,21 @@
         "country": "BFA",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 62.7475,
+        "onset_alert_score": 57.3697824533822,
+        "watchlist_score": 57.3697824533822,
+        "current_risk_score": 62.7475070681999,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
+      },
+      {
+        "country": "BFA",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -5158,6 +5218,21 @@
         "map_risk_level": "WATCH",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "watch"
+      },
+      {
+        "country": "BGD",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 36.7518,
+        "onset_alert_score": 34.3442364164642,
+        "watchlist_score": 34.3442364164642,
+        "current_risk_score": 36.751827082513,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
       }
     ],
     "CAF": [
@@ -6005,6 +6080,21 @@
         "country": "CAF",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 47.0366,
+        "onset_alert_score": 18.866774868329,
+        "watchlist_score": 18.866774868329,
+        "current_risk_score": 47.0365977481024,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "CAF",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -6872,6 +6962,21 @@
         "map_risk_level": "WATCH",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "watch"
+      },
+      {
+        "country": "CIV",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 38.3983,
+        "onset_alert_score": 50.0902871056345,
+        "watchlist_score": 50.0902871056345,
+        "current_risk_score": 38.3983474176942,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
       }
     ],
     "CMR": [
@@ -7719,6 +7824,21 @@
         "country": "CMR",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 58.1033,
+        "onset_alert_score": 51.770508868037,
+        "watchlist_score": 51.770508868037,
+        "current_risk_score": 58.1033270422319,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
+      },
+      {
+        "country": "CMR",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -8586,6 +8706,21 @@
         "map_risk_level": "WATCH",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "watch"
+      },
+      {
+        "country": "COD",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 49.6789,
+        "onset_alert_score": 35.8632803122612,
+        "watchlist_score": 35.8632803122612,
+        "current_risk_score": 49.678882793556,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
       }
     ],
     "COL": [
@@ -9433,6 +9568,21 @@
         "country": "COL",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 48.6818,
+        "onset_alert_score": 46.9534193755583,
+        "watchlist_score": 46.9534193755583,
+        "current_risk_score": 48.6818237876088,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "COL",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -10300,6 +10450,21 @@
         "map_risk_level": "WATCH",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "watch"
+      },
+      {
+        "country": "DZA",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 49.2281,
+        "onset_alert_score": 55.7960869909993,
+        "watchlist_score": 55.7960869909993,
+        "current_risk_score": 49.2280587526638,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
       }
     ],
     "ECU": [
@@ -11147,6 +11312,21 @@
         "country": "ECU",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 38.2337,
+        "onset_alert_score": 17.8666101572391,
+        "watchlist_score": 17.8666101572391,
+        "current_risk_score": 38.233658123717,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "ECU",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -12014,6 +12194,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "EGY",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 53.8532,
+        "onset_alert_score": 62.6039139103061,
+        "watchlist_score": 62.6039139103061,
+        "current_risk_score": 53.8531678656775,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "ERI": [
@@ -12861,6 +13056,21 @@
         "country": "ERI",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 42.0863,
+        "onset_alert_score": 58.8885308037907,
+        "watchlist_score": 58.8885308037907,
+        "current_risk_score": 42.0863129369428,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "ERI",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -13728,6 +13938,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "ETH",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 59.0413,
+        "onset_alert_score": 56.5761597831843,
+        "watchlist_score": 56.5761597831843,
+        "current_risk_score": 59.0412565295855,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "GIN": [
@@ -14575,6 +14800,21 @@
         "country": "GIN",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 28.971,
+        "onset_alert_score": 33.510812278376,
+        "watchlist_score": 33.510812278376,
+        "current_risk_score": 28.9710416165933,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "GIN",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -15442,6 +15682,21 @@
         "map_risk_level": "WATCH",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "watch"
+      },
+      {
+        "country": "GNB",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 29.5495,
+        "onset_alert_score": 22.7855276442201,
+        "watchlist_score": 22.7855276442201,
+        "current_risk_score": 29.5494578595,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
       }
     ],
     "GTM": [
@@ -16289,6 +16544,21 @@
         "country": "GTM",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 28.625,
+        "onset_alert_score": 12.3949717572698,
+        "watchlist_score": 12.3949717572698,
+        "current_risk_score": 28.6249658566817,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "GTM",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -17156,6 +17426,21 @@
         "map_risk_level": "WATCH",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "watch"
+      },
+      {
+        "country": "HND",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 31.3842,
+        "onset_alert_score": 15.8059188175507,
+        "watchlist_score": 15.8059188175507,
+        "current_risk_score": 31.3842459985733,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
       }
     ],
     "HTI": [
@@ -18003,6 +18288,21 @@
         "country": "HTI",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 53.087,
+        "onset_alert_score": 53.8488976326058,
+        "watchlist_score": 53.8488976326058,
+        "current_risk_score": 53.0869905108464,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
+      },
+      {
+        "country": "HTI",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -18870,6 +19170,21 @@
         "map_risk_level": "WATCH",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "watch"
+      },
+      {
+        "country": "IDN",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 42.2329,
+        "onset_alert_score": 40.595478932343,
+        "watchlist_score": 40.595478932343,
+        "current_risk_score": 42.2329229532637,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
       }
     ],
     "IND": [
@@ -19717,6 +20032,21 @@
         "country": "IND",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 44.1066,
+        "onset_alert_score": 28.1365526661913,
+        "watchlist_score": 28.1365526661913,
+        "current_risk_score": 44.1065751722452,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "IND",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -20584,6 +20914,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "IRN",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 56.9015,
+        "onset_alert_score": 70.9195787603802,
+        "watchlist_score": 70.9195787603802,
+        "current_risk_score": 56.9014994262881,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "IRQ": [
@@ -21431,6 +21776,21 @@
         "country": "IRQ",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 60.6947,
+        "onset_alert_score": 38.2554402150073,
+        "watchlist_score": 38.2554402150073,
+        "current_risk_score": 60.6947112507995,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
+      },
+      {
+        "country": "IRQ",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -22298,6 +22658,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "ISR",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 50.2695,
+        "onset_alert_score": 65.5893455813426,
+        "watchlist_score": 65.5893455813426,
+        "current_risk_score": 50.269517651532,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "KEN": [
@@ -23145,6 +23520,21 @@
         "country": "KEN",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 49.5372,
+        "onset_alert_score": 45.733838156574,
+        "watchlist_score": 45.733838156574,
+        "current_risk_score": 49.5372433106061,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "KEN",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -24012,6 +24402,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "KGZ",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 52.0794,
+        "onset_alert_score": 72.1346172733682,
+        "watchlist_score": 72.1346172733682,
+        "current_risk_score": 52.0793699774066,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "LBN": [
@@ -24859,6 +25264,21 @@
         "country": "LBN",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 45.4725,
+        "onset_alert_score": 52.4063722324794,
+        "watchlist_score": 52.4063722324794,
+        "current_risk_score": 45.4725425503076,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "LBN",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -25726,6 +26146,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "LBY",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 59.6079,
+        "onset_alert_score": 69.9677457443984,
+        "watchlist_score": 69.9677457443984,
+        "current_risk_score": 59.6079125998973,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "MDG": [
@@ -26573,6 +27008,21 @@
         "country": "MDG",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 42.0853,
+        "onset_alert_score": 54.6463473897274,
+        "watchlist_score": 54.6463473897274,
+        "current_risk_score": 42.0852868295103,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "MDG",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -27440,6 +27890,21 @@
         "map_risk_level": "WATCH",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "watch"
+      },
+      {
+        "country": "MEX",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 30.5448,
+        "onset_alert_score": 3.86496558114203,
+        "watchlist_score": 3.86496558114203,
+        "current_risk_score": 30.544776120651,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
       }
     ],
     "MLI": [
@@ -28287,6 +28752,21 @@
         "country": "MLI",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 52.6848,
+        "onset_alert_score": 31.8029019058163,
+        "watchlist_score": 31.8029019058163,
+        "current_risk_score": 52.684783892335,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
+      },
+      {
+        "country": "MLI",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -29154,6 +29634,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "MMR",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 65.6892,
+        "onset_alert_score": 57.9247592769047,
+        "watchlist_score": 57.9247592769047,
+        "current_risk_score": 65.6891616852167,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "MOZ": [
@@ -30001,6 +30496,21 @@
         "country": "MOZ",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 57.3693,
+        "onset_alert_score": 64.2396493797929,
+        "watchlist_score": 64.2396493797929,
+        "current_risk_score": 57.369257255429,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
+      },
+      {
+        "country": "MOZ",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -30868,6 +31378,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "NER",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 60.3485,
+        "onset_alert_score": 64.7781265790229,
+        "watchlist_score": 64.7781265790229,
+        "current_risk_score": 60.3484595800602,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "NGA": [
@@ -31715,6 +32240,21 @@
         "country": "NGA",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 52.2363,
+        "onset_alert_score": 31.1225115868449,
+        "watchlist_score": 31.1225115868449,
+        "current_risk_score": 52.2363122870307,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
+      },
+      {
+        "country": "NGA",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -32582,6 +33122,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "PAK",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 57.5633,
+        "onset_alert_score": 36.6084000184122,
+        "watchlist_score": 36.6084000184122,
+        "current_risk_score": 57.5633113386779,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "PHL": [
@@ -33429,6 +33984,21 @@
         "country": "PHL",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 53.5532,
+        "onset_alert_score": 37.534336479069,
+        "watchlist_score": 37.534336479069,
+        "current_risk_score": 53.5531973910753,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
+      },
+      {
+        "country": "PHL",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -34296,6 +34866,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "PSE",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 62.3984,
+        "onset_alert_score": 51.0665004301552,
+        "watchlist_score": 51.0665004301552,
+        "current_risk_score": 62.3984481632419,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "RUS": [
@@ -35143,6 +35728,21 @@
         "country": "RUS",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 60.616,
+        "onset_alert_score": 59.7399689575368,
+        "watchlist_score": 59.7399689575368,
+        "current_risk_score": 60.6159526124538,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
+      },
+      {
+        "country": "RUS",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -36010,6 +36610,21 @@
         "map_risk_level": "WATCH",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "watch"
+      },
+      {
+        "country": "SAU",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 41.816,
+        "onset_alert_score": 43.4518274182489,
+        "watchlist_score": 43.4518274182489,
+        "current_risk_score": 41.8160290352618,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
       }
     ],
     "SDN": [
@@ -36857,6 +37472,21 @@
         "country": "SDN",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 55.0826,
+        "onset_alert_score": 21.9291889500797,
+        "watchlist_score": 21.9291889500797,
+        "current_risk_score": 55.0826177249599,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
+      },
+      {
+        "country": "SDN",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -37724,6 +38354,21 @@
         "map_risk_level": "WATCH",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "watch"
+      },
+      {
+        "country": "SEN",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 42.2384,
+        "onset_alert_score": 61.4363340969853,
+        "watchlist_score": 61.4363340969853,
+        "current_risk_score": 42.2384160523122,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
       }
     ],
     "SLE": [
@@ -38571,6 +39216,21 @@
         "country": "SLE",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 18.4636,
+        "onset_alert_score": 13.0361684518557,
+        "watchlist_score": 13.0361684518557,
+        "current_risk_score": 18.4636405239557,
+        "map_risk_level": "STABLE",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "low"
+      },
+      {
+        "country": "SLE",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -39438,6 +40098,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "SOM",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 57.1278,
+        "onset_alert_score": 48.1182357004258,
+        "watchlist_score": 48.1182357004258,
+        "current_risk_score": 57.1278243813251,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "SSD": [
@@ -40285,6 +40960,21 @@
         "country": "SSD",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 68.3022,
+        "onset_alert_score": 53.3198459111586,
+        "watchlist_score": 53.3198459111586,
+        "current_risk_score": 68.3022417822195,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
+      },
+      {
+        "country": "SSD",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -41152,6 +41842,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "SYR",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 66.1519,
+        "onset_alert_score": 41.2767423828705,
+        "watchlist_score": 41.2767423828705,
+        "current_risk_score": 66.151866909758,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "TCD": [
@@ -41999,6 +42704,21 @@
         "country": "TCD",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 64.3358,
+        "onset_alert_score": 77.9543848590429,
+        "watchlist_score": 77.9543848590429,
+        "current_risk_score": 64.3357902729593,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
+      },
+      {
+        "country": "TCD",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -42866,6 +43586,21 @@
         "map_risk_level": "WATCH",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "watch"
+      },
+      {
+        "country": "TGO",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 36.7672,
+        "onset_alert_score": 45.1090480418018,
+        "watchlist_score": 45.1090480418018,
+        "current_risk_score": 36.7671646969504,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
       }
     ],
     "THA": [
@@ -43713,6 +44448,21 @@
         "country": "THA",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 40.4565,
+        "onset_alert_score": 32.4131282168076,
+        "watchlist_score": 32.4131282168076,
+        "current_risk_score": 40.4565477234488,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "THA",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -44580,6 +45330,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "TJK",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 57.0441,
+        "onset_alert_score": 85.4136572190237,
+        "watchlist_score": 85.4136572190237,
+        "current_risk_score": 57.0441429052464,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "TUN": [
@@ -45427,6 +46192,21 @@
         "country": "TUN",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 42.6444,
+        "onset_alert_score": 42.5688099137732,
+        "watchlist_score": 42.5688099137732,
+        "current_risk_score": 42.6444473202131,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "TUN",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -46294,6 +47074,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "TUR",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 52.0385,
+        "onset_alert_score": 25.2652561645425,
+        "watchlist_score": 25.2652561645425,
+        "current_risk_score": 52.0384835511693,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "UGA": [
@@ -47141,6 +47936,21 @@
         "country": "UGA",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 55.5566,
+        "onset_alert_score": 62.0758969432503,
+        "watchlist_score": 62.0758969432503,
+        "current_risk_score": 55.556648504182,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
+      },
+      {
+        "country": "UGA",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -48008,6 +48818,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "UKR",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 56.8262,
+        "onset_alert_score": 26.2762240928673,
+        "watchlist_score": 26.2762240928673,
+        "current_risk_score": 56.8261784972849,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "VEN": [
@@ -48855,6 +49680,21 @@
         "country": "VEN",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 25.373,
+        "onset_alert_score": 6.01915154696114,
+        "watchlist_score": 6.01915154696114,
+        "current_risk_score": 25.3730374214244,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "VEN",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
@@ -49722,6 +50562,21 @@
         "map_risk_level": "WARNING",
         "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
         "tier": "high"
+      },
+      {
+        "country": "YEM",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 52.9322,
+        "onset_alert_score": 17.3401738254762,
+        "watchlist_score": 17.3401738254762,
+        "current_risk_score": 52.9321900937138,
+        "map_risk_level": "WARNING",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "high"
       }
     ],
     "ZWE": [
@@ -50569,6 +51424,21 @@
         "country": "ZWE",
         "date": "2026-07-08",
         "run_ts": "2026-07-08T13:49:00.601834+00:00",
+        "base_pred": null,
+        "onset_prob": 0.0,
+        "calm_flag": null,
+        "risk_score": 43.0855,
+        "onset_alert_score": 44.5803156215459,
+        "watchlist_score": 44.5803156215459,
+        "current_risk_score": 43.0855070691833,
+        "map_risk_level": "WATCH",
+        "score_policy_version": "dashboard_policy_v1_candidate3_candidate4",
+        "tier": "watch"
+      },
+      {
+        "country": "ZWE",
+        "date": "2026-07-08",
+        "run_ts": "2026-07-08T15:18:07.492576+00:00",
         "base_pred": null,
         "onset_prob": 0.0,
         "calm_flag": null,
