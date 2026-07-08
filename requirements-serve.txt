@@ -1,0 +1,15 @@
+# 서빙 파이프라인(model-scoring 워크플로) 의존성
+# 로컬 검증 환경(2026-07-05 E2E 완주) 버전 고정 — 미고정 시 최신 pandas의
+# str dtype 동작 차이로 피처 빌드가 깨짐 (reindex fill_value)
+# torch 는 CPU 인덱스가 필요해 워크플로에서 별도 설치: torch==2.11.0
+pandas==2.3.3
+numpy==2.2.6
+scikit-learn==1.7.2
+scipy==1.15.3
+pyarrow==23.0.1
+google-cloud-bigquery==3.41.0
+google-cloud-bigquery-storage==2.38.0
+db-dtypes==1.5.1
+openai==2.38.0
+tiktoken==0.13.0
+python-dotenv==1.2.2
