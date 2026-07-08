@@ -11,13 +11,23 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT))
 
-from src.live_osint.extraction import COUNTRY_CENTROIDS
+from src.live_osint.extraction import COUNTRY_CENTROIDS  # noqa: E402
 
 DEFAULT_EVENTS = ROOT / "artifacts" / "live_osint" / "live_events.json"
 DEFAULT_GDELT_CONTEXT = ROOT / "artifacts" / "live_osint" / "gdelt_context.json"
 DEFAULT_MODEL_SCORES = ROOT / "artifacts" / "live_osint" / "model_scores.json"
 DEFAULT_LIVE_RISK_SCORES = ROOT / "risk_scores_live.json"
 DEFAULT_OUT = ROOT / "site" / "live_osint.html"
+
+EVENT_TYPE_KO = {
+    "armed_clash": "무장 충돌",
+    "civil_unrest": "시위·소요",
+    "conflict_signal": "분쟁 신호",
+    "military_movement": "군 이동",
+    "shelling_explosion": "포격·폭발",
+    "strike": "공습·타격",
+    "signal": "기타 신호",
+}
 
 COUNTRY_KO_NAMES = {
     "AFG": "아프가니스탄",
@@ -257,9 +267,6 @@ def main():
     }
     event_countries = {ev.get("country") for ev in events if ev.get("country") and ev.get("country") != "UNK"}
     countries = sorted((event_countries | gdelt_countries | model_countries) - {"UNK"})
-    channels = sorted({ev.get("channel") or "unknown" for ev in events})
-    event_types = sorted({ev.get("event_type") or "signal" for ev in events})
-    precision_counts = Counter(ev.get("location_precision") or "missing" for ev in events)
     country_counts = Counter(ev.get("country") for ev in events if ev.get("country") and ev.get("country") != "UNK")
     keyword_counts = Counter()
     for ev in events:
@@ -295,7 +302,6 @@ def main():
     gdelt_context_data = json.dumps(gdelt_context, ensure_ascii=False).replace("</", "<\\/")
     model_scores_data = json.dumps(model_scores, ensure_ascii=False).replace("</", "<\\/")
     top_risk_data = json.dumps(top_risk_items, ensure_ascii=False).replace("</", "<\\/")
-    country_ko_names_data = json.dumps(COUNTRY_KO_NAMES, ensure_ascii=False).replace("</", "<\\/")
     country_centroid_data = json.dumps(COUNTRY_CENTROIDS, ensure_ascii=False).replace("</", "<\\/")
 
     cards = []
@@ -347,8 +353,6 @@ def main():
         .replace("__FILTERS__", html.escape(json.dumps(payload.get("filters", {}), ensure_ascii=False)))
         .replace("__STATS__", stats)
         .replace("__COUNTRY_OPTIONS__", option_tags(countries, "국가: 전체"))
-        .replace("__CHANNEL_OPTIONS__", option_tags(channels, "채널: 전체"))
-        .replace("__TYPE_OPTIONS__", option_tags(event_types, "유형: 전체"))
         .replace("__EVENT_DATA__", event_data)
         .replace("__GDELT_CONTEXT_DATA__", gdelt_context_data)
         .replace("__MODEL_SCORES_DATA__", model_scores_data)
@@ -384,33 +388,34 @@ TEMPLATE = """<!doctype html>
     * { box-sizing: border-box; }
     body { margin: 0; font-family: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; background: var(--bg); color: var(--ink); }
     main { max-width: 1440px; margin: 0 auto; padding: 0 18px 56px; }
-    header { margin: 0 -18px 20px; padding: 54px 20px 42px; text-align: center; background: var(--tile-dark); color: #fff; }
-    h1 { margin: 0 0 10px; font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; font-size: clamp(34px, 5vw, 56px); font-weight: 600; line-height: 1.07; letter-spacing: -0.28px; }
-    .desc { color: #cccccc; line-height: 1.47; max-width: 900px; margin: 0 auto; font-size: 17px; letter-spacing: -0.224px; }
-    .ranking-strip { display: inline-flex; align-items: center; gap: 14px; margin-top: 24px; padding: 10px 18px; min-height: 44px; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; color: #fff; background: rgba(255,255,255,.06); }
-    .ranking-strip span { color: #cccccc; font-size: 13px; }
-    .ranking-strip strong { min-width: 250px; font-size: 15px; font-weight: 600; text-align: left; }
-    .toolbar { display: grid; grid-template-columns: repeat(7, minmax(120px, 1fr)); gap: 10px; margin: 18px 0; }
-    select, input { width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px; background: white; color: var(--ink); font-size: 14px; letter-spacing: -0.224px; }
+    header { margin: 0 -18px 14px; padding: 30px 20px 24px; text-align: center; background: var(--tile-dark); color: #fff; }
+    h1 { margin: 0 0 8px; font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; font-size: clamp(28px, 3.6vw, 40px); font-weight: 600; line-height: 1.15; letter-spacing: -0.28px; }
+    .desc { color: #cccccc; line-height: 1.45; max-width: 900px; margin: 0 auto; font-size: 15px; letter-spacing: -0.224px; }
+    .map-topbar { position: absolute; top: 12px; right: 12px; z-index: 5; display: flex; align-items: center; gap: 8px; max-width: calc(100% - 24px); }
+    .ranking-strip { display: inline-flex; align-items: center; gap: 10px; padding: 5px 14px; min-height: 40px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); background: rgba(255,255,255,.9); backdrop-filter: saturate(180%) blur(20px); min-width: 0; }
+    .ranking-strip span { color: var(--muted); font-size: 12px; white-space: nowrap; }
+    .ranking-strip strong { min-width: 0; max-width: 320px; font-size: 13.5px; font-weight: 600; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .toolbar { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin: 12px 0 10px; }
+    select, input { width: 100%; min-height: 38px; border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; background: white; color: var(--ink); font-size: 13.5px; letter-spacing: -0.224px; }
     select:focus, input:focus, button:focus { outline: 2px solid var(--blue-focus); outline-offset: 2px; }
-    .zoom-control { position: absolute; top: 18px; right: 18px; z-index: 5; display: inline-flex; align-items: center; gap: 6px; padding: 6px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.86); backdrop-filter: saturate(180%) blur(20px); }
-    .zoom-control button { width: 36px; height: 36px; border: 0; border-radius: 999px; background: var(--blue); color: #fff; font-size: 20px; line-height: 1; cursor: pointer; }
+    .zoom-control { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.9); backdrop-filter: saturate(180%) blur(20px); }
+    .zoom-control button { width: 32px; height: 32px; border: 0; border-radius: 999px; background: var(--blue); color: #fff; font-size: 18px; line-height: 1; cursor: pointer; }
     .zoom-control button:active { transform: scale(.95); }
     .zoom-control output { min-width: 42px; color: var(--ink); font-size: 13px; text-align: center; }
     .dashboard { display: grid; grid-template-columns: minmax(0, 1.62fr) minmax(340px, .72fr); gap: 16px; align-items: stretch; margin: 14px 0 18px; }
-    .map-wrap { position: relative; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: #ffffff; min-height: 100%; padding: 0; }
-    #map { width: 100%; height: 640px; margin: 0; background: transparent; }
+    .map-wrap { position: relative; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: #ffffff; min-height: max(560px, 100%); padding: 0; }
+    #map { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; margin: 0; background: transparent; }
     .js-plotly-plot .plotly .modebar { display: none; }
     #fallbackMap { display: none; position: relative; width: 100%; height: 430px; overflow: hidden; background:
       linear-gradient(90deg, rgba(50,60,54,.10) 1px, transparent 1px),
       linear-gradient(0deg, rgba(50,60,54,.09) 1px, transparent 1px),
       linear-gradient(180deg, #dbe1de 0%, #eef1ee 52%, #d5dbd8 100%);
       background-size: 10% 100%, 100% 16.666%, 100% 100%; }
-    #fallbackMap::before { content: "Fallback coordinate view"; position: absolute; left: 12px; top: 10px; color: #59635d; font-size: 13px; z-index: 1; }
+    #fallbackMap::before { content: "간이 좌표 보기"; position: absolute; left: 12px; top: 10px; color: #59635d; font-size: 13px; z-index: 1; }
     .fallback-marker { position: absolute; width: 22px; height: 22px; transform: translate(-50%, -50%) rotate(45deg); border: 1px solid rgba(255,255,255,.88); box-shadow: 0 0 0 2px rgba(30,36,32,.28), 0 3px 16px rgba(0,0,0,.20); cursor: pointer; }
     .fallback-marker.city { background: rgba(215, 55, 49, .78); color: rgba(215, 55, 49, .72); }
     .fallback-marker.country { width: 34px; height: 34px; background: rgba(224, 136, 31, .55); color: rgba(224, 136, 31, .58); }
-    .legend { display: flex; flex-wrap: wrap; gap: 12px; padding: 0 18px 16px; color: var(--muted); font-size: 13px; background: transparent; }
+    .legend { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; display: flex; flex-wrap: wrap; gap: 12px; padding: 10px 18px 12px; color: var(--muted); font-size: 13px; background: rgba(255,255,255,.92); border-top: 1px solid var(--line); }
     .dot { display: inline-block; width: 12px; height: 12px; margin-right: 5px; border: 1px solid rgba(255,255,255,.75); border-radius: 999px; }
     .dot.city { background: rgba(207, 62, 54, .78); }
     .dot.country { background: rgba(226, 141, 45, .62); }
@@ -467,7 +472,7 @@ TEMPLATE = """<!doctype html>
     .brief-list a { color: var(--ink); text-decoration: none; }
     .brief-list a:hover { color: var(--blue); text-decoration: underline; }
     details.raw-toggle { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: #fafafc; }
-    details.raw-toggle summary { cursor: pointer; color: var(--blue); font-size: 14px; font-weight: 600; }
+    details.raw-toggle summary { cursor: pointer; color: var(--ink); font-size: 14px; font-weight: 600; }
     .raw-message { white-space: pre-wrap; line-height: 1.5; font-size: 13px; color: #1d1d1f; margin-top: 10px; }
     .detail .meta { margin-top: 8px; }
     .event { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 16px; margin: 12px 0; cursor: pointer; }
@@ -488,14 +493,13 @@ TEMPLATE = """<!doctype html>
     .source-link { display: inline-flex; align-items: center; margin-top: 8px; }
     @media (max-width: 820px) {
       main { padding: 0 12px 48px; }
-      header { margin: 0 -12px 16px; padding: 42px 16px 34px; }
+      header { margin: 0 -12px 12px; padding: 14px 16px 12px; }
       .stats { grid-template-columns: 1fr; }
       .toolbar { grid-template-columns: 1fr; }
       .dashboard { grid-template-columns: 1fr; }
-      .ranking-strip { width: 100%; justify-content: center; }
-      .ranking-strip strong { min-width: 0; }
-      .zoom-control { top: 12px; right: 12px; }
-      #map { height: 430px; }
+      .map-topbar { top: 8px; right: 8px; flex-wrap: wrap; justify-content: flex-end; }
+      .ranking-strip strong { max-width: 180px; }
+      .map-wrap { min-height: 430px; }
       #fallbackMap { height: 320px; }
       .detail { min-height: 0; max-height: none; }
     }
@@ -508,43 +512,33 @@ TEMPLATE = """<!doctype html>
       <div class="desc">
         모델 점수를 중심으로 국가별 무력충돌 위험도를 시각화하고, Telegram 및 GDELT 뉴스 신호를 보조 근거로 함께 확인합니다.
       </div>
-      <div class="ranking-strip" aria-live="polite">
-        <span>위험도 Top 10</span>
-        <strong id="topRiskTicker">-</strong>
-      </div>
     </header>
     <section class="toolbar" aria-label="feed filters">
       <select id="mapViewFilter">
         <option value="globe">지도 형태: 지구본</option>
         <option value="flat">지도 형태: 평면</option>
       </select>
-      <select id="mapColorFilter">
-        <option value="model">색상 기준: 모델 위험도</option>
-        <option value="observed">색상 기준: 관측 신호</option>
-      </select>
       <select id="timeFilter">
-        <option value="">기간: 최신 모델일</option>
-        <option value="720">기간: 최근 1개월</option>
-        <option value="168">기간: 최근 1주</option>
-        <option value="24">기간: 최근 24시간</option>
+        <option value="">신호 기간: 전체</option>
+        <option value="720">신호 기간: 최근 1개월</option>
+        <option value="168">신호 기간: 최근 1주</option>
+        <option value="24">신호 기간: 최근 24시간</option>
       </select>
       <select id="countryFilter">__COUNTRY_OPTIONS__</select>
-      <select id="channelFilter">__CHANNEL_OPTIONS__</select>
-      <select id="typeFilter">__TYPE_OPTIONS__</select>
-      <select id="precisionFilter">
-        <option value="">위치: 전체</option>
-        <option value="city">위치: 도시 좌표</option>
-        <option value="country">위치: 국가 추정</option>
-        <option value="missing">위치: 미확정</option>
-      </select>
       <input id="searchFilter" type="search" placeholder="검색어 또는 키워드" />
     </section>
     <section class="dashboard" aria-label="event dashboard">
       <div class="map-wrap" aria-label="event map">
-        <div class="zoom-control" aria-label="지도 확대">
-          <button id="zoomOutButton" type="button" aria-label="지도 축소">-</button>
-          <output id="zoomValue">100%</output>
-          <button id="zoomInButton" type="button" aria-label="지도 확대">+</button>
+        <div class="map-topbar">
+          <div class="ranking-strip" aria-live="polite">
+            <span>위험도 Top 10</span>
+            <strong id="topRiskTicker">-</strong>
+          </div>
+          <div class="zoom-control" aria-label="지도 확대">
+            <button id="zoomOutButton" type="button" aria-label="지도 축소">-</button>
+            <output id="zoomValue">100%</output>
+            <button id="zoomInButton" type="button" aria-label="지도 확대">+</button>
+          </div>
         </div>
         <div id="map"></div>
         <div id="fallbackMap"></div>
@@ -578,15 +572,11 @@ TEMPLATE = """<!doctype html>
     const countryCentroids = JSON.parse(document.getElementById("countryCentroidData").textContent);
     const controls = {
       mapView: document.getElementById("mapViewFilter"),
-      mapColor: document.getElementById("mapColorFilter"),
       zoomOut: document.getElementById("zoomOutButton"),
       zoomIn: document.getElementById("zoomInButton"),
       zoomValue: document.getElementById("zoomValue"),
       time: document.getElementById("timeFilter"),
       country: document.getElementById("countryFilter"),
-      channel: document.getElementById("channelFilter"),
-      type: document.getElementById("typeFilter"),
-      precision: document.getElementById("precisionFilter"),
       search: document.getElementById("searchFilter"),
     };
     const cards = Array.from(document.querySelectorAll(".event"));
@@ -604,44 +594,8 @@ TEMPLATE = """<!doctype html>
     let selectedGdeltCountry = null;
     let mapZoom = 1;
     let tickerIndex = 0;
+    let globeRotation = { lon: 35, lat: 18 };
     const countryKoNames = {
-      AFG: "아프가니스탄",
-      ARM: "아르메니아",
-      AZE: "아제르바이잔",
-      BFA: "부르키나파소",
-      CAF: "중앙아프리카공화국",
-      COD: "콩고민주공화국",
-      ETH: "에티오피아",
-      HTI: "아이티",
-      IND: "인도",
-      IRN: "이란",
-      IRQ: "이라크",
-      ISR: "이스라엘",
-      KEN: "케냐",
-      KWT: "쿠웨이트",
-      LBN: "레바논",
-      LBY: "리비아",
-      LTU: "리투아니아",
-      MLI: "말리",
-      MMR: "미얀마",
-      NER: "니제르",
-      NGA: "나이지리아",
-      PAK: "파키스탄",
-      PSE: "팔레스타인",
-      ROU: "루마니아",
-      RUS: "러시아",
-      SAU: "사우디아라비아",
-      SDN: "수단",
-      SOM: "소말리아",
-      SSD: "남수단",
-      SYR: "시리아",
-      TCD: "차드",
-      TUR: "튀르키예",
-      UKR: "우크라이나",
-      USA: "미국",
-      YEM: "예멘",
-    };
-    Object.assign(countryKoNames, {
       AFG: "아프가니스탄",
       ARM: "아르메니아",
       AZE: "아제르바이잔",
@@ -704,7 +658,7 @@ TEMPLATE = """<!doctype html>
       VEN: "베네수엘라",
       YEM: "예멘",
       ZWE: "짐바브웨",
-    });
+    };
     function countryName(country) {
       return countryKoNames[country] || country || "국가 미확정 신호";
     }
@@ -727,6 +681,18 @@ TEMPLATE = """<!doctype html>
       ukraine: "우크라이나",
     };
 
+    const eventTypeKo = {
+      armed_clash: "무장 충돌",
+      civil_unrest: "시위·소요",
+      conflict_signal: "분쟁 신호",
+      military_movement: "군 이동",
+      shelling_explosion: "포격·폭발",
+      strike: "공습·타격",
+    };
+    function typeLabel(type) {
+      return eventTypeKo[type] || type || "신호";
+    }
+
     function markerColor(precision) {
       if (precision === "city") return "#d73531";
       if (precision === "country") return "#dd8725";
@@ -734,7 +700,7 @@ TEMPLATE = """<!doctype html>
     }
 
     function updateZoom(delta) {
-      mapZoom = Math.max(0.75, Math.min(2.4, Number((mapZoom + delta).toFixed(2))));
+      mapZoom = Math.max(1, Math.min(2.4, Number((mapZoom + delta).toFixed(2))));
       if (controls.zoomValue) controls.zoomValue.textContent = `${Math.round(mapZoom * 100)}%`;
       if (currentVisibleIds.size || map) {
         applyFilters();
@@ -743,12 +709,20 @@ TEMPLATE = """<!doctype html>
 
     function resizeMapForMode() {
       if (!plotlyMap) return;
-      const flatMode = controls.mapView && controls.mapView.value === "flat";
-      const width = Math.max(320, plotlyMap.parentElement ? plotlyMap.parentElement.clientWidth : plotlyMap.clientWidth);
-      const height = flatMode
-        ? Math.max(300, Math.min(430, Math.round(width * 0.32)))
-        : Math.max(460, Math.min(620, Math.round(width * 0.56)));
-      plotlyMap.style.height = `${height}px`;
+      const wrap = plotlyMap.parentElement;
+      if (wrap) {
+        const w = Math.max(320, wrap.clientWidth);
+        const h = Math.max(420, wrap.clientHeight);
+        const flatMode = controls.mapView && controls.mapView.value === "flat";
+        if (flatMode) {
+          plotlyMap.style.width = `${w}px`;
+          plotlyMap.style.height = `${h}px`;
+        } else {
+          const side = Math.ceil(Math.sqrt(w * w + h * h));
+          plotlyMap.style.width = `${side}px`;
+          plotlyMap.style.height = `${side}px`;
+        }
+      }
       if (mapAvailable && map && map._fullLayout && window.Plotly && Plotly.Plots) {
         Plotly.Plots.resize(map);
       }
@@ -806,17 +780,6 @@ TEMPLATE = """<!doctype html>
         maxOnset,
         peakDate: peak.date || "",
       };
-    }
-
-    function riskColor(score) {
-      const value = Number(score || 0);
-      if (value >= 98) return "#7f1d1d";
-      if (value >= 95) return "#b4312c";
-      if (value >= 85) return "#d94f45";
-      if (value >= 65) return "#e9896a";
-      if (value >= 40) return "#f0c7b2";
-      if (value > 0) return "#f7e9df";
-      return "#f3f4f0";
     }
 
     function tierLabel(tier) {
@@ -916,15 +879,15 @@ TEMPLATE = """<!doctype html>
       const location = `${event.location_precision || "missing"} / ${event.location_name || "unknown"}`;
       const coords = event.latitude !== null && event.longitude !== null
         ? `${Number(event.latitude).toFixed(4)}, ${Number(event.longitude).toFixed(4)}`
-        : "no coordinates";
+        : "좌표 없음";
       const keywords = (event.matched_keywords || []).join(", ") || "none";
       return `
         <div class="meta">
           <span>${escapeHtml(event.message_time || "")}</span>
-          <span>channel: ${escapeHtml(event.channel || "unknown")}</span>
-          <span>confidence: ${formatNumber(event.confidence)}</span>
-          <span>severity: ${formatNumber(event.severity)}</span>
-          <span>location: ${escapeHtml(location)}</span>
+          <span>채널: ${escapeHtml(event.channel || "unknown")}</span>
+          <span>신뢰도: ${formatNumber(event.confidence)}</span>
+          <span>심각도: ${formatNumber(event.severity)}</span>
+          <span>위치: ${escapeHtml(location)}</span>
           <span>${escapeHtml(coords)}</span>
           <span>${escapeHtml(keywords)}</span>
         </div>
@@ -939,10 +902,10 @@ TEMPLATE = """<!doctype html>
         return `
           <div class="panel-group gdelt">
             <div class="panel-group-title">
-              <h2>GDELT News Context</h2>
-              <span>news coverage layer</span>
+              <h2>GDELT 뉴스 맥락</h2>
+              <span>뉴스 보도량 레이어</span>
             </div>
-            <div class="detail-empty">No GDELT title context is available for ${escapeHtml(countryLabel)} yet.</div>
+            <div class="detail-empty">${escapeHtml(countryLabel)}의 GDELT 뉴스 요약이 아직 없습니다.</div>
           </div>
         `;
       }
@@ -958,18 +921,18 @@ TEMPLATE = """<!doctype html>
       return `
         <div class="panel-group gdelt">
           <div class="panel-group-title">
-            <h2>GDELT News Context</h2>
-            <span>news coverage layer</span>
+            <h2>GDELT 뉴스 맥락</h2>
+            <span>뉴스 보도량 레이어</span>
           </div>
           <div class="gdelt-metrics">
-            <div class="gdelt-metric"><span>titles latest day</span><strong>${escapeHtml(context.gdelt_24h || 0)}</strong></div>
-            <div class="gdelt-metric"><span>titles latest 7d</span><strong>${escapeHtml(context.gdelt_7d || 0)}</strong></div>
+            <div class="gdelt-metric"><span>최근 1일 기사 수</span><strong>${escapeHtml(context.gdelt_24h || 0)}</strong></div>
+            <div class="gdelt-metric"><span>최근 7일 기사 수</span><strong>${escapeHtml(context.gdelt_7d || 0)}</strong></div>
           </div>
               ${context.ko_brief ? `<div class="gdelt-keywords">${escapeHtml(localizeCountryCodes(context.ko_brief))}</div>` : ""}
           <div class="ko-summary">${escapeHtml(localizeCountryCodes(context.ko_summary || "GDELT 기사 제목 기반 한국어 요약은 아직 생성되지 않았습니다."))}</div>
           ${context.source_limits ? `<div class="detail-empty">${escapeHtml(context.source_limits)}</div>` : ""}
-          <div class="gdelt-keywords">Top GDELT terms: ${escapeHtml(keywords)}</div>
-          ${titles || '<div class="detail-empty">No representative titles are available yet.</div>'}
+          <div class="gdelt-keywords">주요 키워드: ${escapeHtml(keywords)}</div>
+          ${titles || '<div class="detail-empty">대표 기사 제목이 아직 없습니다.</div>'}
         </div>
       `;
     }
@@ -981,9 +944,9 @@ TEMPLATE = """<!doctype html>
           <div class="panel-group gdelt">
             <div class="panel-group-title">
               <h2>모델 위험도 점수</h2>
-              <span>onset model layer</span>
+              <span>신규 발생 예측 레이어</span>
             </div>
-            <div class="detail-empty">No model score is available for ${escapeHtml(country)}.</div>
+            <div class="detail-empty">${escapeHtml(country)}의 모델 점수가 없습니다.</div>
           </div>
         `;
       }
@@ -1025,12 +988,15 @@ TEMPLATE = """<!doctype html>
             <div class="risk-metric alerting"><span>신규 분쟁 발생 위험도</span><strong>${onset.toFixed(1)}</strong><small>onset alert 기준</small></div>
             <div class="risk-metric"><span>위험 단계</span><strong>${escapeHtml(riskLevelLabel(item))}</strong><small>${escapeHtml(item.map_risk_level || item.tier || "")}</small></div>
           </div>
-          <div class="meta">
-            <span>base_pred: ${base.toFixed(3)}</span>
-            <span>onset_prob: ${rawOnset.toFixed(3)}</span>
-            <span>calm_flag: ${calm}</span>
-          </div>
-          <div class="score-note">현재 위험도는 Candidate 4 기반의 종합 위험 점수이며 지도 색상에 사용됩니다. 신규 분쟁 발생 위험도는 Candidate 3 기반의 조기경보 점수이며, 높은 국가는 지도 위 별도 알림 표식으로 표시됩니다.</div>
+          <details class="raw-toggle">
+            <summary>모델 값 보기</summary>
+            <div class="meta">
+              ${item.base_pred != null ? `<span>악화 예측 확률: ${base.toFixed(3)}</span>` : ""}
+              <span>신규 발생 확률(모델 출력): ${rawOnset.toFixed(3)}</span>
+              ${item.calm_flag != null ? `<span>평온 국가 판정: ${calm ? "예" : "아니오"}</span>` : ""}
+            </div>
+          </details>
+          <div class="score-note">현재 위험도는 장기 위험·현재 상태·모델 예측을 합성한 종합 점수로 지도 색상에 사용됩니다. 신규 분쟁 발생 위험도는 평온하던 국가의 신규 발생 조기경보 점수로, 70 이상 국가는 지도 위 삼각형 표식으로 표시됩니다.</div>
           ${periodBlock}
         </div>
       `;
@@ -1040,7 +1006,7 @@ TEMPLATE = """<!doctype html>
       const recentEvents = countryEvents(country, 4);
       const context = (gdeltContext.countries || {})[country];
       const eventItems = recentEvents.map((event) => {
-        const label = `${event.message_time || ""} · ${event.channel || "unknown"} · ${event.event_type || "signal"}`;
+        const label = `${event.message_time || ""} · ${event.channel || "unknown"} · ${typeLabel(event.event_type)}`;
         const summary = event.ko_raw_brief || event.ko_summary || event.summary || "";
         const body = `<strong>${escapeHtml(label)}</strong><br>${escapeHtml(localizeCountryCodes(summary))}`;
         return event.url
@@ -1054,18 +1020,18 @@ TEMPLATE = """<!doctype html>
       return `
         <div class="panel-group telegram">
           <div class="panel-group-title">
-            <h2>Recent Briefing</h2>
-            <span>Telegram + GDELT context</span>
+            <h2>최근 브리핑</h2>
+            <span>텔레그램·GDELT 근거</span>
           </div>
-          ${eventItems ? `<div class="detail-section"><h2>Telegram signals</h2><ul class="brief-list">${eventItems}</ul></div>` : '<div class="detail-empty">No recent Telegram signal is linked to this country in the current export.</div>'}
+          ${eventItems ? `<div class="detail-section"><h2>텔레그램 신호</h2><ul class="brief-list">${eventItems}</ul></div>` : '<div class="detail-empty">현재 데이터에 이 국가와 연결된 텔레그램 신호가 없습니다.</div>'}
           ${context ? `
             <div class="detail-section">
-              <h2>GDELT news context</h2>
+              <h2>GDELT 뉴스 요약</h2>
               ${context.ko_brief ? `<div class="gdelt-keywords">${escapeHtml(localizeCountryCodes(context.ko_brief))}</div>` : ""}
-              <div class="ko-summary">${escapeHtml(localizeCountryCodes(context.ko_summary || "GDELT title summary is not available yet."))}</div>
+              <div class="ko-summary">${escapeHtml(localizeCountryCodes(context.ko_summary || "GDELT 제목 요약이 아직 생성되지 않았습니다."))}</div>
               ${gdeltTitles ? `<ul class="brief-list">${gdeltTitles}</ul>` : ""}
             </div>
-          ` : '<div class="detail-empty">No GDELT title context is available for this country yet.</div>'}
+          ` : '<div class="detail-empty">이 국가의 GDELT 뉴스 요약이 아직 없습니다.</div>'}
         </div>
       `;
     }
@@ -1114,23 +1080,23 @@ TEMPLATE = """<!doctype html>
         </div>
         <div class="panel-group gdelt">
           <div class="panel-group-title">
-            <h2>GDELT News Context</h2>
-            <span>country-level news layer</span>
+            <h2>GDELT 뉴스 맥락</h2>
+            <span>국가 단위 뉴스 레이어</span>
           </div>
           <div class="gdelt-metrics">
-            <div class="gdelt-metric"><span>titles latest day</span><strong>${escapeHtml(context.gdelt_24h || 0)}</strong></div>
-            <div class="gdelt-metric"><span>titles latest 7d</span><strong>${escapeHtml(context.gdelt_7d || 0)}</strong></div>
+            <div class="gdelt-metric"><span>최근 1일 기사 수</span><strong>${escapeHtml(context.gdelt_24h || 0)}</strong></div>
+            <div class="gdelt-metric"><span>최근 7일 기사 수</span><strong>${escapeHtml(context.gdelt_7d || 0)}</strong></div>
           </div>
           ${context.ko_brief ? `<div class="gdelt-keywords">${escapeHtml(context.ko_brief)}</div>` : ""}
             <div class="ko-summary">${escapeHtml(localizeCountryCodes(context.ko_summary || "GDELT 기사 제목 기반 한국어 요약은 아직 생성되지 않았습니다."))}</div>
           ${context.source_limits ? `<div class="detail-empty">${escapeHtml(context.source_limits)}</div>` : ""}
-          <div class="gdelt-keywords">Top GDELT terms: ${escapeHtml(keywords)}</div>
-          ${titles || '<div class="detail-empty">No representative titles are available yet.</div>'}
+          <div class="gdelt-keywords">주요 키워드: ${escapeHtml(keywords)}</div>
+          ${titles || '<div class="detail-empty">대표 기사 제목이 아직 없습니다.</div>'}
         </div>
         <div class="panel-group telegram">
           <div class="panel-group-title">
-            <h2>Telegram Signal</h2>
-            <span>source message layer</span>
+            <h2>텔레그램 신호</h2>
+            <span>원문 메시지 레이어</span>
           </div>
           <div class="detail-empty">현재 export 범위에서 이 국가에 연결된 Telegram event는 선택되지 않았습니다.</div>
         </div>
@@ -1144,23 +1110,23 @@ TEMPLATE = """<!doctype html>
       selectedGdeltCountry = null;
       cards.forEach((card) => card.classList.toggle("selected", card.dataset.eventId === eventId));
       const source = event.url
-        ? `<a class="source-link" href="${escapeHtml(event.url)}" target="_blank" rel="noreferrer">Open Telegram source</a>`
+        ? `<a class="source-link" href="${escapeHtml(event.url)}" target="_blank" rel="noreferrer">텔레그램 원문 열기</a>`
         : "";
       const countryLabel = event.country ? countryName(event.country) : "국가 미확정 신호";
       const modelSection = event.country ? modelRiskSection(event.country) : "";
       detail.innerHTML = `
         <div class="detail-head">
           <div class="detail-title">
-            <strong>${escapeHtml(countryLabel)} - ${escapeHtml(event.event_type || "signal")}</strong>
+            <strong>${escapeHtml(countryLabel)} - ${escapeHtml(typeLabel(event.event_type))}</strong>
             <span>${escapeHtml(event.location_name || "unknown")} - ${escapeHtml(event.location_precision || "missing")}</span>
           </div>
-          <em class="${badgeClass(event.confidence)}">${badgeClass(event.confidence)}</em>
+          <em class="${badgeClass(event.confidence)}">${badgeLabel(event.confidence)}</em>
         </div>
         ${eventMeta(event)}
         <div class="panel-group telegram">
           <div class="panel-group-title">
-            <h2>Telegram Signal</h2>
-            <span>source message layer</span>
+            <h2>텔레그램 신호</h2>
+            <span>원문 메시지 레이어</span>
           </div>
           <div class="detail-section">
             <h2>분류 요약</h2>
@@ -1192,6 +1158,41 @@ TEMPLATE = """<!doctype html>
       return "raw";
     }
 
+    function badgeLabel(confidence) {
+      const value = Number(confidence || 0);
+      if (value >= 0.75) return "신뢰 높음";
+      if (value >= 0.55) return "미검증";
+      return "원문 신호";
+    }
+
+    function animateRotation(targetLon, targetLat) {
+      if (!mapAvailable || !map || (controls.mapView && controls.mapView.value === "flat")) {
+        globeRotation = { lon: targetLon, lat: targetLat };
+        return;
+      }
+      const start = { lon: globeRotation.lon, lat: globeRotation.lat };
+      const dLon = ((targetLon - start.lon + 540) % 360) - 180;
+      const dLat = targetLat - start.lat;
+      const t0 = performance.now();
+      const duration = 550;
+      function step(now) {
+        const t = Math.min(1, (now - t0) / duration);
+        const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        globeRotation = { lon: start.lon + dLon * e, lat: start.lat + dLat * e };
+        Plotly.relayout(map, {
+          "geo.projection.rotation.lon": globeRotation.lon,
+          "geo.projection.rotation.lat": globeRotation.lat,
+        });
+        if (t < 1) window.requestAnimationFrame(step);
+      }
+      window.requestAnimationFrame(step);
+    }
+
+    function rotateToCountry(country) {
+      const coords = countryCentroids[country];
+      if (coords) animateRotation(Number(coords[1]), Number(coords[0]));
+    }
+
     function initMap() {
       if (!mapAvailable) {
         plotlyMap.style.display = "none";
@@ -1209,19 +1210,24 @@ TEMPLATE = """<!doctype html>
         const point = ev.points && ev.points[0];
         if (!point) return;
         if (point.data && point.data.meta === "telegram") {
+          const ev = eventById.get(point.customdata);
+          if (ev && ev.latitude !== null) animateRotation(Number(ev.longitude), Number(ev.latitude));
           selectEvent(point.customdata);
           return;
         }
         if (point.data && point.data.meta === "gdelt") {
+          rotateToCountry(point.customdata);
           selectCountry(point.customdata);
           return;
         }
         if (point.data && point.data.meta === "onset-badge") {
+          rotateToCountry(point.customdata);
           selectCountry(point.customdata);
           return;
         }
         if (point.data && point.data.meta === "country") {
           const country = point.customdata || point.location;
+          rotateToCountry(country);
           selectCountry(country);
         }
       });
@@ -1230,21 +1236,28 @@ TEMPLATE = """<!doctype html>
     function globeLayout() {
       const flatMode = controls.mapView && controls.mapView.value === "flat";
       const zoom = Number(mapZoom || 1);
+      const wrapEl = plotlyMap ? plotlyMap.parentElement : null;
+      const wrapRect = wrapEl ? wrapEl.getBoundingClientRect() : { width: 1000, height: 600 };
+      const w = Math.max(1, wrapRect.width);
+      const h = Math.max(1, wrapRect.height);
+      const side = Math.sqrt(w * w + h * h);
+      const coverFlat = Math.max(1, (h / w) / 0.44);
+      const globeBase = (Math.min(w, h) / side) * 0.95;
       const projectionScale = flatMode
-        ? Math.max(1.08, zoom * 1.18)
-        : 0.82 + ((zoom - 1) * 1.65);
+        ? coverFlat * Math.max(1, zoom)
+        : globeBase * zoom;
       return {
         autosize: true,
         margin: { l: 0, r: 0, t: 0, b: 0 },
-        paper_bgcolor: "rgba(0,0,0,0)",
+        paper_bgcolor: "#ffffff",
         plot_bgcolor: "rgba(0,0,0,0)",
         hovermode: "closest",
         showlegend: false,
         geo: {
-          domain: flatMode ? { x: [0, 1], y: [0, 1] } : { x: [0.01, 0.99], y: [0.02, 0.98] },
+          domain: { x: [0, 1], y: [0, 1] },
           projection: flatMode
             ? { type: "natural earth", scale: projectionScale }
-            : { type: "orthographic", scale: projectionScale, rotation: { lon: 35, lat: 18, roll: 0 } },
+            : { type: "orthographic", scale: projectionScale, rotation: { lon: globeRotation.lon, lat: globeRotation.lat, roll: 0 } },
           bgcolor: "rgba(0,0,0,0)",
           showframe: false,
           showcoastlines: true,
@@ -1281,7 +1294,7 @@ TEMPLATE = """<!doctype html>
         const marker = document.createElement("a");
         marker.className = `fallback-marker ${event.location_precision === "city" ? "city" : "country"}`;
         marker.href = `#event-${event.event_id}`;
-        marker.title = `${event.country ? countryName(event.country) : "국가 미확정 신호"} ${event.event_type || "signal"}`;
+        marker.title = `${event.country ? countryName(event.country) : "국가 미확정 신호"} ${typeLabel(event.event_type)}`;
         marker.style.left = `${pos.x}%`;
         marker.style.top = `${pos.y}%`;
         marker.addEventListener("click", (clickEvent) => {
@@ -1298,7 +1311,7 @@ TEMPLATE = """<!doctype html>
       currentVisibleIds = new Set(visibleIds);
       countrySignalCounts = buildCountrySignalCounts(visibleIds, visibleGdeltCountries);
       const eventCountries = new Set();
-      const modelColorMode = !controls.mapColor || controls.mapColor.value === "model";
+      const modelColorMode = true;
       const countryLocations = modelColorMode
         ? Object.keys(modelScores.countries || {}).filter((country) => country && country !== "UNK")
         : Array.from(countrySignalCounts.keys()).filter((country) => country && country !== "UNK");
@@ -1320,7 +1333,7 @@ TEMPLATE = """<!doctype html>
         }),
         hovertemplate: modelColorMode
           ? "<b>%{text}</b><extra></extra>"
-          : "<b>%{text}</b><br>observed signals: %{z}<extra></extra>",
+          : "<b>%{text}</b><br>관측 신호: %{z}<extra></extra>",
         zmin: 0,
         zmax: modelColorMode ? 100 : Math.max(10, ...countryValues),
         showlegend: false,
@@ -1357,8 +1370,8 @@ TEMPLATE = """<!doctype html>
         lat: visibleEvents.map((event) => Number(event.latitude)),
         lon: visibleEvents.map((event) => Number(event.longitude)),
         customdata: visibleEvents.map((event) => event.event_id),
-        text: visibleEvents.map((event) => `${event.location_name || (event.country ? countryName(event.country) : "국가 미확정 신호")} - ${event.event_type || "signal"}`),
-        hovertemplate: "<b>%{text}</b><br>Telegram signal<extra></extra>",
+        text: visibleEvents.map((event) => `${event.location_name || (event.country ? countryName(event.country) : "국가 미확정 신호")} - ${typeLabel(event.event_type)}`),
+        hovertemplate: "<b>%{text}</b><br>텔레그램 신호<extra></extra>",
         showlegend: false,
         marker: {
           size: visibleEvents.map((event) => event.location_precision === "city" ? 9 : 12),
@@ -1379,7 +1392,7 @@ TEMPLATE = """<!doctype html>
         lon: gdeltOnlyCountries.map((country) => Number(countryCentroids[country][1])),
         customdata: gdeltOnlyCountries,
         text: gdeltOnlyCountries.map((country) => countryName(country)),
-        hovertemplate: "<b>%{text}</b><br>GDELT news context<extra></extra>",
+        hovertemplate: "<b>%{text}</b><br>GDELT 뉴스 신호<extra></extra>",
         showlegend: false,
         marker: {
           size: 11,
@@ -1403,7 +1416,7 @@ TEMPLATE = """<!doctype html>
           const item = modelItem(country);
           return `${countryName(country)} · 신규 발생 ${onsetAlertScore(item).toFixed(1)}`;
         }),
-        hovertemplate: "<b>%{text}</b><br>Onset watchlist<extra></extra>",
+        hovertemplate: "<b>%{text}</b><br>신규 발생 감시 대상<extra></extra>",
         showlegend: false,
         marker: {
           symbol: "triangle-up",
@@ -1414,11 +1427,6 @@ TEMPLATE = """<!doctype html>
         },
       };
 
-      for (const country of visibleGdeltCountries || []) {
-        if (eventCountries.has(country)) continue;
-        const coords = countryCentroids[country];
-        if (!coords) continue;
-      }
       Plotly.react(map, [countryTrace, onsetBadgeTrace, telegramTrace, gdeltTrace], globeLayout(), {
         responsive: true,
         displayModeBar: false,
@@ -1434,11 +1442,16 @@ TEMPLATE = """<!doctype html>
       return Date.now() - timestamp <= Number(hours) * 60 * 60 * 1000;
     }
 
+    let lastCountryFilter = "";
     function applyFilters() {
       const search = controls.search.value.trim().toLowerCase();
+      const focusCountry = controls.country.value;
+      if (focusCountry && countryCentroids[focusCountry]) {
+        globeRotation = { lon: Number(countryCentroids[focusCountry][1]), lat: Number(countryCentroids[focusCountry][0]) };
+      }
       let visible = 0;
       const visibleIds = new Set();
-      const gdeltLayerEnabled = !controls.channel.value && !controls.type.value && !controls.precision.value && !search;
+      const gdeltLayerEnabled = !search;
       const visibleGdeltCountries = new Set();
       if (gdeltLayerEnabled) {
         for (const country of Object.keys(gdeltContext.countries || {})) {
@@ -1451,9 +1464,6 @@ TEMPLATE = """<!doctype html>
         const ok =
           isWithinTimeWindow(card.dataset.messageTime, controls.time.value) &&
           (!controls.country.value || card.dataset.country === controls.country.value) &&
-          (!controls.channel.value || card.dataset.channel === controls.channel.value) &&
-          (!controls.type.value || card.dataset.type === controls.type.value) &&
-          (!controls.precision.value || card.dataset.precision === controls.precision.value) &&
           (!search || card.dataset.search.includes(search));
         card.classList.toggle("hidden", !ok);
         if (ok) {
@@ -1467,26 +1477,30 @@ TEMPLATE = """<!doctype html>
       count.textContent = `표시 중인 Telegram 신호 ${visible}/${cards.length}개 · GDELT 전용 국가 ${gdeltOnlyCount}개`;
       renderMarkers(visibleIds, visibleGdeltCountries);
       renderFallbackMarkers(visibleIds);
+      if (focusCountry && focusCountry !== lastCountryFilter) {
+        lastCountryFilter = focusCountry;
+        selectCountry(focusCountry);
+        return;
+      }
+      lastCountryFilter = focusCountry;
       if (!visibleIds.has(selectedEventId)) {
         const firstVisibleId = visibleIds.values().next().value;
         if (selectedGdeltCountry && (modelItem(selectedGdeltCountry) || visibleGdeltCountries.has(selectedGdeltCountry))) {
           selectCountry(selectedGdeltCountry);
-        } else if (controls.mapColor && controls.mapColor.value === "model") {
+        } else {
           const topCountry = Object.values(modelScores.countries || {})
             .sort((a, b) => currentRiskScore(b) - currentRiskScore(a))[0];
           if (topCountry) {
             selectCountry(topCountry.country);
-          } else if (firstVisibleId) {
-            selectEvent(firstVisibleId);
+            return;
           }
-        } else if (firstVisibleId) {
-          selectEvent(firstVisibleId);
-        } else if (visibleGdeltCountries.size) {
-          selectCountry(visibleGdeltCountries.values().next().value);
-        } else {
+          if (firstVisibleId) {
+            selectEvent(firstVisibleId);
+            return;
+          }
           selectedEventId = null;
           selectedGdeltCountry = null;
-          detail.innerHTML = '<div class="detail-empty">No event matches the current filters.</div>';
+          detail.innerHTML = '<div class="detail-empty">현재 필터에 맞는 신호가 없습니다.</div>';
         }
       }
     }
@@ -1501,7 +1515,7 @@ TEMPLATE = """<!doctype html>
         }
       });
     });
-    [controls.mapView, controls.mapColor, controls.time, controls.country, controls.channel, controls.type, controls.precision, controls.search]
+    [controls.mapView, controls.time, controls.country, controls.search]
       .forEach((control) => control.addEventListener("input", applyFilters));
     controls.zoomOut.addEventListener("click", () => updateZoom(-0.15));
     controls.zoomIn.addEventListener("click", () => updateZoom(0.15));
