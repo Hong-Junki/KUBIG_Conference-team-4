@@ -103,4 +103,14 @@ jobs:
             exit 0
           fi
           git commit -m "Refresh Telegram dashboard"
-          git push
+          # 다른 봇 커밋(점수 동기화 등)과의 푸시 경합 대비 재시도
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              exit 0
+            fi
+            echo "push 실패 (attempt $attempt) — rebase 후 재시도"
+            git pull --rebase origin main
+            sleep $((attempt * 5))
+          done
+          echo "::error::5회 재시도에도 push 실패"
+          exit 1
