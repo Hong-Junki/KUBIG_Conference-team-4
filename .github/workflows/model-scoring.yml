@@ -1,0 +1,183 @@
+name: Model Scoring
+
+# ──────────────────────────────────────────────
+# 모델 채점 자동화 — SERVING_AUTOMATION.md 의 GitHub Actions 구현
+#
+# [매시 25분]  score:
+#   BQ raw → 학습과 동일한 피처 빌드(SERVE_MEANS_SOURCE=bq) → LSTM 채점
+#   → model_scores 적재. 이후 sync_scores_to_supabase(15분 주기)가
+#   Supabase → risk_scores_live.json → 대시보드로 흘려보냄.
+#
+# [일 1회 UTC 02:00 = KST 11:00]  means-update:
+#   새 날 GKG 제목 임베딩 → gkg_embeddings_means upsert.
+#   임베딩은 비용 문제로 하루 1회 — 뉴스 NLP 신호는 일 단위,
+#   GDELT 이벤트 신호는 매시 채점으로 반영 (설계 문서와 동일).
+#
+# [수동]  workflow_dispatch (update_means 체크 시 임베딩 갱신도 실행)
+# ──────────────────────────────────────────────
+
+on:
+  schedule:
+    - cron: "25 * * * *"   # 매시 채점
+    - cron: "0 2 * * *"    # 일 1회: 임베딩 means 갱신 후 채점
+  workflow_dispatch:
+    inputs:
+      update_means:
+        description: "임베딩 means 갱신도 실행"
+        type: boolean
+        default: false
+
+concurrency:
+  group: model-scoring
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: "3.11"
+  GCP_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+  GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+  BQ_DATASET: conflict_ew
+
+jobs:
+  # ─── 일 1회: 임베딩 means 갱신 ───────────────
+  means-update:
+    name: Embedding Means Update
+    if: github.event.schedule == '0 2 * * *' || (github.event_name == 'workflow_dispatch' && inputs.update_means)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "pip"
+
+      - name: Install dependencies
+        run: >
+          pip install pandas pyarrow numpy scikit-learn scipy
+          google-cloud-bigquery google-cloud-bigquery-storage db-dtypes
+          openai tiktoken python-dotenv
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # means 테이블 최신일 조회 → 갱신 윈도우 결정
+      # (마지막 2일은 제목 추가 유입 반영을 위해 항상 재계산 — upsert라 재실행 안전)
+      - name: Determine update window
+        run: |
+          python - <<'PY'
+          import datetime as dt
+          import os
+          from google.cloud import bigquery
+
+          proj = os.environ["GCP_PROJECT"]
+          client = bigquery.Client(project=proj)
+          row = list(client.query(
+              f"SELECT CAST(MAX(date) AS STRING) AS d "
+              f"FROM `{proj}.conflict_ew.gkg_embeddings_means`"
+          ).result())[0]
+          last = dt.date.fromisoformat(row.d)
+          today = dt.datetime.now(dt.timezone.utc).date()
+          start = min(last + dt.timedelta(days=1), today - dt.timedelta(days=2))
+          lines = []
+          if start > today:
+              lines.append("MEANS_SKIP=1")
+          else:
+              lines += [f"MEANS_START={start}", f"MEANS_END={today}", "MEANS_SKIP=0"]
+          print(f"means last={last}, window={start}~{today}")
+          with open(os.environ["GITHUB_ENV"], "a") as fh:
+              fh.write("\n".join(lines) + "\n")
+          PY
+
+      - name: Update means table
+        if: env.MEANS_SKIP == '0'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python scripts/update_means_table.py \
+            --start "$MEANS_START" --end "$MEANS_END" \
+            --suffix "inc$(date -u +%Y%m%d%H%M)"
+
+  # ─── 매시: 피처 빌드 + LSTM 채점 ─────────────
+  score:
+    name: Build Features + LSTM Scoring
+    needs: means-update
+    # 매시 cron 에서는 means-update 가 skipped — 그래도 채점은 실행.
+    # means 실패 시에도 채점은 진행 (전일 means 사용, 설계상 허용).
+    if: always() && needs.means-update.result != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install pandas pyarrow scikit-learn scipy numpy \
+            google-cloud-bigquery google-cloud-bigquery-storage db-dtypes \
+            openai python-dotenv
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # 학습과 동일한 피처 빌드 (임베딩 means 는 BQ 테이블에서 직접 조회)
+      - name: Build model_input features
+        env:
+          SERVE_MEANS_SOURCE: bq
+        run: |
+          RUN_TS="$(date -u +%Y-%m-%dT%H:%M:%S+00:00)"
+          END="$(date -u +%F)"
+          START="$(date -u -d "$END -95 days" +%F)"
+          echo "RUN_TS=$RUN_TS" >> "$GITHUB_ENV"
+          echo "  window: $START ~ $END / run_ts=$RUN_TS"
+          python -m src.serve.build_model_input \
+            --start "$START" --end "$END" --run-ts "$RUN_TS"
+
+      - name: Run LSTM scoring
+        run: python -m src.serve.run_scoring --run-ts "$RUN_TS"
+
+      - name: Verify scores in BigQuery
+        run: |
+          python - <<'PY'
+          import os
+          from google.cloud import bigquery
+
+          proj = os.environ["GCP_PROJECT"]
+          run_ts = os.environ["RUN_TS"]
+          client = bigquery.Client(project=proj)
+          q = (
+              "SELECT CAST(MAX(date) AS STRING) AS max_date, COUNT(*) AS n "
+              f"FROM `{proj}.conflict_ew.model_scores` "
+              f"WHERE run_ts = TIMESTAMP('{run_ts}')"
+          )
+          r = list(client.query(q).result())[0]
+          print(f"model_scores run_ts={run_ts}: rows={r.n}, max_date={r.max_date}")
+          assert r.n and r.n > 0, "채점 결과 0행 — 적재 실패"
+          path = os.environ.get("GITHUB_STEP_SUMMARY")
+          if path:
+              with open(path, "a") as fh:
+                  fh.write(
+                      "## 채점 결과\n"
+                      f"- run_ts: `{run_ts}`\n"
+                      f"- 적재 행 수: {r.n}\n"
+                      f"- 최신 데이터 날짜: {r.max_date}\n"
+                  )
+          PY
