@@ -1,18 +1,18 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-07T20:14:24.255566+00:00`
+- Generated at: `2026-07-08T00:12:21.059413+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1170`
-- Extracted rows: `1170`
-- Conflict events: `330`
-- Fresh conflict events: `191`
-- Non-conflict extracted rows: `840`
+- Raw messages: `1172`
+- Extracted rows: `1172`
+- Conflict events: `331`
+- Fresh conflict events: `192`
+- Non-conflict extracted rows: `841`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 398 | 141 | 35.4% |
+| KyivIndependent_official | 400 | 142 | 35.5% |
 | OSINTdefender | 295 | 62 | 21.0% |
 | MiddleEastEye_TG | 236 | 63 | 26.7% |
 | liveuamap | 140 | 52 | 37.1% |
@@ -27,11 +27,11 @@
 | missing_country | 26 | 7.9% |
 | missing_location | 26 | 7.9% |
 | missing_coordinates | 26 | 7.9% |
-| country_centroid_fallback | 163 | 49.4% |
+| country_centroid_fallback | 164 | 49.5% |
 | low_confidence_lt_0.75 | 11 | 3.3% |
 | high_severity_low_confidence | 9 | 2.7% |
 | negation_or_uncertainty_suspects | 4 | 1.2% |
-| older_than_30_days | 139 | 42.1% |
+| older_than_30_days | 139 | 42.0% |
 | possible_duplicate_groups | 6 | - |
 
 ## Top Matched Keywords
@@ -39,7 +39,7 @@
 | keyword | count |
 | --- | --- |
 | attack | 117 |
-| drone | 98 |
+| drone | 99 |
 | killed | 82 |
 | missile | 71 |
 | wounded | 26 |
@@ -109,7 +109,8 @@
 
 ### Possible Duplicate Groups
 
-- Group 1: 3 events
+- Group 1: 4 events
+  - `KyivIndependent_official` `2026-07-07T22:32:22+00:00` UKR / strike conf=0.97, sev=0.75: ⚡️Raid on leading drone company fuels fears of crackdown on Ukraine's defense tech sector. The CEO of top Ukrainian drone firm Vyriy Industries denied allegations of price gougi... https://t.me/KyivIndependent_official/54122
   - `KyivIndependent_official` `2026-07-07T17:39:31+00:00` UKR / strike conf=0.97, sev=0.75: ⚡️Update: Ukraine signs drone cooperation deal with Denmark. President Volodymyr Zelensky and Danish Prime Minister Mette Frederiksen also discussed strengthening air defenses a... https://t.me/KyivIndependent_official/54116
   - `OSINTdefender` `2026-07-07T17:16:37+00:00` UKR / strike conf=0.92, sev=0.75: #Ukraine #Russia #EU Ukraine's Unmanned Systems Forces have conducted drone strikes on tankers in the Azov Sea, bringing the total number of tankers struck today to 12. This esc... https://t.me/OSINTdefender/19407
   - `KyivIndependent_official` `2026-07-07T16:31:14+00:00` UKR / strike conf=0.97, sev=0.75: ⚡️Ukraine signs drone cooperation deals with Estonia, Netherlands. The agreements are part of Ukraine's broader push to expand drone technology cooperation with partners in Euro... https://t.me/KyivIndependent_official/54114
