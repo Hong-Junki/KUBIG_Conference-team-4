@@ -1,21 +1,21 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-08T00:12:21.059413+00:00`
+- Generated at: `2026-07-08T03:55:16.761008+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1172`
-- Extracted rows: `1172`
+- Raw messages: `1175`
+- Extracted rows: `1175`
 - Conflict events: `331`
-- Fresh conflict events: `192`
-- Non-conflict extracted rows: `841`
+- Fresh conflict events: `191`
+- Non-conflict extracted rows: `844`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 400 | 142 | 35.5% |
+| KyivIndependent_official | 402 | 142 | 35.3% |
 | OSINTdefender | 295 | 62 | 21.0% |
 | MiddleEastEye_TG | 236 | 63 | 26.7% |
-| liveuamap | 140 | 52 | 37.1% |
+| liveuamap | 141 | 52 | 36.9% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
 | demo_security | 1 | 0 | 0.0% |
@@ -31,7 +31,7 @@
 | low_confidence_lt_0.75 | 11 | 3.3% |
 | high_severity_low_confidence | 9 | 2.7% |
 | negation_or_uncertainty_suspects | 4 | 1.2% |
-| older_than_30_days | 139 | 42.0% |
+| older_than_30_days | 140 | 42.3% |
 | possible_duplicate_groups | 6 | - |
 
 ## Top Matched Keywords
@@ -98,6 +98,7 @@
 
 ### Older Than 30 Days
 
+- `liveuamap` `2026-06-08T02:57:19+00:00` ISR / strike conf=0.95, sev=0.90: Israeli army: A missile was launched from Yemen towards Israel, and defense systems are working to intercept it. https://iran.liveuamap.com/en/2026/8-june-02-israeli-army-a-miss... https://t.me/liveuamap/12141
 - `liveuamap` `2026-06-07T13:15:29+00:00` LBN / strike conf=0.95, sev=0.85: The Israeli Air Force carried out strikes in Beirut's southern suburbs a short while ago. Prime Minister Benjamin Netanyahu and Defense Minister Israel Katz in a statement say t... https://t.me/liveuamap/12139
 - `liveuamap` `2026-06-06T08:40:30+00:00` LBN / conflict_signal conf=0.95, sev=0.78: Lebanon army says several soldiers including an officer have been killed in Israeli strike on their military vehicle along the Khardali-Nabatieh road in southern lebanon https:/... https://t.me/liveuamap/12137
 - `liveuamap` `2026-06-05T06:50:04+00:00` LBN / conflict_signal conf=0.95, sev=0.78: Civil Defense: Seven people killed in Israeli airstrikes on Tyre, southern Lebanon, Thursday night/Friday morning https://lebanon.liveuamap.com/en/2026/5-june-06-civil-defense-s... https://t.me/liveuamap/12134
@@ -105,7 +106,6 @@
 - `KyivIndependent_official` `2026-06-04T10:08:43+00:00` UKR / strike conf=0.97, sev=0.90: Why Ukraine is talking about ending ‘hot phase’ of Russia’s war before winter Kyiv hopes U.S.-mediated peace talks with Moscow could yield results before winter as Ukrainian off... https://t.me/KyivIndependent_official/53493
 - `MiddleEastEye_TG` `2026-06-04T09:30:27+00:00` PSE / conflict_signal conf=0.96, sev=0.78: 📹 Activists erected a statue of Marwan Barghouti in London’s Parliament Square, before it was removed by police. Marwan Barghouti is a Palestinian political leader who has been... https://t.me/MiddleEastEye_TG/21888
 - `KyivIndependent_official` `2026-06-04T08:27:32+00:00` UKR / strike conf=0.97, sev=0.83: ⚡️ 16 killed, 86 injured in Russian attacks across Ukraine over past day, massive drone assault hits Kherson. The Air Force said Russia launched 293 drones, 264 of which were in... https://t.me/KyivIndependent_official/53492
-- `MiddleEastEye_TG` `2026-06-04T07:31:16+00:00` LBN / military_movement conf=0.96, sev=0.40: 📹 Last week, Israeli forces ordered the evacuation of Tyre, a city in southern Lebanon with major historical and cultural significance, and declared all areas south of the Zahra... https://t.me/MiddleEastEye_TG/21886
 
 ### Possible Duplicate Groups
 
