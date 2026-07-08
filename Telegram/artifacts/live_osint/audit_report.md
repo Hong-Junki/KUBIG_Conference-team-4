@@ -1,19 +1,19 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-08T17:19:31.272908+00:00`
+- Generated at: `2026-07-08T18:57:18.140405+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1207`
-- Extracted rows: `1207`
-- Conflict events: `337`
-- Fresh conflict events: `196`
-- Non-conflict extracted rows: `870`
+- Raw messages: `1217`
+- Extracted rows: `1217`
+- Conflict events: `340`
+- Fresh conflict events: `199`
+- Non-conflict extracted rows: `877`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 415 | 146 | 35.2% |
-| OSINTdefender | 302 | 62 | 20.5% |
+| KyivIndependent_official | 419 | 147 | 35.1% |
+| OSINTdefender | 308 | 64 | 20.8% |
 | MiddleEastEye_TG | 244 | 64 | 26.2% |
 | liveuamap | 145 | 53 | 36.6% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
@@ -24,22 +24,22 @@
 
 | flag | count | rate_among_conflict_events |
 | --- | --- | --- |
-| missing_country | 26 | 7.7% |
-| missing_location | 26 | 7.7% |
-| missing_coordinates | 26 | 7.7% |
-| country_centroid_fallback | 168 | 49.9% |
-| low_confidence_lt_0.75 | 11 | 3.3% |
-| high_severity_low_confidence | 9 | 2.7% |
+| missing_country | 27 | 7.9% |
+| missing_location | 27 | 7.9% |
+| missing_coordinates | 27 | 7.9% |
+| country_centroid_fallback | 170 | 50.0% |
+| low_confidence_lt_0.75 | 12 | 3.5% |
+| high_severity_low_confidence | 10 | 2.9% |
 | negation_or_uncertainty_suspects | 4 | 1.2% |
-| older_than_30_days | 141 | 41.8% |
+| older_than_30_days | 141 | 41.5% |
 | possible_duplicate_groups | 6 | - |
 
 ## Top Matched Keywords
 
 | keyword | count |
 | --- | --- |
-| attack | 118 |
-| drone | 102 |
+| attack | 119 |
+| drone | 104 |
 | killed | 83 |
 | missile | 74 |
 | wounded | 26 |
@@ -58,6 +58,7 @@
 
 ### Missing Country
 
+- `OSINTdefender` `2026-07-08T18:00:09+00:00` NO_COUNTRY / strike conf=0.72, sev=0.75: #USA #Kazakhstan The Yasa Polaris, a Chevron tanker, was indeed struck by a drone near the Black Sea, but Chevron confirmed that oil exports from Kazakhstan to the Black Sea wer... https://t.me/OSINTdefender/19422
 - `OSINTdefender` `2026-07-06T10:52:49+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China's test-fire of a long-range missile from a nuclear-powered submarine into the Pacific Ocean occurred on July 6, 2026, and has drawn significant criticism from regio... https://t.me/OSINTdefender/19392
 - `OSINTdefender` `2026-07-03T08:52:37+00:00` NO_COUNTRY / military_movement conf=0.72, sev=0.45: #EU #USA Marco Rubio reportedly helped block Defense Secretary Pete Hegseth's plan to announce significant troop cuts in Europe during a NATO meeting last month. Subscribe to @O... https://t.me/OSINTdefender/19373
 - `MiddleEastEye_TG` `2026-07-03T03:04:03+00:00` NO_COUNTRY / conflict_signal conf=0.76, sev=0.75: An Israeli bill to restrict the adhan, the Muslim call to prayer, passed a preliminary reading in parliament on Wednesday. Palestinians condemned the legislation as a "declarati... https://t.me/MiddleEastEye_TG/22113
@@ -65,10 +66,10 @@
 - `KyivIndependent_official` `2026-07-02T02:23:27+00:00` NO_COUNTRY / strike conf=0.77, sev=0.83: ⚡️Update: 2 people have been killed and at least 20 others injured in the attack, while drone threats in the city remain ongoing. As of 5 a.m. local time, officials had also rec... https://t.me/KyivIndependent_official/54024
 - `OSINTdefender` `2026-06-30T22:26:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.85: #China The People's Liberation Army Rocket Force (PLARF), formerly the Second Artillery Corps, was established on 1 July 1966, making it nearly 60 years old as of 2026. Subscrib... https://t.me/OSINTdefender/19362
 - `OSINTdefender` `2026-06-30T18:15:01+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Northrop Grumman has revealed photos of the LGM-35A Sentinel, a new-generation intercontinental ballistic missile designed to replace the aging Minuteman III. This missile... https://t.me/OSINTdefender/19360
-- `KyivIndependent_official` `2026-06-29T21:57:30+00:00` NO_COUNTRY / shelling_explosion conf=0.77, sev=0.75: ⚡️Massive explosion in Monaco injures Ukrainian family, media reports. Authorities in Monaco said the blast was "likely an attack." The explosion injured a 13-year-old girl and... https://t.me/KyivIndependent_official/53978
 
 ### Missing Coordinates
 
+- `OSINTdefender` `2026-07-08T18:00:09+00:00` NO_COUNTRY / strike conf=0.72, sev=0.75: #USA #Kazakhstan The Yasa Polaris, a Chevron tanker, was indeed struck by a drone near the Black Sea, but Chevron confirmed that oil exports from Kazakhstan to the Black Sea wer... https://t.me/OSINTdefender/19422
 - `OSINTdefender` `2026-07-06T10:52:49+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China's test-fire of a long-range missile from a nuclear-powered submarine into the Pacific Ocean occurred on July 6, 2026, and has drawn significant criticism from regio... https://t.me/OSINTdefender/19392
 - `OSINTdefender` `2026-07-03T08:52:37+00:00` NO_COUNTRY / military_movement conf=0.72, sev=0.45: #EU #USA Marco Rubio reportedly helped block Defense Secretary Pete Hegseth's plan to announce significant troop cuts in Europe during a NATO meeting last month. Subscribe to @O... https://t.me/OSINTdefender/19373
 - `MiddleEastEye_TG` `2026-07-03T03:04:03+00:00` NO_COUNTRY / conflict_signal conf=0.76, sev=0.75: An Israeli bill to restrict the adhan, the Muslim call to prayer, passed a preliminary reading in parliament on Wednesday. Palestinians condemned the legislation as a "declarati... https://t.me/MiddleEastEye_TG/22113
@@ -76,10 +77,10 @@
 - `KyivIndependent_official` `2026-07-02T02:23:27+00:00` NO_COUNTRY / strike conf=0.77, sev=0.83: ⚡️Update: 2 people have been killed and at least 20 others injured in the attack, while drone threats in the city remain ongoing. As of 5 a.m. local time, officials had also rec... https://t.me/KyivIndependent_official/54024
 - `OSINTdefender` `2026-06-30T22:26:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.85: #China The People's Liberation Army Rocket Force (PLARF), formerly the Second Artillery Corps, was established on 1 July 1966, making it nearly 60 years old as of 2026. Subscrib... https://t.me/OSINTdefender/19362
 - `OSINTdefender` `2026-06-30T18:15:01+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Northrop Grumman has revealed photos of the LGM-35A Sentinel, a new-generation intercontinental ballistic missile designed to replace the aging Minuteman III. This missile... https://t.me/OSINTdefender/19360
-- `KyivIndependent_official` `2026-06-29T21:57:30+00:00` NO_COUNTRY / shelling_explosion conf=0.77, sev=0.75: ⚡️Massive explosion in Monaco injures Ukrainian family, media reports. Authorities in Monaco said the blast was "likely an attack." The explosion injured a 13-year-old girl and... https://t.me/KyivIndependent_official/53978
 
 ### Low Confidence
 
+- `OSINTdefender` `2026-07-08T18:00:09+00:00` NO_COUNTRY / strike conf=0.72, sev=0.75: #USA #Kazakhstan The Yasa Polaris, a Chevron tanker, was indeed struck by a drone near the Black Sea, but Chevron confirmed that oil exports from Kazakhstan to the Black Sea wer... https://t.me/OSINTdefender/19422
 - `OSINTdefender` `2026-07-06T10:52:49+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China's test-fire of a long-range missile from a nuclear-powered submarine into the Pacific Ocean occurred on July 6, 2026, and has drawn significant criticism from regio... https://t.me/OSINTdefender/19392
 - `OSINTdefender` `2026-07-03T08:52:37+00:00` NO_COUNTRY / military_movement conf=0.72, sev=0.45: #EU #USA Marco Rubio reportedly helped block Defense Secretary Pete Hegseth's plan to announce significant troop cuts in Europe during a NATO meeting last month. Subscribe to @O... https://t.me/OSINTdefender/19373
 - `OSINTdefender` `2026-06-30T22:26:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.85: #China The People's Liberation Army Rocket Force (PLARF), formerly the Second Artillery Corps, was established on 1 July 1966, making it nearly 60 years old as of 2026. Subscrib... https://t.me/OSINTdefender/19362
@@ -87,7 +88,6 @@
 - `OSINTdefender` `2026-06-26T08:12:47+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #NK North Korea tested upgraded artillery and missile systems under Kim Jong Un, including an upgraded 240mm multiple rocket launcher with a 90-kilometer range and a tactical ba... https://t.me/OSINTdefender/19330
 - `OSINTdefender` `2026-06-21T19:47:33+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China has constructed full-scale replicas of the USS Gerald R. Ford aircraft carrier and an Arleigh Burke-class destroyer in the Taklamakan Desert for military training p... https://t.me/OSINTdefender/19296
 - `OSINTdefender` `2026-06-17T04:18:54+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Navigational warnings indicate a missile test in the Pacific, south of Kwajalein, scheduled for June 27-29, 2026, with a range of approximately 3,800 km. This test is likel... https://t.me/OSINTdefender/19248
-- `OSINTdefender` `2026-05-31T11:36:49+00:00` NO_COUNTRY / military_movement conf=0.72, sev=0.45: #USA #EU The Pentagon plans to reduce U.S. military capabilities in Europe, bringing troop levels back to 2021 levels as part of a strategy to encourage European allies to take... https://t.me/OSINTdefender/19076
 
 ### Negation Or Uncertainty Suspects
 
