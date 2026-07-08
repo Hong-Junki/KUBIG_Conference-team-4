@@ -1,21 +1,21 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-08T09:23:11.974047+00:00`
+- Generated at: `2026-07-08T15:15:13.430939+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1187`
-- Extracted rows: `1187`
-- Conflict events: `333`
-- Fresh conflict events: `192`
-- Non-conflict extracted rows: `854`
+- Raw messages: `1202`
+- Extracted rows: `1202`
+- Conflict events: `337`
+- Fresh conflict events: `196`
+- Non-conflict extracted rows: `865`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 403 | 142 | 35.2% |
+| KyivIndependent_official | 411 | 146 | 35.5% |
 | OSINTdefender | 302 | 62 | 20.5% |
-| MiddleEastEye_TG | 237 | 64 | 27.0% |
-| liveuamap | 144 | 53 | 36.8% |
+| MiddleEastEye_TG | 243 | 64 | 26.3% |
+| liveuamap | 145 | 53 | 36.6% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
 | demo_security | 1 | 0 | 0.0% |
@@ -24,32 +24,32 @@
 
 | flag | count | rate_among_conflict_events |
 | --- | --- | --- |
-| missing_country | 26 | 7.8% |
-| missing_location | 26 | 7.8% |
-| missing_coordinates | 26 | 7.8% |
-| country_centroid_fallback | 166 | 49.8% |
+| missing_country | 26 | 7.7% |
+| missing_location | 26 | 7.7% |
+| missing_coordinates | 26 | 7.7% |
+| country_centroid_fallback | 168 | 49.9% |
 | low_confidence_lt_0.75 | 11 | 3.3% |
 | high_severity_low_confidence | 9 | 2.7% |
 | negation_or_uncertainty_suspects | 4 | 1.2% |
-| older_than_30_days | 141 | 42.3% |
+| older_than_30_days | 141 | 41.8% |
 | possible_duplicate_groups | 6 | - |
 
 ## Top Matched Keywords
 
 | keyword | count |
 | --- | --- |
-| attack | 117 |
-| drone | 100 |
-| killed | 82 |
-| missile | 73 |
+| attack | 118 |
+| drone | 102 |
+| killed | 83 |
+| missile | 74 |
 | wounded | 26 |
 | airstrike | 11 |
 | casualties | 10 |
 | protest | 9 |
 | troop | 8 |
+| battle | 7 |
 | rocket | 7 |
 | explosion | 7 |
-| battle | 6 |
 | evacuation | 5 |
 | shelling | 4 |
 | clash | 2 |
