@@ -170,10 +170,11 @@ jobs:
           proj = os.environ["GCP_PROJECT"]
           run_ts = os.environ["RUN_TS"]
           client = bigquery.Client(project=proj)
+          # 주의: model_scores.run_ts 실물 컬럼은 STRING (계약 문서의 TIMESTAMP와 다름)
           q = (
               "SELECT CAST(MAX(date) AS STRING) AS max_date, COUNT(*) AS n "
               f"FROM `{proj}.conflict_ew.model_scores` "
-              f"WHERE run_ts = TIMESTAMP('{run_ts}')"
+              f"WHERE run_ts = '{run_ts}'"
           )
           r = list(client.query(q).result())[0]
           print(f"model_scores run_ts={run_ts}: rows={r.n}, max_date={r.max_date}")
