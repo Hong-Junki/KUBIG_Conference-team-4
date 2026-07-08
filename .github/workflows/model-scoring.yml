@@ -57,17 +57,25 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
+          cache-dependency-path: requirements-serve.txt
 
       - name: Install dependencies
-        run: >
-          pip install pandas pyarrow numpy scikit-learn scipy
-          google-cloud-bigquery google-cloud-bigquery-storage db-dtypes
-          openai tiktoken python-dotenv
+        run: pip install -r requirements-serve.txt
 
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # CI 러너에는 로컬 임베딩 상태 파일이 없음(output/ gitignore) — 빈 상태로 시드.
+      # 이번 윈도우 chunk 는 신규라서 빈 상태가 의미상 정확하고, upsert 라 재실행 안전.
+      - name: Seed embedding state
+        run: |
+          mkdir -p output/gkg_embeddings
+          if [ ! -f output/gkg_embeddings/state.json ]; then
+            echo '{"chunks": {}, "total_cost_est": 0.0, "total_cost_actual": 0.0, "budget_cap": 45.0}' \
+              > output/gkg_embeddings/state.json
+          fi
 
       # means 테이블 최신일 조회 → 갱신 윈도우 결정
       # (마지막 2일은 제목 추가 유입 반영을 위해 항상 재계산 — upsert라 재실행 안전)
@@ -125,13 +133,12 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
+          cache-dependency-path: requirements-serve.txt
 
       - name: Install dependencies
         run: |
-          pip install torch --index-url https://download.pytorch.org/whl/cpu
-          pip install pandas pyarrow scikit-learn scipy numpy \
-            google-cloud-bigquery google-cloud-bigquery-storage db-dtypes \
-            openai python-dotenv
+          pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements-serve.txt
 
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v2
