@@ -1,20 +1,20 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-09T11:47:48.813309+00:00`
+- Generated at: `2026-07-09T14:17:45.998140+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1245`
-- Extracted rows: `1245`
-- Conflict events: `344`
+- Raw messages: `1252`
+- Extracted rows: `1252`
+- Conflict events: `346`
 - Fresh conflict events: `203`
-- Non-conflict extracted rows: `901`
+- Non-conflict extracted rows: `906`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 428 | 148 | 34.6% |
+| KyivIndependent_official | 432 | 148 | 34.3% |
 | OSINTdefender | 318 | 66 | 20.8% |
-| MiddleEastEye_TG | 249 | 64 | 25.7% |
+| MiddleEastEye_TG | 252 | 66 | 26.2% |
 | liveuamap | 149 | 54 | 36.2% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
@@ -27,20 +27,20 @@
 | missing_country | 27 | 7.8% |
 | missing_location | 27 | 7.8% |
 | missing_coordinates | 27 | 7.8% |
-| country_centroid_fallback | 173 | 50.3% |
+| country_centroid_fallback | 174 | 50.3% |
 | low_confidence_lt_0.75 | 12 | 3.5% |
 | high_severity_low_confidence | 10 | 2.9% |
 | negation_or_uncertainty_suspects | 4 | 1.2% |
-| older_than_30_days | 141 | 41.0% |
+| older_than_30_days | 143 | 41.3% |
 | possible_duplicate_groups | 6 | - |
 
 ## Top Matched Keywords
 
 | keyword | count |
 | --- | --- |
-| attack | 119 |
+| attack | 120 |
 | drone | 107 |
-| killed | 83 |
+| killed | 84 |
 | missile | 77 |
 | wounded | 26 |
 | airstrike | 11 |
@@ -98,14 +98,14 @@
 
 ### Older Than 30 Days
 
+- `liveuamap` `2026-06-09T11:55:09+00:00` LBN / conflict_signal conf=0.95, sev=0.60: Lebanese Ministry of Health: 8 dead and 32 wounded as a result of the Israeli raid that targeted the residential neighborhood in the city of Tyre https://lebanon.liveuamap.com/e... https://t.me/liveuamap/12148
+- `liveuamap` `2026-06-09T11:52:34+00:00` IRN / strike conf=0.95, sev=0.75: A U.S. Navy surface drone found and rescued the two crew from a U.S. Apache attack helicopter that crashed into waters near Oman’s coast, the U.S. military’s Central Command tol... https://t.me/liveuamap/12147
 - `liveuamap` `2026-06-08T06:53:34+00:00` ISR / strike conf=0.95, sev=0.90: Ballistic missile interceptor seen launching from Central Israel during the recent wave of missiles launched by Iran https://iran.liveuamap.com/en/2026/8-june-06-ballistic-missi... https://t.me/liveuamap/12142
 - `liveuamap` `2026-06-08T02:57:19+00:00` ISR / strike conf=0.95, sev=0.90: Israeli army: A missile was launched from Yemen towards Israel, and defense systems are working to intercept it. https://iran.liveuamap.com/en/2026/8-june-02-israeli-army-a-miss... https://t.me/liveuamap/12141
 - `liveuamap` `2026-06-07T13:15:29+00:00` LBN / strike conf=0.95, sev=0.85: The Israeli Air Force carried out strikes in Beirut's southern suburbs a short while ago. Prime Minister Benjamin Netanyahu and Defense Minister Israel Katz in a statement say t... https://t.me/liveuamap/12139
 - `liveuamap` `2026-06-06T08:40:30+00:00` LBN / conflict_signal conf=0.95, sev=0.78: Lebanon army says several soldiers including an officer have been killed in Israeli strike on their military vehicle along the Khardali-Nabatieh road in southern lebanon https:/... https://t.me/liveuamap/12137
 - `liveuamap` `2026-06-05T06:50:04+00:00` LBN / conflict_signal conf=0.95, sev=0.78: Civil Defense: Seven people killed in Israeli airstrikes on Tyre, southern Lebanon, Thursday night/Friday morning https://lebanon.liveuamap.com/en/2026/5-june-06-civil-defense-s... https://t.me/liveuamap/12134
 - `liveuamap` `2026-06-04T19:43:01+00:00` LBN / strike conf=0.95, sev=0.95: Ministry of Health: 5 dead and one wounded as a result of an airstrike on the town of Sahmar in the Western Bekaa https://lebanon.liveuamap.com/en/2026/4-june-19-ministry-of-hea... https://t.me/liveuamap/12133
-- `KyivIndependent_official` `2026-06-04T10:08:43+00:00` UKR / strike conf=0.97, sev=0.90: Why Ukraine is talking about ending ‘hot phase’ of Russia’s war before winter Kyiv hopes U.S.-mediated peace talks with Moscow could yield results before winter as Ukrainian off... https://t.me/KyivIndependent_official/53493
-- `MiddleEastEye_TG` `2026-06-04T09:30:27+00:00` PSE / conflict_signal conf=0.96, sev=0.78: 📹 Activists erected a statue of Marwan Barghouti in London’s Parliament Square, before it was removed by police. Marwan Barghouti is a Palestinian political leader who has been... https://t.me/MiddleEastEye_TG/21888
 
 ### Possible Duplicate Groups
 
