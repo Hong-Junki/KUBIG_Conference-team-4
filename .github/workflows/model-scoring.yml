@@ -78,7 +78,9 @@ jobs:
           fi
 
       # means 테이블 최신일 조회 → 갱신 윈도우 결정
-      # (마지막 2일은 제목 추가 유입 반영을 위해 항상 재계산 — upsert라 재실행 안전)
+      # 윈도우 = (마지막 임베딩일+1 ~ 어제): 완결된 날만 임베딩.
+      # 이미 임베딩된 날짜와 겹치면 05_sync_embed의 append 중복 가드가 중단시키므로
+      # 재계산(lookback) 없이 gap만 처리한다.
       - name: Determine update window
         run: |
           python - <<'PY'
@@ -94,13 +96,14 @@ jobs:
           ).result())[0]
           last = dt.date.fromisoformat(row.d)
           today = dt.datetime.now(dt.timezone.utc).date()
-          start = min(last + dt.timedelta(days=1), today - dt.timedelta(days=2))
+          start = last + dt.timedelta(days=1)
+          end = today - dt.timedelta(days=1)
           lines = []
-          if start > today:
+          if start > end:
               lines.append("MEANS_SKIP=1")
           else:
-              lines += [f"MEANS_START={start}", f"MEANS_END={today}", "MEANS_SKIP=0"]
-          print(f"means last={last}, window={start}~{today}")
+              lines += [f"MEANS_START={start}", f"MEANS_END={end}", "MEANS_SKIP=0"]
+          print(f"means last={last}, window={start}~{end}")
           with open(os.environ["GITHUB_ENV"], "a") as fh:
               fh.write("\n".join(lines) + "\n")
           PY
