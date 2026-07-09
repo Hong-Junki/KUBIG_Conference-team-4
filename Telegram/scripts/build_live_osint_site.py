@@ -327,7 +327,7 @@ def main():
               data-event-id="{html.escape(event_id)}" data-country="{html.escape(country)}" data-channel="{html.escape(channel)}"
               data-type="{html.escape(event_type)}" data-precision="{html.escape(precision)}"
               data-message-time="{html.escape(ev.get("message_time") or "")}"
-              data-confidence="{confidence:.4f}" data-search="{html.escape((country + ' ' + channel + ' ' + event_type + ' ' + location + ' ' + kw + ' ' + (ev.get('summary') or '')).lower())}">
+              data-confidence="{confidence:.4f}" data-search="{html.escape(' '.join([country, country_label, channel, event_type, location, kw, ev.get('summary') or '', ev.get('ko_raw_brief') or '', ev.get('ko_raw_summary') or '', ev.get('ko_summary') or '']).lower())}">
               <div class="topline">
                 <strong>{html.escape(country_label)}</strong>
                 <span>{html.escape(event_type)}</span>
@@ -525,7 +525,7 @@ TEMPLATE = """<!doctype html>
         <option value="24">신호 기간: 최근 24시간</option>
       </select>
       <select id="countryFilter">__COUNTRY_OPTIONS__</select>
-      <input id="searchFilter" type="search" placeholder="검색어 또는 키워드" />
+      <input id="searchFilter" type="search" placeholder="국가·키워드 검색 (한국어 가능)" />
     </section>
     <section class="dashboard" aria-label="event dashboard">
       <div class="map-wrap" aria-label="event map">
@@ -661,6 +661,16 @@ TEMPLATE = """<!doctype html>
     };
     function countryName(country) {
       return countryKoNames[country] || country || "국가 미확정 신호";
+    }
+
+    const gdeltSearchText = {};
+    for (const [gc, gctx] of Object.entries(gdeltContext.countries || {})) {
+      gdeltSearchText[gc] = [
+        gc, countryName(gc),
+        ((gctx || {}).top_keywords || []).join(" "),
+        (gctx || {}).ko_brief || "",
+        (gctx || {}).ko_summary || "",
+      ].join(" ").toLowerCase();
     }
     const locationKoNames = {
       beirut: "베이루트",
@@ -1443,6 +1453,8 @@ TEMPLATE = """<!doctype html>
     }
 
     let lastCountryFilter = "";
+    let lastSearchCountry = "";
+    let lastSearchQuery = "";
     function applyFilters() {
       const search = controls.search.value.trim().toLowerCase();
       const focusCountry = controls.country.value;
@@ -1451,13 +1463,23 @@ TEMPLATE = """<!doctype html>
       }
       let visible = 0;
       const visibleIds = new Set();
-      const gdeltLayerEnabled = !search;
       const visibleGdeltCountries = new Set();
-      if (gdeltLayerEnabled) {
-        for (const country of Object.keys(gdeltContext.countries || {})) {
-          if (!countryCentroids[country] || !hasGdeltCountryContext(country)) continue;
-          if (controls.country.value && controls.country.value !== country) continue;
-          visibleGdeltCountries.add(country);
+      for (const country of Object.keys(gdeltContext.countries || {})) {
+        if (!countryCentroids[country] || !hasGdeltCountryContext(country)) continue;
+        if (controls.country.value && controls.country.value !== country) continue;
+        if (search && !(gdeltSearchText[country] || "").includes(search)) continue;
+        visibleGdeltCountries.add(country);
+      }
+      let searchCountry = null;
+      if (!focusCountry && search && search.length >= 2) {
+        const nameHits = Object.keys(countryKoNames).filter((code) =>
+          countryKoNames[code].toLowerCase().includes(search) || code.toLowerCase() === search);
+        if (nameHits.length) {
+          searchCountry = nameHits.sort((a, b) =>
+            currentRiskScore(modelItem(b)) - currentRiskScore(modelItem(a)))[0];
+          if (countryCentroids[searchCountry]) {
+            globeRotation = { lon: Number(countryCentroids[searchCountry][1]), lat: Number(countryCentroids[searchCountry][0]) };
+          }
         }
       }
       for (const card of cards) {
@@ -1475,6 +1497,20 @@ TEMPLATE = """<!doctype html>
         !Array.from(visibleIds).some((eventId) => (eventById.get(eventId) || {}).country === country)
       ).length;
       count.textContent = `표시 중인 Telegram 신호 ${visible}/${cards.length}개 · GDELT 전용 국가 ${gdeltOnlyCount}개`;
+      let searchEvent = null;
+      if (search && !searchCountry && search !== lastSearchQuery) {
+        lastSearchQuery = search;
+        const matched = Array.from(visibleIds).map((id) => eventById.get(id)).filter(Boolean);
+        matched.sort((a, b) =>
+          (Number(b.severity || 0) - Number(a.severity || 0)) ||
+          (Date.parse(b.message_time || 0) - Date.parse(a.message_time || 0)));
+        searchEvent = matched[0] || null;
+        if (searchEvent && searchEvent.latitude !== null && searchEvent.longitude !== null) {
+          globeRotation = { lon: Number(searchEvent.longitude), lat: Number(searchEvent.latitude) };
+        }
+      } else if (!search) {
+        lastSearchQuery = "";
+      }
       renderMarkers(visibleIds, visibleGdeltCountries);
       renderFallbackMarkers(visibleIds);
       if (focusCountry && focusCountry !== lastCountryFilter) {
@@ -1483,6 +1519,16 @@ TEMPLATE = """<!doctype html>
         return;
       }
       lastCountryFilter = focusCountry;
+      if (searchCountry && searchCountry !== lastSearchCountry) {
+        lastSearchCountry = searchCountry;
+        selectCountry(searchCountry);
+        return;
+      }
+      if (!searchCountry) lastSearchCountry = "";
+      if (searchEvent) {
+        selectEvent(searchEvent.event_id);
+        return;
+      }
       if (!visibleIds.has(selectedEventId)) {
         const firstVisibleId = visibleIds.values().next().value;
         if (selectedGdeltCountry && (modelItem(selectedGdeltCountry) || visibleGdeltCountries.has(selectedGdeltCountry))) {
