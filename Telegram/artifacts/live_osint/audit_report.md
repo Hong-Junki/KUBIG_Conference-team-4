@@ -1,18 +1,18 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-09T23:45:40.299505+00:00`
+- Generated at: `2026-07-10T01:23:52.454762+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1273`
-- Extracted rows: `1273`
+- Raw messages: `1274`
+- Extracted rows: `1274`
 - Conflict events: `352`
 - Fresh conflict events: `208`
-- Non-conflict extracted rows: `921`
+- Non-conflict extracted rows: `922`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 440 | 150 | 34.1% |
+| KyivIndependent_official | 441 | 150 | 34.0% |
 | OSINTdefender | 323 | 68 | 21.1% |
 | MiddleEastEye_TG | 258 | 68 | 26.4% |
 | liveuamap | 151 | 54 | 35.8% |
