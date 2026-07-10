@@ -1,21 +1,21 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-10T01:23:52.454762+00:00`
+- Generated at: `2026-07-10T05:49:49.135953+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1274`
-- Extracted rows: `1274`
-- Conflict events: `352`
-- Fresh conflict events: `208`
-- Non-conflict extracted rows: `922`
+- Raw messages: `1280`
+- Extracted rows: `1280`
+- Conflict events: `354`
+- Fresh conflict events: `210`
+- Non-conflict extracted rows: `926`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 441 | 150 | 34.0% |
-| OSINTdefender | 323 | 68 | 21.1% |
+| KyivIndependent_official | 443 | 151 | 34.1% |
+| OSINTdefender | 326 | 69 | 21.2% |
 | MiddleEastEye_TG | 258 | 68 | 26.4% |
-| liveuamap | 151 | 54 | 35.8% |
+| liveuamap | 152 | 54 | 35.5% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
 | demo_security | 1 | 0 | 0.0% |
@@ -24,22 +24,22 @@
 
 | flag | count | rate_among_conflict_events |
 | --- | --- | --- |
-| missing_country | 27 | 7.7% |
-| missing_location | 27 | 7.7% |
-| missing_coordinates | 27 | 7.7% |
-| country_centroid_fallback | 176 | 50.0% |
+| missing_country | 28 | 7.9% |
+| missing_location | 28 | 7.9% |
+| missing_coordinates | 28 | 7.9% |
+| country_centroid_fallback | 177 | 50.0% |
 | low_confidence_lt_0.75 | 12 | 3.4% |
 | high_severity_low_confidence | 10 | 2.8% |
 | negation_or_uncertainty_suspects | 4 | 1.1% |
-| older_than_30_days | 144 | 40.9% |
+| older_than_30_days | 144 | 40.7% |
 | possible_duplicate_groups | 6 | - |
 
 ## Top Matched Keywords
 
 | keyword | count |
 | --- | --- |
-| attack | 121 |
-| drone | 107 |
+| attack | 122 |
+| drone | 109 |
 | killed | 85 |
 | missile | 80 |
 | wounded | 26 |
@@ -58,6 +58,7 @@
 
 ### Missing Country
 
+- `KyivIndependent_official` `2026-07-10T02:59:42+00:00` NO_COUNTRY / strike conf=0.77, sev=0.75: ⚡️Key Russian oil refinery halts production following Ukrainian attack, Reuters reports. A key Russian oil refinery in the city of Saratov halted processing on July 8 following... https://t.me/KyivIndependent_official/54168
 - `OSINTdefender` `2026-07-08T18:00:09+00:00` NO_COUNTRY / strike conf=0.72, sev=0.75: #USA #Kazakhstan The Yasa Polaris, a Chevron tanker, was indeed struck by a drone near the Black Sea, but Chevron confirmed that oil exports from Kazakhstan to the Black Sea wer... https://t.me/OSINTdefender/19422
 - `OSINTdefender` `2026-07-06T10:52:49+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China's test-fire of a long-range missile from a nuclear-powered submarine into the Pacific Ocean occurred on July 6, 2026, and has drawn significant criticism from regio... https://t.me/OSINTdefender/19392
 - `OSINTdefender` `2026-07-03T08:52:37+00:00` NO_COUNTRY / military_movement conf=0.72, sev=0.45: #EU #USA Marco Rubio reportedly helped block Defense Secretary Pete Hegseth's plan to announce significant troop cuts in Europe during a NATO meeting last month. Subscribe to @O... https://t.me/OSINTdefender/19373
@@ -65,10 +66,10 @@
 - `KyivIndependent_official` `2026-07-02T14:05:14+00:00` NO_COUNTRY / conflict_signal conf=0.77, sev=0.75: ⚡️ Around 800,000 of Ukrainian publisher’s books destroyed in overnight Russian attack. According to BookChef, the central warehouse of their logistics partner — where their boo... https://t.me/KyivIndependent_official/54035
 - `KyivIndependent_official` `2026-07-02T02:23:27+00:00` NO_COUNTRY / strike conf=0.77, sev=0.83: ⚡️Update: 2 people have been killed and at least 20 others injured in the attack, while drone threats in the city remain ongoing. As of 5 a.m. local time, officials had also rec... https://t.me/KyivIndependent_official/54024
 - `OSINTdefender` `2026-06-30T22:26:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.85: #China The People's Liberation Army Rocket Force (PLARF), formerly the Second Artillery Corps, was established on 1 July 1966, making it nearly 60 years old as of 2026. Subscrib... https://t.me/OSINTdefender/19362
-- `OSINTdefender` `2026-06-30T18:15:01+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Northrop Grumman has revealed photos of the LGM-35A Sentinel, a new-generation intercontinental ballistic missile designed to replace the aging Minuteman III. This missile... https://t.me/OSINTdefender/19360
 
 ### Missing Coordinates
 
+- `KyivIndependent_official` `2026-07-10T02:59:42+00:00` NO_COUNTRY / strike conf=0.77, sev=0.75: ⚡️Key Russian oil refinery halts production following Ukrainian attack, Reuters reports. A key Russian oil refinery in the city of Saratov halted processing on July 8 following... https://t.me/KyivIndependent_official/54168
 - `OSINTdefender` `2026-07-08T18:00:09+00:00` NO_COUNTRY / strike conf=0.72, sev=0.75: #USA #Kazakhstan The Yasa Polaris, a Chevron tanker, was indeed struck by a drone near the Black Sea, but Chevron confirmed that oil exports from Kazakhstan to the Black Sea wer... https://t.me/OSINTdefender/19422
 - `OSINTdefender` `2026-07-06T10:52:49+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China's test-fire of a long-range missile from a nuclear-powered submarine into the Pacific Ocean occurred on July 6, 2026, and has drawn significant criticism from regio... https://t.me/OSINTdefender/19392
 - `OSINTdefender` `2026-07-03T08:52:37+00:00` NO_COUNTRY / military_movement conf=0.72, sev=0.45: #EU #USA Marco Rubio reportedly helped block Defense Secretary Pete Hegseth's plan to announce significant troop cuts in Europe during a NATO meeting last month. Subscribe to @O... https://t.me/OSINTdefender/19373
@@ -76,7 +77,6 @@
 - `KyivIndependent_official` `2026-07-02T14:05:14+00:00` NO_COUNTRY / conflict_signal conf=0.77, sev=0.75: ⚡️ Around 800,000 of Ukrainian publisher’s books destroyed in overnight Russian attack. According to BookChef, the central warehouse of their logistics partner — where their boo... https://t.me/KyivIndependent_official/54035
 - `KyivIndependent_official` `2026-07-02T02:23:27+00:00` NO_COUNTRY / strike conf=0.77, sev=0.83: ⚡️Update: 2 people have been killed and at least 20 others injured in the attack, while drone threats in the city remain ongoing. As of 5 a.m. local time, officials had also rec... https://t.me/KyivIndependent_official/54024
 - `OSINTdefender` `2026-06-30T22:26:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.85: #China The People's Liberation Army Rocket Force (PLARF), formerly the Second Artillery Corps, was established on 1 July 1966, making it nearly 60 years old as of 2026. Subscrib... https://t.me/OSINTdefender/19362
-- `OSINTdefender` `2026-06-30T18:15:01+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Northrop Grumman has revealed photos of the LGM-35A Sentinel, a new-generation intercontinental ballistic missile designed to replace the aging Minuteman III. This missile... https://t.me/OSINTdefender/19360
 
 ### Low Confidence
 
