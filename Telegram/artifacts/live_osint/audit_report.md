@@ -1,20 +1,20 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-10T12:13:39.115029+00:00`
+- Generated at: `2026-07-10T15:15:29.226128+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1288`
-- Extracted rows: `1288`
+- Raw messages: `1297`
+- Extracted rows: `1297`
 - Conflict events: `356`
-- Fresh conflict events: `212`
-- Non-conflict extracted rows: `932`
+- Fresh conflict events: `211`
+- Non-conflict extracted rows: `941`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 447 | 152 | 34.0% |
+| KyivIndependent_official | 452 | 152 | 33.6% |
 | OSINTdefender | 326 | 69 | 21.2% |
-| MiddleEastEye_TG | 262 | 69 | 26.3% |
+| MiddleEastEye_TG | 266 | 69 | 25.9% |
 | liveuamap | 152 | 54 | 35.5% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
@@ -31,7 +31,7 @@
 | low_confidence_lt_0.75 | 12 | 3.4% |
 | high_severity_low_confidence | 10 | 2.8% |
 | negation_or_uncertainty_suspects | 4 | 1.1% |
-| older_than_30_days | 144 | 40.4% |
+| older_than_30_days | 145 | 40.7% |
 | possible_duplicate_groups | 6 | - |
 
 ## Top Matched Keywords
@@ -98,6 +98,7 @@
 
 ### Older Than 30 Days
 
+- `MiddleEastEye_TG` `2026-06-10T14:02:33+00:00` ISR / conflict_signal conf=0.96, sev=0.75: 📹 “The Israelis were intent on leaving no survivor.” Republican Congressman Thomas Massie has used the 59th anniversary of Israel’s attack on the USS Liberty to call for a new i... https://t.me/MiddleEastEye_TG/21913
 - `liveuamap` `2026-06-09T16:50:31+00:00` IRN / conflict_signal conf=0.95, sev=0.75: Following the downing of a U.S. Army AH-64 Apache helicopter near the Strait of Hormuz, U.S. President Donald J. Trump has said that the Apache was in fact shot down while patro... https://t.me/liveuamap/12149
 - `liveuamap` `2026-06-09T11:55:09+00:00` LBN / conflict_signal conf=0.95, sev=0.60: Lebanese Ministry of Health: 8 dead and 32 wounded as a result of the Israeli raid that targeted the residential neighborhood in the city of Tyre https://lebanon.liveuamap.com/e... https://t.me/liveuamap/12148
 - `liveuamap` `2026-06-09T11:52:34+00:00` IRN / strike conf=0.95, sev=0.75: A U.S. Navy surface drone found and rescued the two crew from a U.S. Apache attack helicopter that crashed into waters near Oman’s coast, the U.S. military’s Central Command tol... https://t.me/liveuamap/12147
@@ -105,7 +106,6 @@
 - `liveuamap` `2026-06-08T02:57:19+00:00` ISR / strike conf=0.95, sev=0.90: Israeli army: A missile was launched from Yemen towards Israel, and defense systems are working to intercept it. https://iran.liveuamap.com/en/2026/8-june-02-israeli-army-a-miss... https://t.me/liveuamap/12141
 - `liveuamap` `2026-06-07T13:15:29+00:00` LBN / strike conf=0.95, sev=0.85: The Israeli Air Force carried out strikes in Beirut's southern suburbs a short while ago. Prime Minister Benjamin Netanyahu and Defense Minister Israel Katz in a statement say t... https://t.me/liveuamap/12139
 - `liveuamap` `2026-06-06T08:40:30+00:00` LBN / conflict_signal conf=0.95, sev=0.78: Lebanon army says several soldiers including an officer have been killed in Israeli strike on their military vehicle along the Khardali-Nabatieh road in southern lebanon https:/... https://t.me/liveuamap/12137
-- `liveuamap` `2026-06-05T06:50:04+00:00` LBN / conflict_signal conf=0.95, sev=0.78: Civil Defense: Seven people killed in Israeli airstrikes on Tyre, southern Lebanon, Thursday night/Friday morning https://lebanon.liveuamap.com/en/2026/5-june-06-civil-defense-s... https://t.me/liveuamap/12134
 
 ### Possible Duplicate Groups
 
