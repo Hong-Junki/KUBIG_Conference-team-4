@@ -1,12 +1,12 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-11T12:48:35.587884+00:00`
+- Generated at: `2026-07-11T14:20:10.128522+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1332`
-- Extracted rows: `1332`
+- Raw messages: `1333`
+- Extracted rows: `1333`
 - Conflict events: `363`
-- Fresh conflict events: `216`
-- Non-conflict extracted rows: `969`
+- Fresh conflict events: `215`
+- Non-conflict extracted rows: `970`
 
 ## Channel Detection Rates
 
@@ -14,7 +14,7 @@
 | --- | --- | --- | --- |
 | KyivIndependent_official | 471 | 158 | 33.5% |
 | OSINTdefender | 339 | 70 | 20.6% |
-| MiddleEastEye_TG | 269 | 69 | 25.7% |
+| MiddleEastEye_TG | 270 | 69 | 25.6% |
 | liveuamap | 152 | 54 | 35.5% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
@@ -31,7 +31,7 @@
 | low_confidence_lt_0.75 | 12 | 3.3% |
 | high_severity_low_confidence | 10 | 2.8% |
 | negation_or_uncertainty_suspects | 4 | 1.1% |
-| older_than_30_days | 147 | 40.5% |
+| older_than_30_days | 148 | 40.8% |
 | possible_duplicate_groups | 6 | - |
 
 ## Top Matched Keywords
@@ -98,6 +98,7 @@
 
 ### Older Than 30 Days
 
+- `liveuamap` `2026-06-11T13:27:54+00:00` LBN / conflict_signal conf=0.95, sev=0.60: One dead and 17 wounded, including 10 nurses and staff members, in the raid on the vicinity of Hiram Hospital https://lebanon.liveuamap.com/en/2026/11-june-13-one-dead-and-17-wo... https://t.me/liveuamap/12156
 - `MiddleEastEye_TG` `2026-06-11T11:34:37+00:00` LBN / conflict_signal conf=0.96, sev=0.78: 📹 Prime Minister Benjamin Netanyahu called on the Lebanese people on Wednesday to “join Israel” against Hezbollah. Netanyahu claimed that “Israel is not at war” with the Lebanes... https://t.me/MiddleEastEye_TG/21923
 - `MiddleEastEye_TG` `2026-06-10T19:05:22+00:00` PSE / conflict_signal conf=0.96, sev=0.75: 📰 Israeli settlers attacked a Palestinian Christian village on Tuesday as their violence across the occupied West Bank continues to escalate. Settlers targeted areas near the vi... https://t.me/MiddleEastEye_TG/21915
 - `MiddleEastEye_TG` `2026-06-10T14:02:33+00:00` ISR / conflict_signal conf=0.96, sev=0.75: 📹 “The Israelis were intent on leaving no survivor.” Republican Congressman Thomas Massie has used the 59th anniversary of Israel’s attack on the USS Liberty to call for a new i... https://t.me/MiddleEastEye_TG/21913
@@ -105,7 +106,6 @@
 - `liveuamap` `2026-06-09T11:55:09+00:00` LBN / conflict_signal conf=0.95, sev=0.60: Lebanese Ministry of Health: 8 dead and 32 wounded as a result of the Israeli raid that targeted the residential neighborhood in the city of Tyre https://lebanon.liveuamap.com/e... https://t.me/liveuamap/12148
 - `liveuamap` `2026-06-09T11:52:34+00:00` IRN / strike conf=0.95, sev=0.75: A U.S. Navy surface drone found and rescued the two crew from a U.S. Apache attack helicopter that crashed into waters near Oman’s coast, the U.S. military’s Central Command tol... https://t.me/liveuamap/12147
 - `liveuamap` `2026-06-08T06:53:34+00:00` ISR / strike conf=0.95, sev=0.90: Ballistic missile interceptor seen launching from Central Israel during the recent wave of missiles launched by Iran https://iran.liveuamap.com/en/2026/8-june-06-ballistic-missi... https://t.me/liveuamap/12142
-- `liveuamap` `2026-06-08T02:57:19+00:00` ISR / strike conf=0.95, sev=0.90: Israeli army: A missile was launched from Yemen towards Israel, and defense systems are working to intercept it. https://iran.liveuamap.com/en/2026/8-june-02-israeli-army-a-miss... https://t.me/liveuamap/12141
 
 ### Possible Duplicate Groups
 
