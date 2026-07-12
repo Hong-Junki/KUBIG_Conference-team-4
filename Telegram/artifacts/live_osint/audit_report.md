@@ -1,20 +1,20 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-12T00:20:11.096868+00:00`
+- Generated at: `2026-07-12T04:09:33.613707+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1349`
-- Extracted rows: `1349`
-- Conflict events: `365`
-- Fresh conflict events: `216`
-- Non-conflict extracted rows: `984`
+- Raw messages: `1352`
+- Extracted rows: `1352`
+- Conflict events: `367`
+- Fresh conflict events: `217`
+- Non-conflict extracted rows: `985`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 481 | 160 | 33.3% |
+| KyivIndependent_official | 483 | 162 | 33.5% |
 | OSINTdefender | 343 | 70 | 20.4% |
-| MiddleEastEye_TG | 272 | 69 | 25.4% |
+| MiddleEastEye_TG | 273 | 69 | 25.3% |
 | liveuamap | 152 | 54 | 35.5% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
@@ -24,23 +24,23 @@
 
 | flag | count | rate_among_conflict_events |
 | --- | --- | --- |
-| missing_country | 28 | 7.7% |
-| missing_location | 28 | 7.7% |
-| missing_coordinates | 28 | 7.7% |
-| country_centroid_fallback | 179 | 49.0% |
+| missing_country | 28 | 7.6% |
+| missing_location | 28 | 7.6% |
+| missing_coordinates | 28 | 7.6% |
+| country_centroid_fallback | 180 | 49.0% |
 | low_confidence_lt_0.75 | 12 | 3.3% |
 | high_severity_low_confidence | 10 | 2.7% |
 | negation_or_uncertainty_suspects | 4 | 1.1% |
-| older_than_30_days | 149 | 40.8% |
+| older_than_30_days | 150 | 40.9% |
 | possible_duplicate_groups | 6 | - |
 
 ## Top Matched Keywords
 
 | keyword | count |
 | --- | --- |
-| attack | 131 |
+| attack | 132 |
 | drone | 110 |
-| killed | 88 |
+| killed | 89 |
 | missile | 85 |
 | wounded | 26 |
 | airstrike | 11 |
@@ -98,6 +98,7 @@
 
 ### Older Than 30 Days
 
+- `MiddleEastEye_TG` `2026-06-12T03:33:09+00:00` LBN / conflict_signal conf=0.96, sev=0.78: The Israeli army announced on Thursday that 30 Israeli soldiers and officers have been killed and 1302 others have been injured in Lebanon, since the resumption of fighting in e... https://t.me/MiddleEastEye_TG/21927
 - `MiddleEastEye_TG` `2026-06-11T23:32:52+00:00` PSE / military_movement conf=0.96, sev=0.40: More than 1,500 Palestinian patients have died waiting for medical evacuation as more than 16,500 remain trapped in Gaza, the Palestinian health ministry has said. Gaza’s health... https://t.me/MiddleEastEye_TG/21926
 - `liveuamap` `2026-06-11T13:27:54+00:00` LBN / conflict_signal conf=0.95, sev=0.60: One dead and 17 wounded, including 10 nurses and staff members, in the raid on the vicinity of Hiram Hospital https://lebanon.liveuamap.com/en/2026/11-june-13-one-dead-and-17-wo... https://t.me/liveuamap/12156
 - `MiddleEastEye_TG` `2026-06-11T11:34:37+00:00` LBN / conflict_signal conf=0.96, sev=0.78: 📹 Prime Minister Benjamin Netanyahu called on the Lebanese people on Wednesday to “join Israel” against Hezbollah. Netanyahu claimed that “Israel is not at war” with the Lebanes... https://t.me/MiddleEastEye_TG/21923
@@ -105,7 +106,6 @@
 - `MiddleEastEye_TG` `2026-06-10T14:02:33+00:00` ISR / conflict_signal conf=0.96, sev=0.75: 📹 “The Israelis were intent on leaving no survivor.” Republican Congressman Thomas Massie has used the 59th anniversary of Israel’s attack on the USS Liberty to call for a new i... https://t.me/MiddleEastEye_TG/21913
 - `liveuamap` `2026-06-09T16:50:31+00:00` IRN / conflict_signal conf=0.95, sev=0.75: Following the downing of a U.S. Army AH-64 Apache helicopter near the Strait of Hormuz, U.S. President Donald J. Trump has said that the Apache was in fact shot down while patro... https://t.me/liveuamap/12149
 - `liveuamap` `2026-06-09T11:55:09+00:00` LBN / conflict_signal conf=0.95, sev=0.60: Lebanese Ministry of Health: 8 dead and 32 wounded as a result of the Israeli raid that targeted the residential neighborhood in the city of Tyre https://lebanon.liveuamap.com/e... https://t.me/liveuamap/12148
-- `liveuamap` `2026-06-09T11:52:34+00:00` IRN / strike conf=0.95, sev=0.75: A U.S. Navy surface drone found and rescued the two crew from a U.S. Apache attack helicopter that crashed into waters near Oman’s coast, the U.S. military’s Central Command tol... https://t.me/liveuamap/12147
 
 ### Possible Duplicate Groups
 
