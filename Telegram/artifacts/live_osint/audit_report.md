@@ -1,18 +1,18 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-11T23:18:21.521749+00:00`
+- Generated at: `2026-07-12T00:20:11.096868+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1348`
-- Extracted rows: `1348`
+- Raw messages: `1349`
+- Extracted rows: `1349`
 - Conflict events: `365`
-- Fresh conflict events: `217`
-- Non-conflict extracted rows: `983`
+- Fresh conflict events: `216`
+- Non-conflict extracted rows: `984`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 480 | 160 | 33.3% |
+| KyivIndependent_official | 481 | 160 | 33.3% |
 | OSINTdefender | 343 | 70 | 20.4% |
 | MiddleEastEye_TG | 272 | 69 | 25.4% |
 | liveuamap | 152 | 54 | 35.5% |
@@ -31,7 +31,7 @@
 | low_confidence_lt_0.75 | 12 | 3.3% |
 | high_severity_low_confidence | 10 | 2.7% |
 | negation_or_uncertainty_suspects | 4 | 1.1% |
-| older_than_30_days | 148 | 40.5% |
+| older_than_30_days | 149 | 40.8% |
 | possible_duplicate_groups | 6 | - |
 
 ## Top Matched Keywords
@@ -98,6 +98,7 @@
 
 ### Older Than 30 Days
 
+- `MiddleEastEye_TG` `2026-06-11T23:32:52+00:00` PSE / military_movement conf=0.96, sev=0.40: More than 1,500 Palestinian patients have died waiting for medical evacuation as more than 16,500 remain trapped in Gaza, the Palestinian health ministry has said. Gaza’s health... https://t.me/MiddleEastEye_TG/21926
 - `liveuamap` `2026-06-11T13:27:54+00:00` LBN / conflict_signal conf=0.95, sev=0.60: One dead and 17 wounded, including 10 nurses and staff members, in the raid on the vicinity of Hiram Hospital https://lebanon.liveuamap.com/en/2026/11-june-13-one-dead-and-17-wo... https://t.me/liveuamap/12156
 - `MiddleEastEye_TG` `2026-06-11T11:34:37+00:00` LBN / conflict_signal conf=0.96, sev=0.78: 📹 Prime Minister Benjamin Netanyahu called on the Lebanese people on Wednesday to “join Israel” against Hezbollah. Netanyahu claimed that “Israel is not at war” with the Lebanes... https://t.me/MiddleEastEye_TG/21923
 - `MiddleEastEye_TG` `2026-06-10T19:05:22+00:00` PSE / conflict_signal conf=0.96, sev=0.75: 📰 Israeli settlers attacked a Palestinian Christian village on Tuesday as their violence across the occupied West Bank continues to escalate. Settlers targeted areas near the vi... https://t.me/MiddleEastEye_TG/21915
@@ -105,7 +106,6 @@
 - `liveuamap` `2026-06-09T16:50:31+00:00` IRN / conflict_signal conf=0.95, sev=0.75: Following the downing of a U.S. Army AH-64 Apache helicopter near the Strait of Hormuz, U.S. President Donald J. Trump has said that the Apache was in fact shot down while patro... https://t.me/liveuamap/12149
 - `liveuamap` `2026-06-09T11:55:09+00:00` LBN / conflict_signal conf=0.95, sev=0.60: Lebanese Ministry of Health: 8 dead and 32 wounded as a result of the Israeli raid that targeted the residential neighborhood in the city of Tyre https://lebanon.liveuamap.com/e... https://t.me/liveuamap/12148
 - `liveuamap` `2026-06-09T11:52:34+00:00` IRN / strike conf=0.95, sev=0.75: A U.S. Navy surface drone found and rescued the two crew from a U.S. Apache attack helicopter that crashed into waters near Oman’s coast, the U.S. military’s Central Command tol... https://t.me/liveuamap/12147
-- `liveuamap` `2026-06-08T06:53:34+00:00` ISR / strike conf=0.95, sev=0.90: Ballistic missile interceptor seen launching from Central Israel during the recent wave of missiles launched by Iran https://iran.liveuamap.com/en/2026/8-june-06-ballistic-missi... https://t.me/liveuamap/12142
 
 ### Possible Duplicate Groups
 
