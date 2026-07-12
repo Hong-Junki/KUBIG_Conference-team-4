@@ -1,18 +1,18 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-12T10:50:43.405425+00:00`
+- Generated at: `2026-07-12T11:54:03.692747+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1367`
-- Extracted rows: `1367`
+- Raw messages: `1369`
+- Extracted rows: `1369`
 - Conflict events: `372`
-- Fresh conflict events: `222`
-- Non-conflict extracted rows: `995`
+- Fresh conflict events: `221`
+- Non-conflict extracted rows: `997`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 486 | 162 | 33.3% |
+| KyivIndependent_official | 488 | 162 | 33.2% |
 | OSINTdefender | 349 | 74 | 21.2% |
 | MiddleEastEye_TG | 275 | 69 | 25.1% |
 | liveuamap | 156 | 55 | 35.3% |
@@ -31,7 +31,7 @@
 | low_confidence_lt_0.75 | 12 | 3.2% |
 | high_severity_low_confidence | 10 | 2.7% |
 | negation_or_uncertainty_suspects | 4 | 1.1% |
-| older_than_30_days | 150 | 40.3% |
+| older_than_30_days | 151 | 40.6% |
 | possible_duplicate_groups | 7 | - |
 
 ## Top Matched Keywords
@@ -98,6 +98,7 @@
 
 ### Older Than 30 Days
 
+- `MiddleEastEye_TG` `2026-06-12T11:31:32+00:00` NO_COUNTRY / strike conf=0.76, sev=0.75: 🎥 Drone footage from Wednesday showed a vehicle set on fire as police blocked a road to stop anti-immigrant violence for the second night in Belfast, Northern Ireland. A wave of... https://t.me/MiddleEastEye_TG/21930
 - `MiddleEastEye_TG` `2026-06-12T03:33:09+00:00` LBN / conflict_signal conf=0.96, sev=0.78: The Israeli army announced on Thursday that 30 Israeli soldiers and officers have been killed and 1302 others have been injured in Lebanon, since the resumption of fighting in e... https://t.me/MiddleEastEye_TG/21927
 - `MiddleEastEye_TG` `2026-06-11T23:32:52+00:00` PSE / military_movement conf=0.96, sev=0.40: More than 1,500 Palestinian patients have died waiting for medical evacuation as more than 16,500 remain trapped in Gaza, the Palestinian health ministry has said. Gaza’s health... https://t.me/MiddleEastEye_TG/21926
 - `liveuamap` `2026-06-11T13:27:54+00:00` LBN / conflict_signal conf=0.95, sev=0.60: One dead and 17 wounded, including 10 nurses and staff members, in the raid on the vicinity of Hiram Hospital https://lebanon.liveuamap.com/en/2026/11-june-13-one-dead-and-17-wo... https://t.me/liveuamap/12156
@@ -105,7 +106,6 @@
 - `MiddleEastEye_TG` `2026-06-10T19:05:22+00:00` PSE / conflict_signal conf=0.96, sev=0.75: 📰 Israeli settlers attacked a Palestinian Christian village on Tuesday as their violence across the occupied West Bank continues to escalate. Settlers targeted areas near the vi... https://t.me/MiddleEastEye_TG/21915
 - `MiddleEastEye_TG` `2026-06-10T14:02:33+00:00` ISR / conflict_signal conf=0.96, sev=0.75: 📹 “The Israelis were intent on leaving no survivor.” Republican Congressman Thomas Massie has used the 59th anniversary of Israel’s attack on the USS Liberty to call for a new i... https://t.me/MiddleEastEye_TG/21913
 - `liveuamap` `2026-06-09T16:50:31+00:00` IRN / conflict_signal conf=0.95, sev=0.75: Following the downing of a U.S. Army AH-64 Apache helicopter near the Strait of Hormuz, U.S. President Donald J. Trump has said that the Apache was in fact shot down while patro... https://t.me/liveuamap/12149
-- `liveuamap` `2026-06-09T11:55:09+00:00` LBN / conflict_signal conf=0.95, sev=0.60: Lebanese Ministry of Health: 8 dead and 32 wounded as a result of the Israeli raid that targeted the residential neighborhood in the city of Tyre https://lebanon.liveuamap.com/e... https://t.me/liveuamap/12148
 
 ### Possible Duplicate Groups
 
