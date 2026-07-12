@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T17:45:06.806592+00:00",
+  "generated_at": "2026-07-12T18:42:29.837761+00:00",
   "source": "bigquery_model_scores",
   "table": "conflict-ew-mvp-20260604.conflict_ew.model_scores",
   "score_system": {
