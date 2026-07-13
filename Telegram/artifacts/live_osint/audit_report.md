@@ -1,18 +1,18 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-13T18:12:37.325091+00:00`
+- Generated at: `2026-07-13T20:00:52.194855+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1414`
-- Extracted rows: `1414`
+- Raw messages: `1415`
+- Extracted rows: `1415`
 - Conflict events: `386`
-- Fresh conflict events: `233`
-- Non-conflict extracted rows: `1028`
+- Fresh conflict events: `232`
+- Non-conflict extracted rows: `1029`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 508 | 169 | 33.3% |
+| KyivIndependent_official | 509 | 169 | 33.2% |
 | OSINTdefender | 359 | 78 | 21.7% |
 | MiddleEastEye_TG | 283 | 69 | 24.4% |
 | liveuamap | 163 | 58 | 35.6% |
@@ -31,7 +31,7 @@
 | low_confidence_lt_0.75 | 12 | 3.1% |
 | high_severity_low_confidence | 10 | 2.6% |
 | negation_or_uncertainty_suspects | 4 | 1.0% |
-| older_than_30_days | 153 | 39.6% |
+| older_than_30_days | 154 | 39.9% |
 | possible_duplicate_groups | 7 | - |
 
 ## Top Matched Keywords
@@ -98,6 +98,7 @@
 
 ### Older Than 30 Days
 
+- `OSINTdefender` `2026-06-13T19:36:42+00:00` USA / strike conf=0.92, sev=0.90: #Iran #Russia Iran has reportedly restored about 75% of its missile arsenal during a ceasefire with the United States, with significant assistance from Russia. This rearmament i... https://t.me/OSINTdefender/19217
 - `MiddleEastEye_TG` `2026-06-13T13:00:17+00:00` PSE / conflict_signal conf=0.96, sev=0.78: 🎥 Palestinians in Gaza struggle to cope with a heatwave as the Israeli blockade prevents them from accessing vital aid that might provide relief. Despite reaching a ceasefire ag... https://t.me/MiddleEastEye_TG/21946
 - `liveuamap` `2026-06-13T11:45:54+00:00` LBN / strike conf=0.95, sev=0.75: Lebanese Army: A Lebanese soldier was seriously injured after being targeted by an Israeli drone on the Kafr Remman-Nabatieh road. https://lebanon.liveuamap.com/en/2026/13-june-... https://t.me/liveuamap/12158
 - `MiddleEastEye_TG` `2026-06-12T11:31:32+00:00` NO_COUNTRY / strike conf=0.76, sev=0.75: 🎥 Drone footage from Wednesday showed a vehicle set on fire as police blocked a road to stop anti-immigrant violence for the second night in Belfast, Northern Ireland. A wave of... https://t.me/MiddleEastEye_TG/21930
@@ -105,7 +106,6 @@
 - `MiddleEastEye_TG` `2026-06-11T23:32:52+00:00` PSE / military_movement conf=0.96, sev=0.40: More than 1,500 Palestinian patients have died waiting for medical evacuation as more than 16,500 remain trapped in Gaza, the Palestinian health ministry has said. Gaza’s health... https://t.me/MiddleEastEye_TG/21926
 - `liveuamap` `2026-06-11T13:27:54+00:00` LBN / conflict_signal conf=0.95, sev=0.60: One dead and 17 wounded, including 10 nurses and staff members, in the raid on the vicinity of Hiram Hospital https://lebanon.liveuamap.com/en/2026/11-june-13-one-dead-and-17-wo... https://t.me/liveuamap/12156
 - `MiddleEastEye_TG` `2026-06-11T11:34:37+00:00` LBN / conflict_signal conf=0.96, sev=0.78: 📹 Prime Minister Benjamin Netanyahu called on the Lebanese people on Wednesday to “join Israel” against Hezbollah. Netanyahu claimed that “Israel is not at war” with the Lebanes... https://t.me/MiddleEastEye_TG/21923
-- `MiddleEastEye_TG` `2026-06-10T19:05:22+00:00` PSE / conflict_signal conf=0.96, sev=0.75: 📰 Israeli settlers attacked a Palestinian Christian village on Tuesday as their violence across the occupied West Bank continues to escalate. Settlers targeted areas near the vi... https://t.me/MiddleEastEye_TG/21915
 
 ### Possible Duplicate Groups
 
