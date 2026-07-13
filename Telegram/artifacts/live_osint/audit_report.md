@@ -1,21 +1,21 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-13T10:51:25.766481+00:00`
+- Generated at: `2026-07-13T13:19:53.917053+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1386`
-- Extracted rows: `1386`
-- Conflict events: `378`
-- Fresh conflict events: `227`
-- Non-conflict extracted rows: `1008`
+- Raw messages: `1395`
+- Extracted rows: `1395`
+- Conflict events: `381`
+- Fresh conflict events: `228`
+- Non-conflict extracted rows: `1014`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 497 | 165 | 33.2% |
+| KyivIndependent_official | 502 | 168 | 33.5% |
 | OSINTdefender | 351 | 75 | 21.4% |
-| MiddleEastEye_TG | 278 | 69 | 24.8% |
-| liveuamap | 159 | 57 | 35.8% |
+| MiddleEastEye_TG | 279 | 69 | 24.7% |
+| liveuamap | 162 | 57 | 35.2% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
 | demo_security | 1 | 0 | 0.0% |
@@ -24,23 +24,23 @@
 
 | flag | count | rate_among_conflict_events |
 | --- | --- | --- |
-| missing_country | 28 | 7.4% |
-| missing_location | 28 | 7.4% |
-| missing_coordinates | 28 | 7.4% |
-| country_centroid_fallback | 189 | 50.0% |
-| low_confidence_lt_0.75 | 12 | 3.2% |
+| missing_country | 29 | 7.6% |
+| missing_location | 29 | 7.6% |
+| missing_coordinates | 29 | 7.6% |
+| country_centroid_fallback | 191 | 50.1% |
+| low_confidence_lt_0.75 | 12 | 3.1% |
 | high_severity_low_confidence | 10 | 2.6% |
-| negation_or_uncertainty_suspects | 4 | 1.1% |
-| older_than_30_days | 151 | 39.9% |
+| negation_or_uncertainty_suspects | 4 | 1.0% |
+| older_than_30_days | 153 | 40.2% |
 | possible_duplicate_groups | 7 | - |
 
 ## Top Matched Keywords
 
 | keyword | count |
 | --- | --- |
-| attack | 137 |
-| drone | 114 |
-| missile | 89 |
+| attack | 138 |
+| drone | 116 |
+| missile | 90 |
 | killed | 89 |
 | wounded | 27 |
 | protest | 11 |
@@ -58,6 +58,7 @@
 
 ### Missing Country
 
+- `KyivIndependent_official` `2026-07-13T11:39:16+00:00` NO_COUNTRY / strike conf=0.77, sev=0.75: ⚡️Moldova's largest EU air defense support package even larger than expected. The package of support was agreed hours after a Russian overnight attack in which a Russian drone c... https://t.me/KyivIndependent_official/54225
 - `KyivIndependent_official` `2026-07-10T02:59:42+00:00` NO_COUNTRY / strike conf=0.77, sev=0.75: ⚡️Key Russian oil refinery halts production following Ukrainian attack, Reuters reports. A key Russian oil refinery in the city of Saratov halted processing on July 8 following... https://t.me/KyivIndependent_official/54168
 - `OSINTdefender` `2026-07-08T18:00:09+00:00` NO_COUNTRY / strike conf=0.72, sev=0.75: #USA #Kazakhstan The Yasa Polaris, a Chevron tanker, was indeed struck by a drone near the Black Sea, but Chevron confirmed that oil exports from Kazakhstan to the Black Sea wer... https://t.me/OSINTdefender/19422
 - `OSINTdefender` `2026-07-06T10:52:49+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China's test-fire of a long-range missile from a nuclear-powered submarine into the Pacific Ocean occurred on July 6, 2026, and has drawn significant criticism from regio... https://t.me/OSINTdefender/19392
@@ -65,10 +66,10 @@
 - `MiddleEastEye_TG` `2026-07-03T03:04:03+00:00` NO_COUNTRY / conflict_signal conf=0.76, sev=0.75: An Israeli bill to restrict the adhan, the Muslim call to prayer, passed a preliminary reading in parliament on Wednesday. Palestinians condemned the legislation as a "declarati... https://t.me/MiddleEastEye_TG/22113
 - `KyivIndependent_official` `2026-07-02T14:05:14+00:00` NO_COUNTRY / conflict_signal conf=0.77, sev=0.75: ⚡️ Around 800,000 of Ukrainian publisher’s books destroyed in overnight Russian attack. According to BookChef, the central warehouse of their logistics partner — where their boo... https://t.me/KyivIndependent_official/54035
 - `KyivIndependent_official` `2026-07-02T02:23:27+00:00` NO_COUNTRY / strike conf=0.77, sev=0.83: ⚡️Update: 2 people have been killed and at least 20 others injured in the attack, while drone threats in the city remain ongoing. As of 5 a.m. local time, officials had also rec... https://t.me/KyivIndependent_official/54024
-- `OSINTdefender` `2026-06-30T22:26:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.85: #China The People's Liberation Army Rocket Force (PLARF), formerly the Second Artillery Corps, was established on 1 July 1966, making it nearly 60 years old as of 2026. Subscrib... https://t.me/OSINTdefender/19362
 
 ### Missing Coordinates
 
+- `KyivIndependent_official` `2026-07-13T11:39:16+00:00` NO_COUNTRY / strike conf=0.77, sev=0.75: ⚡️Moldova's largest EU air defense support package even larger than expected. The package of support was agreed hours after a Russian overnight attack in which a Russian drone c... https://t.me/KyivIndependent_official/54225
 - `KyivIndependent_official` `2026-07-10T02:59:42+00:00` NO_COUNTRY / strike conf=0.77, sev=0.75: ⚡️Key Russian oil refinery halts production following Ukrainian attack, Reuters reports. A key Russian oil refinery in the city of Saratov halted processing on July 8 following... https://t.me/KyivIndependent_official/54168
 - `OSINTdefender` `2026-07-08T18:00:09+00:00` NO_COUNTRY / strike conf=0.72, sev=0.75: #USA #Kazakhstan The Yasa Polaris, a Chevron tanker, was indeed struck by a drone near the Black Sea, but Chevron confirmed that oil exports from Kazakhstan to the Black Sea wer... https://t.me/OSINTdefender/19422
 - `OSINTdefender` `2026-07-06T10:52:49+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China's test-fire of a long-range missile from a nuclear-powered submarine into the Pacific Ocean occurred on July 6, 2026, and has drawn significant criticism from regio... https://t.me/OSINTdefender/19392
@@ -76,7 +77,6 @@
 - `MiddleEastEye_TG` `2026-07-03T03:04:03+00:00` NO_COUNTRY / conflict_signal conf=0.76, sev=0.75: An Israeli bill to restrict the adhan, the Muslim call to prayer, passed a preliminary reading in parliament on Wednesday. Palestinians condemned the legislation as a "declarati... https://t.me/MiddleEastEye_TG/22113
 - `KyivIndependent_official` `2026-07-02T14:05:14+00:00` NO_COUNTRY / conflict_signal conf=0.77, sev=0.75: ⚡️ Around 800,000 of Ukrainian publisher’s books destroyed in overnight Russian attack. According to BookChef, the central warehouse of their logistics partner — where their boo... https://t.me/KyivIndependent_official/54035
 - `KyivIndependent_official` `2026-07-02T02:23:27+00:00` NO_COUNTRY / strike conf=0.77, sev=0.83: ⚡️Update: 2 people have been killed and at least 20 others injured in the attack, while drone threats in the city remain ongoing. As of 5 a.m. local time, officials had also rec... https://t.me/KyivIndependent_official/54024
-- `OSINTdefender` `2026-06-30T22:26:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.85: #China The People's Liberation Army Rocket Force (PLARF), formerly the Second Artillery Corps, was established on 1 July 1966, making it nearly 60 years old as of 2026. Subscrib... https://t.me/OSINTdefender/19362
 
 ### Low Confidence
 
@@ -98,14 +98,14 @@
 
 ### Older Than 30 Days
 
+- `MiddleEastEye_TG` `2026-06-13T13:00:17+00:00` PSE / conflict_signal conf=0.96, sev=0.78: 🎥 Palestinians in Gaza struggle to cope with a heatwave as the Israeli blockade prevents them from accessing vital aid that might provide relief. Despite reaching a ceasefire ag... https://t.me/MiddleEastEye_TG/21946
+- `liveuamap` `2026-06-13T11:45:54+00:00` LBN / strike conf=0.95, sev=0.75: Lebanese Army: A Lebanese soldier was seriously injured after being targeted by an Israeli drone on the Kafr Remman-Nabatieh road. https://lebanon.liveuamap.com/en/2026/13-june-... https://t.me/liveuamap/12158
 - `MiddleEastEye_TG` `2026-06-12T11:31:32+00:00` NO_COUNTRY / strike conf=0.76, sev=0.75: 🎥 Drone footage from Wednesday showed a vehicle set on fire as police blocked a road to stop anti-immigrant violence for the second night in Belfast, Northern Ireland. A wave of... https://t.me/MiddleEastEye_TG/21930
 - `MiddleEastEye_TG` `2026-06-12T03:33:09+00:00` LBN / conflict_signal conf=0.96, sev=0.78: The Israeli army announced on Thursday that 30 Israeli soldiers and officers have been killed and 1302 others have been injured in Lebanon, since the resumption of fighting in e... https://t.me/MiddleEastEye_TG/21927
 - `MiddleEastEye_TG` `2026-06-11T23:32:52+00:00` PSE / military_movement conf=0.96, sev=0.40: More than 1,500 Palestinian patients have died waiting for medical evacuation as more than 16,500 remain trapped in Gaza, the Palestinian health ministry has said. Gaza’s health... https://t.me/MiddleEastEye_TG/21926
 - `liveuamap` `2026-06-11T13:27:54+00:00` LBN / conflict_signal conf=0.95, sev=0.60: One dead and 17 wounded, including 10 nurses and staff members, in the raid on the vicinity of Hiram Hospital https://lebanon.liveuamap.com/en/2026/11-june-13-one-dead-and-17-wo... https://t.me/liveuamap/12156
 - `MiddleEastEye_TG` `2026-06-11T11:34:37+00:00` LBN / conflict_signal conf=0.96, sev=0.78: 📹 Prime Minister Benjamin Netanyahu called on the Lebanese people on Wednesday to “join Israel” against Hezbollah. Netanyahu claimed that “Israel is not at war” with the Lebanes... https://t.me/MiddleEastEye_TG/21923
 - `MiddleEastEye_TG` `2026-06-10T19:05:22+00:00` PSE / conflict_signal conf=0.96, sev=0.75: 📰 Israeli settlers attacked a Palestinian Christian village on Tuesday as their violence across the occupied West Bank continues to escalate. Settlers targeted areas near the vi... https://t.me/MiddleEastEye_TG/21915
-- `MiddleEastEye_TG` `2026-06-10T14:02:33+00:00` ISR / conflict_signal conf=0.96, sev=0.75: 📹 “The Israelis were intent on leaving no survivor.” Republican Congressman Thomas Massie has used the 59th anniversary of Israel’s attack on the USS Liberty to call for a new i... https://t.me/MiddleEastEye_TG/21913
-- `liveuamap` `2026-06-09T16:50:31+00:00` IRN / conflict_signal conf=0.95, sev=0.75: Following the downing of a U.S. Army AH-64 Apache helicopter near the Strait of Hormuz, U.S. President Donald J. Trump has said that the Apache was in fact shot down while patro... https://t.me/liveuamap/12149
 
 ### Possible Duplicate Groups
 
