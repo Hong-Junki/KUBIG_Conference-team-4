@@ -1,20 +1,20 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-13T13:19:53.917053+00:00`
+- Generated at: `2026-07-13T16:13:18.496309+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1395`
-- Extracted rows: `1395`
-- Conflict events: `381`
-- Fresh conflict events: `228`
-- Non-conflict extracted rows: `1014`
+- Raw messages: `1404`
+- Extracted rows: `1404`
+- Conflict events: `383`
+- Fresh conflict events: `230`
+- Non-conflict extracted rows: `1021`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 502 | 168 | 33.5% |
-| OSINTdefender | 351 | 75 | 21.4% |
-| MiddleEastEye_TG | 279 | 69 | 24.7% |
+| KyivIndependent_official | 506 | 169 | 33.4% |
+| OSINTdefender | 354 | 76 | 21.5% |
+| MiddleEastEye_TG | 281 | 69 | 24.6% |
 | liveuamap | 162 | 57 | 35.2% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
@@ -27,20 +27,20 @@
 | missing_country | 29 | 7.6% |
 | missing_location | 29 | 7.6% |
 | missing_coordinates | 29 | 7.6% |
-| country_centroid_fallback | 191 | 50.1% |
+| country_centroid_fallback | 192 | 50.1% |
 | low_confidence_lt_0.75 | 12 | 3.1% |
 | high_severity_low_confidence | 10 | 2.6% |
 | negation_or_uncertainty_suspects | 4 | 1.0% |
-| older_than_30_days | 153 | 40.2% |
+| older_than_30_days | 153 | 39.9% |
 | possible_duplicate_groups | 7 | - |
 
 ## Top Matched Keywords
 
 | keyword | count |
 | --- | --- |
-| attack | 138 |
+| attack | 139 |
 | drone | 116 |
-| missile | 90 |
+| missile | 91 |
 | killed | 89 |
 | wounded | 27 |
 | protest | 11 |
