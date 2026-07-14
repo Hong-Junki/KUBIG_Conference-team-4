@@ -1,21 +1,21 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-14T06:34:20.416354+00:00`
+- Generated at: `2026-07-14T08:46:57.674528+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1427`
-- Extracted rows: `1427`
-- Conflict events: `392`
-- Fresh conflict events: `237`
-- Non-conflict extracted rows: `1035`
+- Raw messages: `1432`
+- Extracted rows: `1432`
+- Conflict events: `393`
+- Fresh conflict events: `238`
+- Non-conflict extracted rows: `1039`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 514 | 171 | 33.3% |
-| OSINTdefender | 364 | 80 | 22.0% |
+| KyivIndependent_official | 517 | 171 | 33.1% |
+| OSINTdefender | 365 | 81 | 22.2% |
 | MiddleEastEye_TG | 283 | 69 | 24.4% |
-| liveuamap | 165 | 60 | 36.4% |
+| liveuamap | 166 | 60 | 36.1% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
 | demo_security | 1 | 0 | 0.0% |
@@ -24,14 +24,14 @@
 
 | flag | count | rate_among_conflict_events |
 | --- | --- | --- |
-| missing_country | 30 | 7.7% |
-| missing_location | 30 | 7.7% |
-| missing_coordinates | 30 | 7.7% |
-| country_centroid_fallback | 199 | 50.8% |
-| low_confidence_lt_0.75 | 13 | 3.3% |
-| high_severity_low_confidence | 11 | 2.8% |
+| missing_country | 31 | 7.9% |
+| missing_location | 31 | 7.9% |
+| missing_coordinates | 31 | 7.9% |
+| country_centroid_fallback | 199 | 50.6% |
+| low_confidence_lt_0.75 | 14 | 3.6% |
+| high_severity_low_confidence | 12 | 3.1% |
 | negation_or_uncertainty_suspects | 4 | 1.0% |
-| older_than_30_days | 155 | 39.5% |
+| older_than_30_days | 155 | 39.4% |
 | possible_duplicate_groups | 7 | - |
 
 ## Top Matched Keywords
@@ -39,7 +39,7 @@
 | keyword | count |
 | --- | --- |
 | attack | 142 |
-| drone | 117 |
+| drone | 118 |
 | missile | 95 |
 | killed | 90 |
 | wounded | 27 |
@@ -58,6 +58,7 @@
 
 ### Missing Country
 
+- `OSINTdefender` `2026-07-14T08:24:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.75: #USA The Squire Seaglider drone is designed to support a variety of operations including tailored logistics, intelligence, surveillance, reconnaissance (ISR), and search and res... https://t.me/OSINTdefender/19481
 - `OSINTdefender` `2026-07-13T23:24:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Sentinel is set to modernize the ground-based leg of America's Nuclear Triad, with initial capabilities expected to be fielded in the early 2030s. This program aims to enha... https://t.me/OSINTdefender/19474
 - `KyivIndependent_official` `2026-07-13T11:39:16+00:00` NO_COUNTRY / strike conf=0.77, sev=0.75: ⚡️Moldova's largest EU air defense support package even larger than expected. The package of support was agreed hours after a Russian overnight attack in which a Russian drone c... https://t.me/KyivIndependent_official/54225
 - `KyivIndependent_official` `2026-07-10T02:59:42+00:00` NO_COUNTRY / strike conf=0.77, sev=0.75: ⚡️Key Russian oil refinery halts production following Ukrainian attack, Reuters reports. A key Russian oil refinery in the city of Saratov halted processing on July 8 following... https://t.me/KyivIndependent_official/54168
@@ -65,10 +66,10 @@
 - `OSINTdefender` `2026-07-06T10:52:49+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China's test-fire of a long-range missile from a nuclear-powered submarine into the Pacific Ocean occurred on July 6, 2026, and has drawn significant criticism from regio... https://t.me/OSINTdefender/19392
 - `OSINTdefender` `2026-07-03T08:52:37+00:00` NO_COUNTRY / military_movement conf=0.72, sev=0.45: #EU #USA Marco Rubio reportedly helped block Defense Secretary Pete Hegseth's plan to announce significant troop cuts in Europe during a NATO meeting last month. Subscribe to @O... https://t.me/OSINTdefender/19373
 - `MiddleEastEye_TG` `2026-07-03T03:04:03+00:00` NO_COUNTRY / conflict_signal conf=0.76, sev=0.75: An Israeli bill to restrict the adhan, the Muslim call to prayer, passed a preliminary reading in parliament on Wednesday. Palestinians condemned the legislation as a "declarati... https://t.me/MiddleEastEye_TG/22113
-- `KyivIndependent_official` `2026-07-02T14:05:14+00:00` NO_COUNTRY / conflict_signal conf=0.77, sev=0.75: ⚡️ Around 800,000 of Ukrainian publisher’s books destroyed in overnight Russian attack. According to BookChef, the central warehouse of their logistics partner — where their boo... https://t.me/KyivIndependent_official/54035
 
 ### Missing Coordinates
 
+- `OSINTdefender` `2026-07-14T08:24:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.75: #USA The Squire Seaglider drone is designed to support a variety of operations including tailored logistics, intelligence, surveillance, reconnaissance (ISR), and search and res... https://t.me/OSINTdefender/19481
 - `OSINTdefender` `2026-07-13T23:24:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Sentinel is set to modernize the ground-based leg of America's Nuclear Triad, with initial capabilities expected to be fielded in the early 2030s. This program aims to enha... https://t.me/OSINTdefender/19474
 - `KyivIndependent_official` `2026-07-13T11:39:16+00:00` NO_COUNTRY / strike conf=0.77, sev=0.75: ⚡️Moldova's largest EU air defense support package even larger than expected. The package of support was agreed hours after a Russian overnight attack in which a Russian drone c... https://t.me/KyivIndependent_official/54225
 - `KyivIndependent_official` `2026-07-10T02:59:42+00:00` NO_COUNTRY / strike conf=0.77, sev=0.75: ⚡️Key Russian oil refinery halts production following Ukrainian attack, Reuters reports. A key Russian oil refinery in the city of Saratov halted processing on July 8 following... https://t.me/KyivIndependent_official/54168
@@ -76,10 +77,10 @@
 - `OSINTdefender` `2026-07-06T10:52:49+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China's test-fire of a long-range missile from a nuclear-powered submarine into the Pacific Ocean occurred on July 6, 2026, and has drawn significant criticism from regio... https://t.me/OSINTdefender/19392
 - `OSINTdefender` `2026-07-03T08:52:37+00:00` NO_COUNTRY / military_movement conf=0.72, sev=0.45: #EU #USA Marco Rubio reportedly helped block Defense Secretary Pete Hegseth's plan to announce significant troop cuts in Europe during a NATO meeting last month. Subscribe to @O... https://t.me/OSINTdefender/19373
 - `MiddleEastEye_TG` `2026-07-03T03:04:03+00:00` NO_COUNTRY / conflict_signal conf=0.76, sev=0.75: An Israeli bill to restrict the adhan, the Muslim call to prayer, passed a preliminary reading in parliament on Wednesday. Palestinians condemned the legislation as a "declarati... https://t.me/MiddleEastEye_TG/22113
-- `KyivIndependent_official` `2026-07-02T14:05:14+00:00` NO_COUNTRY / conflict_signal conf=0.77, sev=0.75: ⚡️ Around 800,000 of Ukrainian publisher’s books destroyed in overnight Russian attack. According to BookChef, the central warehouse of their logistics partner — where their boo... https://t.me/KyivIndependent_official/54035
 
 ### Low Confidence
 
+- `OSINTdefender` `2026-07-14T08:24:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.75: #USA The Squire Seaglider drone is designed to support a variety of operations including tailored logistics, intelligence, surveillance, reconnaissance (ISR), and search and res... https://t.me/OSINTdefender/19481
 - `OSINTdefender` `2026-07-13T23:24:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Sentinel is set to modernize the ground-based leg of America's Nuclear Triad, with initial capabilities expected to be fielded in the early 2030s. This program aims to enha... https://t.me/OSINTdefender/19474
 - `OSINTdefender` `2026-07-08T18:00:09+00:00` NO_COUNTRY / strike conf=0.72, sev=0.75: #USA #Kazakhstan The Yasa Polaris, a Chevron tanker, was indeed struck by a drone near the Black Sea, but Chevron confirmed that oil exports from Kazakhstan to the Black Sea wer... https://t.me/OSINTdefender/19422
 - `OSINTdefender` `2026-07-06T10:52:49+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China's test-fire of a long-range missile from a nuclear-powered submarine into the Pacific Ocean occurred on July 6, 2026, and has drawn significant criticism from regio... https://t.me/OSINTdefender/19392
@@ -87,7 +88,6 @@
 - `OSINTdefender` `2026-06-30T22:26:58+00:00` NO_COUNTRY / strike conf=0.72, sev=0.85: #China The People's Liberation Army Rocket Force (PLARF), formerly the Second Artillery Corps, was established on 1 July 1966, making it nearly 60 years old as of 2026. Subscrib... https://t.me/OSINTdefender/19362
 - `OSINTdefender` `2026-06-30T18:15:01+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #USA Northrop Grumman has revealed photos of the LGM-35A Sentinel, a new-generation intercontinental ballistic missile designed to replace the aging Minuteman III. This missile... https://t.me/OSINTdefender/19360
 - `OSINTdefender` `2026-06-26T08:12:47+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #NK North Korea tested upgraded artillery and missile systems under Kim Jong Un, including an upgraded 240mm multiple rocket launcher with a 90-kilometer range and a tactical ba... https://t.me/OSINTdefender/19330
-- `OSINTdefender` `2026-06-21T19:47:33+00:00` NO_COUNTRY / strike conf=0.72, sev=0.90: #China China has constructed full-scale replicas of the USS Gerald R. Ford aircraft carrier and an Arleigh Burke-class destroyer in the Taklamakan Desert for military training p... https://t.me/OSINTdefender/19296
 
 ### Negation Or Uncertainty Suspects
 
