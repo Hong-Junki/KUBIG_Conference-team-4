@@ -1,18 +1,18 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-14T10:34:28.997434+00:00`
+- Generated at: `2026-07-14T12:07:18.168557+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1435`
-- Extracted rows: `1435`
-- Conflict events: `393`
-- Fresh conflict events: `238`
-- Non-conflict extracted rows: `1042`
+- Raw messages: `1437`
+- Extracted rows: `1437`
+- Conflict events: `394`
+- Fresh conflict events: `237`
+- Non-conflict extracted rows: `1043`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 519 | 171 | 32.9% |
+| KyivIndependent_official | 521 | 172 | 33.0% |
 | OSINTdefender | 365 | 81 | 22.2% |
 | MiddleEastEye_TG | 284 | 69 | 24.3% |
 | liveuamap | 166 | 60 | 36.1% |
@@ -27,11 +27,11 @@
 | missing_country | 31 | 7.9% |
 | missing_location | 31 | 7.9% |
 | missing_coordinates | 31 | 7.9% |
-| country_centroid_fallback | 199 | 50.6% |
+| country_centroid_fallback | 199 | 50.5% |
 | low_confidence_lt_0.75 | 14 | 3.6% |
-| high_severity_low_confidence | 12 | 3.1% |
-| negation_or_uncertainty_suspects | 4 | 1.0% |
-| older_than_30_days | 155 | 39.4% |
+| high_severity_low_confidence | 12 | 3.0% |
+| negation_or_uncertainty_suspects | 5 | 1.3% |
+| older_than_30_days | 157 | 39.8% |
 | possible_duplicate_groups | 7 | - |
 
 ## Top Matched Keywords
@@ -40,12 +40,12 @@
 | --- | --- |
 | attack | 142 |
 | drone | 118 |
-| missile | 95 |
+| missile | 96 |
 | killed | 90 |
 | wounded | 27 |
+| casualties | 11 |
 | protest | 11 |
 | airstrike | 11 |
-| casualties | 10 |
 | explosion | 8 |
 | troop | 8 |
 | battle | 7 |
@@ -91,6 +91,7 @@
 
 ### Negation Or Uncertainty Suspects
 
+- `KyivIndependent_official` `2026-07-14T11:05:52+00:00` UKR / strike conf=0.82, sev=0.44: ⚡️Russian attacks kill 7, injure 78 across Ukraine over past day as Kyiv comes under another ballistic missile strike. Explosions rocked the capital shortly after air raid siren... https://t.me/KyivIndependent_official/54245
 - `liveuamap` `2026-07-07T13:30:07+00:00` IRN / conflict_signal conf=0.80, sev=0.33: UKMTO has received a report of an incident involving a tanker transiting the Strait of Hormuz. The tanker was struck by an unidentified projectile and is believed to have struct... https://t.me/liveuamap/12211
 - `OSINTdefender` `2026-06-18T17:20:41+00:00` UKR / strike conf=0.92, sev=0.75: #Russia #Ukraine #Belarus Will the incident with the bus in the Bryansk region be used for a new round of escalation? Russian and Belarusian officials officially blamed Ukrainia... https://t.me/OSINTdefender/19262
 - `OSINTdefender` `2026-06-18T04:31:32+00:00` UKR / conflict_signal conf=0.77, sev=0.37: #Russia #Ukraine Dozens of Ukrainian drones attacked the Moscow Refinery, causing damage but no casualties, according to Mayor Sergey Sobyanin. Emergency services are currently... https://t.me/OSINTdefender/19257
@@ -98,14 +99,14 @@
 
 ### Older Than 30 Days
 
+- `liveuamap` `2026-06-14T11:40:22+00:00` LBN / conflict_signal conf=0.95, sev=0.60: One dead and four wounded in the initial toll from the raid on a residential apartment in Ghobeiri in Beirut's southern suburbs https://lebanon.liveuamap.com/en/2026/14-june-11-... https://t.me/liveuamap/12159
+- `MiddleEastEye_TG` `2026-06-14T10:52:28+00:00` LBN / conflict_signal conf=0.96, sev=0.75: Several reports are circulating that Israel struck the Beirut's southern suburbs, following calls from prominent Israeli officials on attacking the area. The attack comes after... https://t.me/MiddleEastEye_TG/21948
 - `MiddleEastEye_TG` `2026-06-13T20:11:42+00:00` IRN / armed_clash conf=0.96, sev=0.80: #BREAKING US President Donald Trump says a long-awaited agreement to end the US-Israeli war on Iran will be signed on Sunday, paving the way for the reopening of the strategic S... https://t.me/MiddleEastEye_TG/21947
 - `OSINTdefender` `2026-06-13T19:36:42+00:00` USA / strike conf=0.92, sev=0.90: #Iran #Russia Iran has reportedly restored about 75% of its missile arsenal during a ceasefire with the United States, with significant assistance from Russia. This rearmament i... https://t.me/OSINTdefender/19217
 - `MiddleEastEye_TG` `2026-06-13T13:00:17+00:00` PSE / conflict_signal conf=0.96, sev=0.78: 🎥 Palestinians in Gaza struggle to cope with a heatwave as the Israeli blockade prevents them from accessing vital aid that might provide relief. Despite reaching a ceasefire ag... https://t.me/MiddleEastEye_TG/21946
 - `liveuamap` `2026-06-13T11:45:54+00:00` LBN / strike conf=0.95, sev=0.75: Lebanese Army: A Lebanese soldier was seriously injured after being targeted by an Israeli drone on the Kafr Remman-Nabatieh road. https://lebanon.liveuamap.com/en/2026/13-june-... https://t.me/liveuamap/12158
 - `MiddleEastEye_TG` `2026-06-12T11:31:32+00:00` NO_COUNTRY / strike conf=0.76, sev=0.75: 🎥 Drone footage from Wednesday showed a vehicle set on fire as police blocked a road to stop anti-immigrant violence for the second night in Belfast, Northern Ireland. A wave of... https://t.me/MiddleEastEye_TG/21930
 - `MiddleEastEye_TG` `2026-06-12T03:33:09+00:00` LBN / conflict_signal conf=0.96, sev=0.78: The Israeli army announced on Thursday that 30 Israeli soldiers and officers have been killed and 1302 others have been injured in Lebanon, since the resumption of fighting in e... https://t.me/MiddleEastEye_TG/21927
-- `MiddleEastEye_TG` `2026-06-11T23:32:52+00:00` PSE / military_movement conf=0.96, sev=0.40: More than 1,500 Palestinian patients have died waiting for medical evacuation as more than 16,500 remain trapped in Gaza, the Palestinian health ministry has said. Gaza’s health... https://t.me/MiddleEastEye_TG/21926
-- `liveuamap` `2026-06-11T13:27:54+00:00` LBN / conflict_signal conf=0.95, sev=0.60: One dead and 17 wounded, including 10 nurses and staff members, in the raid on the vicinity of Hiram Hospital https://lebanon.liveuamap.com/en/2026/11-june-13-one-dead-and-17-wo... https://t.me/liveuamap/12156
 
 ### Possible Duplicate Groups
 
