@@ -1,20 +1,20 @@
 # Live OSINT Feed Audit Report
 
-- Generated at: `2026-07-14T17:31:13.026115+00:00`
+- Generated at: `2026-07-14T18:50:28.144835+00:00`
 - Freshness threshold: `30` days
-- Raw messages: `1448`
-- Extracted rows: `1448`
-- Conflict events: `398`
-- Fresh conflict events: `241`
-- Non-conflict extracted rows: `1050`
+- Raw messages: `1455`
+- Extracted rows: `1455`
+- Conflict events: `401`
+- Fresh conflict events: `244`
+- Non-conflict extracted rows: `1054`
 
 ## Channel Detection Rates
 
 | channel | raw_messages | conflict_events | detection_rate |
 | --- | --- | --- | --- |
-| KyivIndependent_official | 528 | 175 | 33.1% |
-| OSINTdefender | 365 | 81 | 22.2% |
-| MiddleEastEye_TG | 286 | 69 | 24.1% |
+| KyivIndependent_official | 532 | 177 | 33.3% |
+| OSINTdefender | 367 | 81 | 22.1% |
+| MiddleEastEye_TG | 287 | 70 | 24.4% |
 | liveuamap | 168 | 61 | 36.3% |
 | aljazeeraenglish | 50 | 5 | 10.0% |
 | bellingcat_en | 50 | 7 | 14.0% |
@@ -24,14 +24,14 @@
 
 | flag | count | rate_among_conflict_events |
 | --- | --- | --- |
-| missing_country | 31 | 7.8% |
-| missing_location | 31 | 7.8% |
-| missing_coordinates | 31 | 7.8% |
-| country_centroid_fallback | 202 | 50.8% |
+| missing_country | 31 | 7.7% |
+| missing_location | 31 | 7.7% |
+| missing_coordinates | 31 | 7.7% |
+| country_centroid_fallback | 203 | 50.6% |
 | low_confidence_lt_0.75 | 14 | 3.5% |
 | high_severity_low_confidence | 12 | 3.0% |
-| negation_or_uncertainty_suspects | 5 | 1.3% |
-| older_than_30_days | 157 | 39.4% |
+| negation_or_uncertainty_suspects | 5 | 1.2% |
+| older_than_30_days | 157 | 39.2% |
 | possible_duplicate_groups | 7 | - |
 
 ## Top Matched Keywords
@@ -39,19 +39,19 @@
 | keyword | count |
 | --- | --- |
 | attack | 144 |
-| drone | 119 |
+| drone | 120 |
 | missile | 97 |
-| killed | 91 |
+| killed | 92 |
 | wounded | 28 |
+| casualties | 12 |
 | protest | 12 |
-| casualties | 11 |
 | airstrike | 11 |
 | explosion | 9 |
 | troop | 8 |
 | battle | 7 |
 | rocket | 7 |
+| shelling | 5 |
 | evacuation | 5 |
-| shelling | 4 |
 | clash | 2 |
 
 ## Samples To Review
