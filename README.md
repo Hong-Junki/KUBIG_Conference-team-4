@@ -43,7 +43,7 @@ GDELT 뉴스 신호와 경제지표만으로 58개국의 분쟁 신규 발생 �
 | TCN / 7모델 스태킹 | 0.115 |
 | 트리 (XGB·LGBM) | 0.091~0.098 |
 
-PR-AUC 0.173은 무작위 기준(양성률 6.9%)의 약 2.5배다. 위험 상위 2% 국가에 경보를 냈을 때 그중 27%에서 실제로 분쟁이 발생했다. 실험 과정(escalation 비교, 트리·시퀀스·스태킹 후보)은 [`model/`](model/) 노트북과 리포트에 정리되어 있다.
+PR-AUC 0.173은 무작위 기준(양성률 6.9%)의 약 2.5배다. 위험 상위 2% 국가에 경보를 냈을 때 그중 27%에서 실제로 분쟁이 발생했다. 학습 스크립트는 [`scripts/train_onset_prod.py`](scripts/train_onset_prod.py), 배포 가중치는 [`output/models/onset_prod/`](output/models/onset_prod/)에 있다. 실험 과정(escalation 비교, 트리·시퀀스·스태킹 후보)은 [`model/`](model/) 노트북과 리포트에 정리되어 있다.
 
 대시보드 점수는 두 가지로 나눴다. 지도 색상 = `current_risk`(현재 위험 수준), 조기경보 = `onset_alert`(신규 발생 임박 신호). 정책 상세: [`docs/dashboard-scoring-policy.md`](docs/dashboard-scoring-policy.md)
 
@@ -61,16 +61,16 @@ https://hong-junki.github.io/KUBIG_Conference-team-4/
 ├── src/
 │   ├── collect/        # ACLED·GDELT·경제지표 수집 (+ incremental/ 증분 수집)
 │   ├── process/        # 병합·전처리·피처·라벨·데이터셋
-│   ├── model/          # 학습·평가 파이프라인
 │   └── serve/          # 실시간 피처 빌드·채점        → SERVING_AUTOMATION.md
-├── model/              # 모델 실험 노트북·리포트 (src/model 파이프라인과 별개)
-├── scripts/            # 학습·EDA·임베딩 보조 스크립트
+├── scripts/            # 최종 모델 학습(train_onset_prod.py)·EDA·임베딩 보조
+├── output/models/      # 배포 모델 가중치 (LSTM onset_prod + 임베딩 PCA)
+├── model/              # 모델 실험 노트북·리포트
 ├── Telegram/           # 대시보드 사이트(GitHub Pages) + Telegram 수집·LLM 요약
 ├── docs/               # 수집 검증 리포트, 파이프라인 감사, 대시보드 점수 정책
 ├── .github/workflows/  # 수집·채점·동기화·대시보드 재생성 워크플로 4종
 ├── migrations/         # Supabase 스키마
 ├── Dockerfile.serve    # 채점 컨테이너 (계약 문서: SERVING_CONTRACTS.md)
-├── input/ · output/    # 데이터·산출물 (실행 시 생성)
+├── input/              # 데이터 (실행 시 생성, 서빙용 앵커 임베딩만 포함)
 └── tests/
 ```
 
